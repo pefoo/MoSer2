@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.2)
+
+project(MoSer2 LANGUAGES CXX VERSION 0.1)
+
+#
+# includes
+#
+# Required for default install dirs
+include(GNUInstallDirs)
+
+#
+# cmake / make flags
+#
+set(CMAKE_CXX_STANDARD 11)
+
+#
+# set output dirs
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/runtime)
+set(CMAKE_ARCHIVE_DIR ${CMAKE_BINARY_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+
+#
+# Testing
+#
+enable_testing()
+
+
+#
+# include sub projects
+#
+add_subdirectory(./src/moser2)
+add_subdirectory(./extern/pluginmanager)
+add_subdirectory(./extern/events)
