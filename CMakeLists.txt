@@ -29,6 +29,9 @@ enable_testing()
 #
 # include sub projects
 #
+include_directories(./extern)
+
 add_subdirectory(./src/moser2)
 add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/events)
+add_subdirectory(./extern/easyloggingpp-9.96.5)
