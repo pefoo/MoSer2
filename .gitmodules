@@ -1,0 +1,6 @@
+[submodule "extern/events"]
+	path = extern/events
+	url = git@bitbucket.org:peepesteam/events.git
+[submodule "extern/pluginmanager"]
+	path = extern/pluginmanager
+	url = git@bitbucket.org:peepesteam/pluginmanager.git
