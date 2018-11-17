@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(MoSer2 LANGUAGES CXX VERSION 0.1)
+project(MoSer2 LANGUAGES CXX VERSION 0.1.0)
+
+#
+# Options
+#
+option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
 
 #
 # includes
@@ -11,7 +16,8 @@ include(GNUInstallDirs)
 #
 # cmake / make flags
 #
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 #
 # set output dirs
@@ -32,13 +38,30 @@ configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYON
 #
 enable_testing()
 
+#
+# IDE support
+#
+
+if (ENABLE_IDE_SUPPORT)
+    FILE(GLOB_RECURSE HEADERS "*.hpp")
+    FILE(GLOB_RECURSE GNUPLOT "*.gnuplot")
+    add_custom_target(header SOURCES ${HEADERS})
+    add_custom_target(scripts SOURCES ${GNUPLOT})
+endif()
+
 
 #
 # include sub projects
 #
-include_directories(./extern)
+include_directories(
+  ./extern
+  ./include
+)
 
 add_subdirectory(./src/moser2)
+add_subdirectory(./src/measurementpluginbase)
+add_subdirectory(./src/measurementplugins/cpuplugin)
 add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/events)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
+add_subdirectory(./include/monitorplugin)

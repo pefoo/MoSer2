@@ -1,0 +1,2 @@
+add_library(cpuplugin SHARED cpuplugin.cpp)
+target_link_libraries(cpuplugin MeasurementPluginBase)
