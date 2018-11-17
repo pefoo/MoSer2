@@ -2,4 +2,9 @@
 
 INITIALIZE_EASYLOGGINGPP
 
-int main() { return 0; }
+int main() {
+  el::Configurations conf("logger.conf");
+  el::Loggers::reconfigureAllLoggers(conf);
+
+  return 0;
+}

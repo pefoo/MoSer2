@@ -15,10 +15,17 @@ set(CMAKE_CXX_STANDARD 11)
 
 #
 # set output dirs
+#
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/runtime)
 set(CMAKE_ARCHIVE_DIR ${CMAKE_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+
+# other directories
+set(ETC_DIR "./etc")
+
+# Copy logger config to runtime dir
+configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
 
 #
 # Testing
