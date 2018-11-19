@@ -2,6 +2,7 @@
 #define PLUGINCONTROLLER_H
 
 #include <memory>
+#include <string>
 #include <vector>
 #include "imonitoringplugin/imonitorplugin.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
@@ -22,7 +23,7 @@ class PluginController {
   /// \param path The path to the file to laod the plugin from (a shared
   /// library)
   ///
-  void LoadPlugin(const std::string& path);
+  void LoadPlugin(const std::string& path, const std::string& plugin_ame);
 
   ///
   /// \brief Try to load plugins from all shared libraries in a folder
@@ -38,6 +39,6 @@ class PluginController {
   std::unique_ptr<MonitoringPluginManager> pluginManager;
   std::vector<imonitorplugin::IMonitorPlugin> plugins;
 };
-}
-}
+}  // namespace plugin
+}  // namespace moser2
 #endif  // PLUGINCONTROLLER_H

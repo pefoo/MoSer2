@@ -1,7 +1,9 @@
 #ifndef CPUPLUGIN_H
 #define CPUPLUGIN_H
 
+#include <string>
 #include "monitoringpluginbase/measurementpluginbase.hpp"
+
 namespace monitoringplugins {
 namespace cpuplugin {
 ///
@@ -9,7 +11,7 @@ namespace cpuplugin {
 ///
 class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
-  CpuPlugin(std::string name);
+  explicit CpuPlugin(std::string name);
 
  protected:
   data AcquireDataInternal() const override;
@@ -21,6 +23,6 @@ extern "C" imonitorplugin::IMonitorPlugin* create(const std::string& name) {
 }
 
 extern "C" void destroy(CpuPlugin* p) { delete p; }
-}
-}
+}  // namespace cpuplugin
+}  // namespace monitoringplugins
 #endif  // CPUPLUGIN_H

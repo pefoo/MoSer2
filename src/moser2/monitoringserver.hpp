@@ -12,6 +12,6 @@ class MonitoringServer {
 
  private:
 };
-}
+}  // namespace moser2
 
 #endif  // MONITORINGSERVER_H

@@ -1,4 +1,6 @@
 #include "monitoringplugins/cpuplugin/cpuplugin.hpp"
+#include <string>
+#include <utility>
 
 monitoringplugins::cpuplugin::CpuPlugin::CpuPlugin(std::string name)
     : monitoringpluginbase::MonitorPluginBase(std::move(name)) {}

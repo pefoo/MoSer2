@@ -5,4 +5,4 @@ if [ "$#" -ne 1 ]; then
   exit 1;
 fi
 
-python "$1"/tools/cpplint/cpplint.py --extensions=cpp,hpp --filter=-legal/copyright $(find "$1"/include "$1"/src -name *.cpp -o -name *.hpp) | grep -v 'Done processing'
+python "$1"/tools/cpplint/cpplint.py --extensions=cpp,hpp --filter=-legal/copyright,-readability/todo $(find "$1"/include "$1"/src -name *.cpp -o -name *.hpp) | grep -v 'Done processing'

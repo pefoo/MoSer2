@@ -2,6 +2,7 @@
 #define MEASUREMENTPLUGINBASE_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include "imonitoringplugin/imonitorplugin.hpp"
 
@@ -16,7 +17,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \brief Create new instance
   /// \param name The name of the plugin
   ///
-  MonitorPluginBase(std::string name);
+  explicit MonitorPluginBase(std::string name);
 
   ///
   /// \brief Get the plugin name
@@ -50,5 +51,5 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   std::int64_t MakeTimestamp() const;
   std::string name;
 };
-}
+}  // namespace monitoringpluginbase
 #endif  // MEASUREMENTPLUGINBASE_H

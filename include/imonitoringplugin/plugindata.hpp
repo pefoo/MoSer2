@@ -2,6 +2,7 @@
 #define PLUGINDATA_H
 
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace imonitorplugin {

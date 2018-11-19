@@ -1,5 +1,7 @@
 #include "monitoringpluginbase/measurementpluginbase.hpp"
 #include <ctime>
+#include <string>
+#include <utility>
 #include "imonitoringplugin/plugindata.hpp"
 
 monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)

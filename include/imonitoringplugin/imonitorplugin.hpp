@@ -16,5 +16,5 @@ class IMonitorPlugin {
 
 typedef IMonitorPlugin* create_t(const std::string& name);
 typedef void destroy_t(IMonitorPlugin*);
-}
+}  // namespace imonitorplugin
 #endif  // IMONITORPLUGIN_H
