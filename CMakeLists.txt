@@ -41,7 +41,6 @@ enable_testing()
 #
 # IDE support
 #
-
 if (ENABLE_IDE_SUPPORT)
     FILE(GLOB_RECURSE HEADERS "*.hpp")
     FILE(GLOB_RECURSE GNUPLOT "*.gnuplot")
@@ -49,6 +48,10 @@ if (ENABLE_IDE_SUPPORT)
     add_custom_target(scripts SOURCES ${GNUPLOT})
 endif()
 
+#
+# Custom targets
+#
+add_custom_target(cpplint ${PROJECT_SOURCE_DIR}/tools/run_cpp_lint.sh ${PROJECT_SOURCE_DIR})
 
 #
 # include sub projects

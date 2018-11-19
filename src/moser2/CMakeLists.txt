@@ -3,6 +3,7 @@ set(EXEC_NAME MoSer2)
 set(SOURCES
   main.cpp
   monitoringserver.cpp
+  plugin/plugincontroller.cpp
 )
 
 add_executable(${EXEC_NAME} ${SOURCES})
