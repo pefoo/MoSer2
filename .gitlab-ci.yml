@@ -1,0 +1,27 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - mkdir runtime
+    - cd runtime
+    - cmake ..
+    - make
+  artifacts:
+    paths:
+      - runtime/
+
+unit-test:
+  stage: test
+  script:
+    - cd runtime 
+    - ctest --verbose
+
+cpplint:
+  stage: test
+  script:
+    - cd runtime
+    - make cpplint
+
