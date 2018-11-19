@@ -23,7 +23,7 @@ class PluginController {
   /// \param path The path to the file to laod the plugin from (a shared
   /// library)
   ///
-  void LoadPlugin(const std::string& path, const std::string& plugin_ame);
+  void LoadPlugin(const std::string& path, const std::string& plugin_name);
 
   ///
   /// \brief Try to load plugins from all shared libraries in a folder
@@ -36,8 +36,8 @@ class PluginController {
                                        imonitorplugin::create_t,
                                        imonitorplugin::destroy_t>
       MonitoringPluginManager;
-  std::unique_ptr<MonitoringPluginManager> pluginManager;
-  std::vector<imonitorplugin::IMonitorPlugin> plugins;
+  std::unique_ptr<MonitoringPluginManager> plugin_manager;
+  std::vector<MonitoringPluginManager::plugin_t*> plugins;
 };
 }  // namespace plugin
 }  // namespace moser2

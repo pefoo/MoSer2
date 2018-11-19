@@ -1,19 +1,23 @@
 #include "plugincontroller.hpp"
 #include <memory>
 #include <string>
+#include "easyloggingpp-9.96.5/src/easylogging++.h"
 
 namespace moser2 {
 namespace plugin {
 PluginController::PluginController() {
-  this->pluginManager = std::make_unique<MonitoringPluginManager>();
+  this->plugin_manager = std::make_unique<MonitoringPluginManager>();
 }
 
 void PluginController::LoadPlugin(const std::string &path,
                                   const std::string &plugin_name) {
-  // TODO Remove this test code
-  auto plugin =
-      this->pluginManager->LoadPlugin("./libcpuplugin.so", "cpuplugin");
-  auto name = plugin->Instance()->GetName();
+  try {
+    this->plugins.push_back(
+        this->plugin_manager->LoadPlugin(path, plugin_name));
+  } catch (const std::exception &e) {
+    LOG(ERROR) << "Failed to load the plugin " << plugin_name << " located at "
+               << path << ". " << e.what();
+  }
 }
 
 void PluginController::LoadPlugins(const std::string &path) {
