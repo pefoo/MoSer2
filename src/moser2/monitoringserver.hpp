@@ -1,7 +1,7 @@
 #ifndef MONITORINGSERVER_H
 #define MONITORINGSERVER_H
 #include <memory>
-#include "monitorplugin/imonitorplugin.hpp"
+#include "imonitoringplugin/imonitorplugin.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
 
 namespace moser2 {
@@ -14,9 +14,9 @@ class MonitoringServer {
   ~MonitoringServer();
 
  private:
-  typedef pluginmanager::PluginManager<monitorplugin::IMonitorPlugin,
-                                       monitorplugin::create_t,
-                                       monitorplugin::destroy_t>
+  typedef pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin,
+                                       imonitorplugin::create_t,
+                                       imonitorplugin::destroy_t>
       MeasurementPluginManager;
   std::unique_ptr<MeasurementPluginManager> pluginManager;
 };

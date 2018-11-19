@@ -3,20 +3,20 @@
 
 #include <string>
 #include <vector>
-#include "monitorplugin/imonitorplugin.hpp"
+#include "imonitoringplugin/imonitorplugin.hpp"
 
-namespace measurementpluginbase {
+namespace monitoringpluginbase {
 ///
 /// \brief The base class of each monitoring plugin.
 /// \details Provides basic functionality for plugins
 ///
-class MeasurementPluginBase : virtual public monitorplugin::IMonitorPlugin {
+class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
  public:
   ///
   /// \brief Create new instance
   /// \param name The name of the plugin
   ///
-  MeasurementPluginBase(std::string name);
+  MonitorPluginBase(std::string name);
 
   ///
   /// \brief Get the plugin name
@@ -29,7 +29,7 @@ class MeasurementPluginBase : virtual public monitorplugin::IMonitorPlugin {
   /// \return A plugin data objection that contains the information the plugin
   /// acquired
   ///
-  monitorplugin::PluginData AcquireData() const override;
+  imonitorplugin::PluginData AcquireData() const override;
 
  protected:
   typedef std::vector<std::pair<std::string, std::string>> data;

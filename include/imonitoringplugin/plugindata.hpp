@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-namespace monitorplugin {
+namespace imonitorplugin {
 struct PluginData {
   const std::string PluginName;
   const std::int64_t Timestamp;

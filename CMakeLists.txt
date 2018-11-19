@@ -59,9 +59,9 @@ include_directories(
 )
 
 add_subdirectory(./src/moser2)
-add_subdirectory(./src/measurementpluginbase)
-add_subdirectory(./src/measurementplugins/cpuplugin)
+add_subdirectory(./src/monitoringpluginbase)
+add_subdirectory(./src/monitoringplugins/cpuplugin)
 add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/events)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
-add_subdirectory(./include/monitorplugin)
+add_subdirectory(./include/imonitoringplugin)
