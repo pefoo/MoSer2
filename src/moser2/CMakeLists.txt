@@ -4,6 +4,7 @@ set(SOURCES
   main.cpp
   monitoringserver.cpp
   plugin/plugincontroller.cpp
+  plugin/pluginfacade.cpp
 )
 
 add_executable(${EXEC_NAME} ${SOURCES})
