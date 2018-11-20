@@ -59,11 +59,13 @@ add_custom_target(cpplint ${PROJECT_SOURCE_DIR}/tools/run_cpp_lint.sh ${PROJECT_
 include_directories(
   ./extern
   ./include
+  ./src
 )
 
 add_subdirectory(./src/moser2)
 add_subdirectory(./src/monitoringpluginbase)
 add_subdirectory(./src/monitoringplugins/cpuplugin)
+add_subdirectory(./src/utility)
 add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/events)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
