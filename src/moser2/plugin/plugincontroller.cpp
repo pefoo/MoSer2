@@ -17,6 +17,7 @@ void PluginController::LoadPlugin(const std::string &path,
   try {
     this->plugins.push_back(
         this->plugin_manager->LoadPlugin(path, plugin_name));
+    LOG(INFO) << "Loaded plugin " << plugin_name << " from " << path;
   } catch (const std::exception &e) {
     LOG(ERROR) << "Failed to load the plugin " << plugin_name << " located at "
                << path << ". " << e.what();
@@ -47,7 +48,8 @@ void PluginController::RunPlugins(const int interval_ms) {
       cv.wait(lk);
       std::for_each(std::begin(this->plugins), std::end(this->plugins),
                     [](MonitoringPluginManager::plugin_t *&plug) {
-                      plug->Instance()->AcquireData();
+                      // TODO Do something with the data
+                      LOG(DEBUG) << plug->Instance()->AcquireData().ToString();
                     });
     }
     cb_timer.Stop();
