@@ -11,3 +11,4 @@ fi
 #   build/c++11       Google banned some headers because they have their own implementation 
 
 python "$1"/tools/cpplint/cpplint.py --extensions=cpp,hpp --filter=-legal/copyright,-readability/todo,-build/c++11 $(find "$1"/include "$1"/src -name *.cpp -o -name *.hpp) | grep -v 'Done processing'
+exit ${PIPESTATUS[0]}
