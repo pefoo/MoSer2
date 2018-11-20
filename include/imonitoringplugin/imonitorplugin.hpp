@@ -2,8 +2,8 @@
 #define IMONITORPLUGIN_H
 
 #include <string>
+#include "imonitoringplugin/plugindata.hpp"
 namespace imonitorplugin {
-class PluginData;
 ///
 /// \brief The interface monitoring plugins have to implement
 ///
