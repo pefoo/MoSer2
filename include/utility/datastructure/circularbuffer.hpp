@@ -40,12 +40,12 @@ class CircularBuffer {
   /// \param item The next item (out parameter)
   /// \return True, if the buffer was not empty
   ///
-  bool Get(T& item) {
+  bool Get(T* item) {
     std::lock_guard<std::mutex> lock(this->mutex);
     if (this->is_empty()) {
       return false;
     }
-    item = this->data[this->tail];
+    *item = this->data[this->tail];
     this->full = false;
     this->tail = (this->tail + 1) % this->max_size;
     return true;

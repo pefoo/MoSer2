@@ -34,7 +34,7 @@ TEST_CASE("Circular buffer", "[Utility]") {
   // Buffer returns the values in the correct order
   for (int i = 0; i < 10; ++i) {
     int v;
-    REQUIRE(cb.Get(v));
+    REQUIRE(cb.Get(&v));
     REQUIRE(v == i);
   }
 
