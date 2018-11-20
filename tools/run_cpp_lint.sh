@@ -5,4 +5,9 @@ if [ "$#" -ne 1 ]; then
   exit 1;
 fi
 
-python "$1"/tools/cpplint/cpplint.py --extensions=cpp,hpp --filter=-legal/copyright,-readability/todo $(find "$1"/include "$1"/src -name *.cpp -o -name *.hpp) | grep -v 'Done processing'
+# silenced the following categories:
+#   legal/copyright   No copyright needed
+#   readability/todo  No user names next to todo comments needed
+#   build/c++11       Google banned some headers because they have their own implementation 
+
+python "$1"/tools/cpplint/cpplint.py --extensions=cpp,hpp --filter=-legal/copyright,-readability/todo,-build/c++11 $(find "$1"/include "$1"/src -name *.cpp -o -name *.hpp) | grep -v 'Done processing'
