@@ -21,5 +21,5 @@ struct PluginData {
     return ss.str();
   }
 };
-}
+}  // namespace imonitorplugin
 #endif  // PLUGINDATA_H
