@@ -17,7 +17,7 @@ include(GNUInstallDirs)
 # cmake / make flags
 #
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC --coverage")
 
 #
 # set output dirs
@@ -51,7 +51,15 @@ endif()
 #
 # Custom targets
 #
+# A cpplint wrapper. Calls cpplint and prints the results
 add_custom_target(cpplint ${PROJECT_SOURCE_DIR}/tools/run_cpp_lint.sh ${PROJECT_SOURCE_DIR})
+# Code covare using lcov. Note that you have to run the unit tests before calling this
+# Since lcov gets confused with old data, remove all coverage files when done. Thus, running unit tests before executing this again is required
+add_custom_target(coverage
+  COMMAND lcov -d . -c -o lcov_full.info
+  COMMAND lcov -r lcov_full.info '/usr/include/*' '/usr/lib/*' '${PROJECT_SOURCE_DIR}/extern/*' '${PROJECT_SOURCE_DIR}/test/*' -o lcov_reduced.info
+  COMMAND genhtml -o lcov-html lcov_reduced.info
+  COMMAND lcov -d . -z)
 
 #
 # include sub projects

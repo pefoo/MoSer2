@@ -4,6 +4,7 @@ variables:
 stages:
   - build
   - test
+  - analyze
 
 build:
   stage: build
@@ -23,8 +24,13 @@ unit-test:
     - ctest --verbose
 
 cpplint:
-  stage: test
+  stage: analyze
   script:
     - cd runtime
     - make cpplint
 
+code-coverage:
+  stage: analyze
+  script:
+    - cd runtime
+    - make coverage
