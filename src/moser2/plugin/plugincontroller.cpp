@@ -10,9 +10,7 @@ namespace moser2 {
 namespace plugin {
 PluginController::PluginController()
     : plugin_manager(std::make_unique<MonitoringPluginManager>()),
-      execute(false) {
-  PluginFacade::Instance();
-}
+      execute(false) {}
 
 void PluginController::LoadPlugin(const std::string &path,
                                   const std::string &plugin_name) {
