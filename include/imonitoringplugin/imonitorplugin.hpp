@@ -10,7 +10,7 @@ namespace imonitorplugin {
 class IMonitorPlugin {
  public:
   virtual ~IMonitorPlugin() {}
-  virtual std::string GetName() const = 0;
+  virtual std::string name() const = 0;
   virtual PluginData AcquireData() const = 0;
 };
 

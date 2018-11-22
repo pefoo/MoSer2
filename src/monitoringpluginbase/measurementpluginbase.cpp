@@ -5,15 +5,15 @@
 #include "imonitoringplugin/plugindata.hpp"
 
 monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
-    : name(std::move(name)) {}
+    : name_(std::move(name)) {}
 
-std::string monitoringpluginbase::MonitorPluginBase::GetName() const {
-  return this->name;
+std::string monitoringpluginbase::MonitorPluginBase::name() const {
+  return this->name_;
 }
 
 imonitorplugin::PluginData
 monitoringpluginbase::MonitorPluginBase::AcquireData() const {
-  return imonitorplugin::PluginData{this->GetName(), this->MakeTimestamp(),
+  return imonitorplugin::PluginData{this->name(), this->MakeTimestamp(),
                                     this->AcquireDataInternal()};
 }
 

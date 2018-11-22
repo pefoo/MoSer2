@@ -41,8 +41,8 @@ class CallbackTimer {
   bool is_running() const;
 
  private:
-  std::atomic_bool execute;
-  std::thread thread;
+  std::atomic_bool execute_;
+  std::thread thread_;
 };
 
 }  // namespace threading

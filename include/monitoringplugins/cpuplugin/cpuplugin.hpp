@@ -11,7 +11,7 @@ namespace cpuplugin {
 ///
 class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
-  explicit CpuPlugin(std::string name);
+  explicit CpuPlugin(std::string name_);
 
  protected:
   data AcquireDataInternal() const override;

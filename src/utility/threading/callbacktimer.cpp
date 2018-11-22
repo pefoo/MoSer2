@@ -5,10 +5,10 @@
 namespace utility {
 namespace threading {
 
-CallbackTimer::CallbackTimer() : execute(false) {}
+CallbackTimer::CallbackTimer() : execute_(false) {}
 
 CallbackTimer::~CallbackTimer() {
-  if (this->execute.load(std::memory_order_acquire)) {
+  if (this->execute_.load(std::memory_order_acquire)) {
     this->Stop();
   }
 }
@@ -18,9 +18,9 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
     this->Stop();
   }
 
-  this->execute.store(true, std::memory_order_release);
-  this->thread = std::thread([=]() {
-    while (this->execute.load(std::memory_order_acquire)) {
+  this->execute_.store(true, std::memory_order_release);
+  this->thread_ = std::thread([=]() {
+    while (this->execute_.load(std::memory_order_acquire)) {
       try {
         func();
       } catch (const std::exception& e) {
@@ -34,15 +34,15 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
 }
 
 void CallbackTimer::Stop() {
-  this->execute.store(false, std::memory_order_release);
-  if (this->thread.joinable()) {
-    this->thread.join();
+  this->execute_.store(false, std::memory_order_release);
+  if (this->thread_.joinable()) {
+    this->thread_.join();
   }
 }
 
 bool CallbackTimer::is_running() const {
-  return this->execute.load(std::memory_order_acquire) &&
-         this->thread.joinable();
+  return this->execute_.load(std::memory_order_acquire) &&
+         this->thread_.joinable();
 }
 
 }  // namespace threading

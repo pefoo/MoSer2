@@ -17,13 +17,13 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \brief Create new instance
   /// \param name The name of the plugin
   ///
-  explicit MonitorPluginBase(std::string name);
+  explicit MonitorPluginBase(std::string name_);
 
   ///
   /// \brief Get the plugin name
   /// \return The name of the plugin
   ///
-  std::string GetName() const override;
+  std::string name() const override;
 
   ///
   /// \brief Ask the plugin to acquire the data it was written for
@@ -49,7 +49,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
 
  private:
   std::int64_t MakeTimestamp() const;
-  std::string name;
+  std::string name_;
 };
 }  // namespace monitoringpluginbase
 #endif  // MEASUREMENTPLUGINBASE_H
