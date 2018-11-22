@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
 
@@ -7,5 +8,7 @@ int main() {
   el::Configurations conf("logger.conf");
   el::Loggers::reconfigureAllLoggers(conf);
   moser2::MonitoringServer server{};
+
+  getchar();
   return 0;
 }

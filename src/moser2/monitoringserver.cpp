@@ -8,7 +8,6 @@ moser2::MonitoringServer::MonitoringServer() {
   // TODO remove this test implementation
   this->plugin_controller->LoadPlugin("./libcpuplugin.so", "cpuPlugin");
   this->plugin_controller->RunPlugins();
-  std::this_thread::sleep_for(std::chrono::seconds(10));
 }
 
 moser2::MonitoringServer::~MonitoringServer() {
