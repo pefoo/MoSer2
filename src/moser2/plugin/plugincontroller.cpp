@@ -6,6 +6,7 @@
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "pluginfacade.hpp"
 #include "utility/threading/callbacktimer.hpp"
+
 namespace moser2 {
 namespace plugin {
 PluginController::PluginController()
@@ -46,11 +47,11 @@ void PluginController::RunPlugins(const int interval_ms) {
       std::unique_lock<std::mutex> lk(cond_lock);
       // TODO timeout handling please
       cv.wait(lk);
-      std::for_each(std::begin(this->plugins), std::end(this->plugins),
-                    [](MonitoringPluginManager::plugin_t *&plug) {
-                      // TODO Do something with the data
-                      LOG(DEBUG) << plug->Instance()->AcquireData().ToString();
-                    });
+      std::for_each(
+          std::begin(this->plugins), std::end(this->plugins),
+          [](MonitoringPluginManager::plugin_t *&plug) {
+            PluginFacade::Instance().Put(plug->Instance()->AcquireData());
+          });
     }
     cb_timer.Stop();
   });
