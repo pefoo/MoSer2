@@ -1,15 +1,20 @@
-variables:
-  GIT_SUBMODULE_STRATEGY: recursive
+image: peepe/cmake-ssh-lcov
 
 stages:
   - build
   - test
   - analyze
 
+cache:
+  paths:
+    - runtime/*
+
 build:
   stage: build
   script:
-    - mkdir runtime
+    - ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git submodule init'
+    - ssh-agent sh -c 'ssh-add ~/.ssh/id_rsa; git submodule update'
+    - mkdir -p runtime
     - cd runtime
     - cmake ..
     - make
@@ -17,11 +22,14 @@ build:
     paths:
       - runtime/
 
+
 unit-test:
   stage: test
   script:
     - cd runtime 
     - ctest --verbose
+
+
 
 cpplint:
   stage: analyze
@@ -34,3 +42,6 @@ code-coverage:
   script:
     - cd runtime
     - make coverage
+  artifacts:
+    paths:
+      - runtime/lcov-html
