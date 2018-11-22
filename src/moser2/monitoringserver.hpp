@@ -9,11 +9,18 @@ class PluginController;
 }  // namespace plugin
 
 ///
-/// \brief TODO
+/// \brief The monitoring server entry point.
 ///
 class MonitoringServer {
  public:
+  ///
+  /// \brief MonitoringServer
+  ///
   MonitoringServer();
+
+  ///
+  /// \brief ~MonitoringServer
+  ///
   ~MonitoringServer();
 
  private:
