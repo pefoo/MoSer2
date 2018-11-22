@@ -65,10 +65,14 @@ add_custom_target(coverage
 # include sub projects
 #
 include_directories(
+  SYSTEM
   ./extern
+)
+include_directories(
   ./include
   ./src
 )
+
 
 add_subdirectory(./src/moser2)
 add_subdirectory(./src/monitoringpluginbase)
