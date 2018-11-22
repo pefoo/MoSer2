@@ -35,21 +35,17 @@ TEST_CASE("Callback timer auto stop", "[utility]") {
   std::condition_variable cv;
   std::mutex mut;
 
+  // Timer stops when the destructor is called
   cb->Start(100, [&cv]() { cv.notify_one(); });
   delete cb;
   std::unique_lock<std::mutex> lk(mut);
   auto status = cv.wait_for(lk, std::chrono::milliseconds(250));
   REQUIRE(status == std::cv_status::timeout);
-}
 
-///
-/// \brief Callback timer ignores exceptions in func
-///
-TEST_CASE("Callback timer exception in func", "[utility]") {
-  utility::threading::CallbackTimer cb{};
-
-  REQUIRE_NOTHROW([&cb]() {
-    cb.Start(10, []() { throw std::exception(); });
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-  });
+  // Timer stops when start is called again
+  cb = new utility::threading::CallbackTimer{};
+  cb->Start(50, [&cv]() { cv.notify_one(); });
+  cb->Start(200, [&cv]() { cv.notify_one(); });
+  status = cv.wait_for(lk, std::chrono::milliseconds(100));
+  REQUIRE(status == std::cv_status::timeout);
 }
