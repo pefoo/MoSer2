@@ -1,4 +1,5 @@
 #include "pluginfacade.hpp"
+#include <memory>
 #include "imonitoringplugin/plugindata.hpp"
 #include "utility/datastructure/circularbuffer.hpp"
 
