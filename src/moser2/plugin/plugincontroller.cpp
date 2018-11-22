@@ -4,13 +4,15 @@
 #include <mutex>
 #include <string>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "pluginfacade.hpp"
 #include "utility/threading/callbacktimer.hpp"
-
 namespace moser2 {
 namespace plugin {
 PluginController::PluginController()
     : plugin_manager(std::make_unique<MonitoringPluginManager>()),
-      execute(false) {}
+      execute(false) {
+  PluginFacade::Instance();
+}
 
 void PluginController::LoadPlugin(const std::string &path,
                                   const std::string &plugin_name) {

@@ -27,7 +27,7 @@ class CallbackTimer {
   /// \param interval_ms The interval in ms
   /// \param func The function to call
   ///
-  void Start(int interval_ms, std::function<void(void)> func);
+  void Start(int interval_ms, const std::function<void(void)>& func);
 
   ///
   /// \brief Stop the timer

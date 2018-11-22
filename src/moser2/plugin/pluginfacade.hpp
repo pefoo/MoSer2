@@ -1,6 +1,11 @@
 #ifndef PLUGINFACADE_H
 #define PLUGINFACADE_H
 
+#include <memory>
+#include "imonitoringplugin/plugindata.hpp"
+#include "utility/datastructure/circularbuffer.hpp"
+
+#define s 10
 namespace moser2 {
 namespace plugin {
 ///
@@ -8,7 +13,17 @@ namespace plugin {
 ///
 class PluginFacade {
  public:
+  static PluginFacade& Instance();
+
+  bool GetNext(imonitorplugin::PluginData* data);
+
  private:
+  PluginFacade();
+  friend class PluginController;
+  void Put(const imonitorplugin::PluginData& data);
+  std::unique_ptr<
+      utility::datastructure::CircularBuffer<imonitorplugin::PluginData>>
+      buffer;
 };
 }  // namespace plugin
 }  // namespace moser2

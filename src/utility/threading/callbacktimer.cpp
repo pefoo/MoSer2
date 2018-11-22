@@ -13,7 +13,7 @@ CallbackTimer::~CallbackTimer() {
   }
 }
 
-void CallbackTimer::Start(int interval_ms, std::function<void()> func) {
+void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
   if (this->is_running()) {
     this->Stop();
   }
