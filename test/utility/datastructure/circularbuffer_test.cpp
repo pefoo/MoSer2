@@ -27,18 +27,28 @@ TEST_CASE("Circular buffer", "[Utility]") {
   REQUIRE(!cb.is_full());
 
   // Fill it once more
-  for (int i = 0; i < 10; ++i) {
+  for (int i = 0; i < 20; ++i) {
     cb.Put(i);
+    REQUIRE(cb.size() == (i < 10 ? i + 1 : 10));
   }
 
   // Buffer returns the values in the correct order
   for (int i = 0; i < 10; ++i) {
     int v;
     REQUIRE(cb.Get(&v));
-    REQUIRE(v == i);
+    REQUIRE(v == i + 10);
   }
 
-  // Buffer is not empty
+  // Buffer is empty after getting all items
+  int v;
   REQUIRE(cb.is_empty());
   REQUIRE(!cb.is_full());
+  REQUIRE(cb.Get(&v) == false);
+
+  // Buffer size is correct when head wrapped around
+  for (int i = 0; i < 15; ++i) {
+    cb.Put(i);
+  }
+  cb.Get(&v);
+  REQUIRE(cb.size() == 9);
 }

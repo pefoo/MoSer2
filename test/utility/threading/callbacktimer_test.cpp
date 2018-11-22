@@ -44,8 +44,9 @@ TEST_CASE("Callback timer auto stop", "[utility]") {
 
   // Timer stops when start is called again
   cb = new utility::threading::CallbackTimer{};
-  cb->Start(50, [&cv]() { cv.notify_one(); });
+  cb->Start(10, [&cv]() { cv.notify_one(); });
   cb->Start(200, [&cv]() { cv.notify_one(); });
+  std::this_thread::sleep_for(std::chrono::milliseconds(50));
   status = cv.wait_for(lk, std::chrono::milliseconds(100));
   REQUIRE(status == std::cv_status::timeout);
 }
