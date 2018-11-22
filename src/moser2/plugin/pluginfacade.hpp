@@ -5,7 +5,6 @@
 #include "imonitoringplugin/plugindata.hpp"
 #include "utility/datastructure/circularbuffer.hpp"
 
-#define s 10
 namespace moser2 {
 namespace plugin {
 ///
