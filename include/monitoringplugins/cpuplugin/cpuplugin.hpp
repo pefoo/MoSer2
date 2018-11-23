@@ -7,11 +7,11 @@
 namespace monitoringplugins {
 namespace cpuplugin {
 ///
-/// \brief TODO
+/// \brief The cpu plugin
 ///
 class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
-  explicit CpuPlugin(std::string name_);
+  explicit CpuPlugin();
 
  protected:
   data AcquireDataInternal() const override;

@@ -12,11 +12,8 @@ namespace monitoringpluginbase {
  * Pass the plugin type as argument.
  * Note that these macros may not be placed inside a class!
  */
-#define CREATE_DETAULT_CONSTRUCTOR_FACTORY(type)       \
-  extern "C" ::imonitorplugin::IMonitorPlugin* create( \
-      const std::string& name) {                       \
-    return new type{name};                             \
-  }
+#define CREATE_DETAULT_CONSTRUCTOR_FACTORY(type) \
+  extern "C" ::imonitorplugin::IMonitorPlugin* create() { return new type{}; }
 
 #define CREATE_DEFAULT_DESTRUCTOR_FACTORY(type) \
   extern "C" void destroy(type* p) { delete p; }

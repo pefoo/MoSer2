@@ -37,8 +37,8 @@ struct CpuPlugin::CpuStat {
   static d_type ToDType(const std::string& value) { return std::stoi(value); }
 };
 
-CpuPlugin::CpuPlugin(std::string name)
-    : monitoringpluginbase::MonitorPluginBase(std::move(name)),
+CpuPlugin::CpuPlugin()
+    : monitoringpluginbase::MonitorPluginBase("CpuPlugin"),
       core_count_(std::thread::hardware_concurrency()) {}
 
 monitoringpluginbase::MonitorPluginBase::data CpuPlugin::AcquireDataInternal()

@@ -6,7 +6,7 @@
 moser2::MonitoringServer::MonitoringServer() {
   this->plugin_controller = std::make_unique<plugin::PluginController>();
   // TODO remove this test implementation
-  this->plugin_controller->LoadPlugin("./libcpuplugin.so", "cpuPlugin");
+  this->plugin_controller->LoadPlugin("./libcpuplugin.so");
   this->plugin_controller->RunPlugins();
 }
 

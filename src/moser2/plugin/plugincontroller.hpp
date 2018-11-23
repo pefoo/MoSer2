@@ -25,7 +25,7 @@ class PluginController {
   /// \param path The path to the file to load the plugin from (a shared
   /// library)
   ///
-  void LoadPlugin(const std::string& path, const std::string& plugin_name);
+  void LoadPlugin(const std::string& path);
 
   ///
   /// \brief Try to load plugins from all shared libraries in a folder

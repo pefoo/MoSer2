@@ -13,14 +13,14 @@ PluginController::PluginController()
     : plugin_manager(std::make_unique<MonitoringPluginManager>()),
       execute(false) {}
 
-void PluginController::LoadPlugin(const std::string &path,
-                                  const std::string &plugin_name) {
+void PluginController::LoadPlugin(const std::string &path) {
   try {
-    this->plugins.push_back(
-        this->plugin_manager->LoadPlugin(path, plugin_name));
-    LOG(INFO) << "Loaded plugin " << plugin_name << " from " << path;
+    this->plugins.push_back(this->plugin_manager->LoadPlugin(path));
+    LOG(INFO) << "Loaded plugin " << this->plugins.back()->Instance()->name()
+              << " from " << path;
   } catch (const std::exception &e) {
-    LOG(ERROR) << "Failed to load the plugin " << plugin_name << " located at "
+    LOG(ERROR) << "Failed to load the plugin "
+               << this->plugins.back()->Instance()->name() << " located at "
                << path << ". " << e.what();
   }
 }
