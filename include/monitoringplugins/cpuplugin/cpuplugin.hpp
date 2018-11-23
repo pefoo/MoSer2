@@ -2,7 +2,7 @@
 #define CPUPLUGIN_H
 
 #include <string>
-#include "monitoringpluginbase/measurementpluginbase.hpp"
+#include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
 namespace cpuplugin {
