@@ -24,7 +24,7 @@ class MonitoringServer {
   ~MonitoringServer();
 
  private:
-  std::unique_ptr<plugin::PluginController> plugin_controller;
+  std::unique_ptr<plugin::PluginController> plugin_controller_;
 };
 }  // namespace moser2
 

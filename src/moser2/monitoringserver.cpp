@@ -4,14 +4,14 @@
 #include "pluginmanager/include/plugin_manager.hpp"
 
 moser2::MonitoringServer::MonitoringServer() {
-  this->plugin_controller = std::make_unique<plugin::PluginController>();
+  this->plugin_controller_ = std::make_unique<plugin::PluginController>();
   // TODO remove this test implementation
-  this->plugin_controller->LoadPlugin("./libcpuplugin.so");
-  this->plugin_controller->RunPlugins();
+  this->plugin_controller_->LoadPlugin("./libcpuplugin.so");
+  this->plugin_controller_->RunPlugins();
 }
 
 moser2::MonitoringServer::~MonitoringServer() {
-  if (this->plugin_controller->plugins_running()) {
-    this->plugin_controller->StopPlugins();
+  if (this->plugin_controller_->plugins_running()) {
+    this->plugin_controller_->StopPlugins();
   }
 }

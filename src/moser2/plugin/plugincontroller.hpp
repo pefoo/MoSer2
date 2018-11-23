@@ -59,10 +59,10 @@ class PluginController {
                                        imonitorplugin::create_t,
                                        imonitorplugin::destroy_t>
       MonitoringPluginManager;
-  std::unique_ptr<MonitoringPluginManager> plugin_manager;
-  std::atomic_bool execute;
-  std::thread plugin_thread;
-  std::vector<MonitoringPluginManager::plugin_t*> plugins;
+  std::unique_ptr<MonitoringPluginManager> plugin_manager_;
+  std::atomic_bool execute_;
+  std::thread plugin_thread_;
+  std::vector<MonitoringPluginManager::plugin_t*> plugins_;
 };
 }  // namespace plugin
 }  // namespace moser2

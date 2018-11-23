@@ -22,7 +22,7 @@ class PluginFacade {
   void Put(const imonitorplugin::PluginData& data);
   std::unique_ptr<
       utility::datastructure::CircularBuffer<imonitorplugin::PluginData>>
-      buffer;
+      buffer_;
 };
 }  // namespace plugin
 }  // namespace moser2

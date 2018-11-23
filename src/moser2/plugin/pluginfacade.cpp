@@ -5,12 +5,12 @@
 #include "utility/datastructure/circularbuffer.hpp"
 
 moser2::plugin::PluginFacade::PluginFacade()
-    : buffer(std::make_unique<utility::datastructure::CircularBuffer<
+    : buffer_(std::make_unique<utility::datastructure::CircularBuffer<
                  imonitorplugin::PluginData>>(1000)) {}
 
 void moser2::plugin::PluginFacade::Put(const imonitorplugin::PluginData &data) {
   LOG(DEBUG) << data.ToString();
-  this->buffer->Put(data);
+  this->buffer_->Put(data);
 }
 
 moser2::plugin::PluginFacade &moser2::plugin::PluginFacade::Instance() {
@@ -19,5 +19,5 @@ moser2::plugin::PluginFacade &moser2::plugin::PluginFacade::Instance() {
 }
 
 bool moser2::plugin::PluginFacade::GetNext(imonitorplugin::PluginData *data) {
-  return this->buffer->Get(data);
+  return this->buffer_->Get(data);
 }
