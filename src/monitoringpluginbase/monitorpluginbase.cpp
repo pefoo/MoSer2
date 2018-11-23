@@ -1,8 +1,8 @@
+#include "monitoringpluginbase/monitorpluginbase.hpp"
 #include <ctime>
 #include <string>
 #include <utility>
 #include "imonitoringplugin/plugindata.hpp"
-#include "monitoringpluginbase/monitorpluginbase.hpp"
 
 monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
     : name_(std::move(name)) {}

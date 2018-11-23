@@ -17,6 +17,9 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
   data AcquireDataInternal() const override;
 
  private:
+  struct CpuStat;
+  CpuStat GetCpuStat() const;
+  u_int core_count_;
 };
 
 CREATE_DETAULT_CONSTRUCTOR_FACTORY(CpuPlugin);
