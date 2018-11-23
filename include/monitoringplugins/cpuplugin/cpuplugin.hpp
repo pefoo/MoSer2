@@ -18,11 +18,10 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
 
  private:
 };
-extern "C" imonitorplugin::IMonitorPlugin* create(const std::string& name) {
-  return new CpuPlugin{name};
-}
 
-extern "C" void destroy(CpuPlugin* p) { delete p; }
+CREATE_DETAULT_CONSTRUCTOR_FACTORY(CpuPlugin);
+CREATE_DEFAULT_DESTRUCTOR_FACTORY(CpuPlugin);
+
 }  // namespace cpuplugin
 }  // namespace monitoringplugins
 #endif  // CPUPLUGIN_H
