@@ -56,9 +56,10 @@ add_custom_target(cpplint ${PROJECT_SOURCE_DIR}/tools/run_cpp_lint.sh ${PROJECT_
 # Code covare using lcov. Note that you have to run the unit tests before calling this
 # Since lcov gets confused with old data, remove all coverage files when done. Thus, running unit tests before executing this again is required
 add_custom_target(coverage
-  COMMAND lcov -d . -c -o lcov_full.info
-  COMMAND lcov -e lcov_full.info '${PROJECT_SOURCE_DIR}/include/*' '${PROJECT_SOURCE_DIR}/src/*' -o lcov_reduced.info
-  COMMAND genhtml -o lcov-html lcov_reduced.info
+  COMMAND lcov -q -d . -c -o lcov_full.info
+  COMMAND lcov -q -e lcov_full.info '${PROJECT_SOURCE_DIR}/include/*' '${PROJECT_SOURCE_DIR}/src/*' -o lcov_reduced.info
+  COMMAND genhtml -q -o lcov-html lcov_reduced.info
+  COMMAND lcov -l lcov_reduced.info
   COMMAND lcov -d . -z)
 
 #
