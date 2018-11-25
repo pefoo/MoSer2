@@ -3,20 +3,20 @@
 
 #include <string>
 
-namespace settingsprovider{
+namespace settingsprovider {
 
 ///
 /// \brief TODO
 ///
-class SettingsProvider
-{
-public:
+class SettingsProvider {
+ public:
   ///
   /// \brief Create a new settings provider instance using the provided file
   /// \param file The settings file to read
   ///
   explicit SettingsProvider(const std::string& file);
-private:
+
+ private:
 };
-} // namespace settingsprovider
-#endif //SETTINGSPROVIDER_H
+}  // namespace settingsprovider
+#endif  // SETTINGSPROVIDER_H

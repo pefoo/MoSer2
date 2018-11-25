@@ -2,8 +2,9 @@
 #define SETTING_H
 
 #include <functional>
-#include <settingsprovider/isetting.hpp>
 #include <string>
+#include <utility>
+#include "settingsprovider/isetting.hpp"
 
 namespace settingsprovider {
 ///
@@ -85,7 +86,7 @@ class SettingBase : public ISetting<ValueType> {
 ///
 template <typename ValueType>
 struct Verifiers {
-  const static std::function<bool(const ValueType&, std::string*)>
+  static const std::function<bool(const ValueType&, std::string*)>
       default_verifier;
 };
 template <typename ValueType>
