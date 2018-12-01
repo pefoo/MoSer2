@@ -2,6 +2,7 @@
 #define SETTINGSPROVIDER_H
 
 #include <string>
+#include "settingsprovider/setting.hpp"
 
 namespace settingsprovider {
 

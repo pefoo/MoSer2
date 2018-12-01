@@ -35,7 +35,7 @@ class SettingBase : public ISetting<ValueType> {
         verifier_(verifier),
         string_converter_(converter) {}
 
-  virtual ~SettingBase() override {}
+  ~SettingBase() override {}
 
   ///
   /// \copydoc ISetting::key()
