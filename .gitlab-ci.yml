@@ -31,10 +31,7 @@ unit-test:
   artifacts:
     reports:
       junit: 
-        - "settingsprovider_test_result.xml"
-        - "utility_test_result.xml"
-
-
+        - "runtime/*_test_result.xml"
 
 cpplint:
   stage: analyze
