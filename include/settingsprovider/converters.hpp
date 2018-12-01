@@ -22,8 +22,6 @@ template <>
 struct Converters<std::string> {
   static const Converter_t<std::string> converter;
 };
-const Converter_t<std::string> Converters<std::string>::converter =
-    [](const std::string& s) -> std::string { return s; };
 
 ///
 /// \brief The int converter
@@ -32,8 +30,6 @@ template <>
 struct Converters<int> {
   static const Converter_t<int> converter;
 };
-const Converter_t<int> Converters<int>::converter =
-    [](const std::string& s) -> int { return std::stoi(s); };
 
 }  // namespace settingsprovider
 

@@ -29,6 +29,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # other directories
 set(ETC_DIR "./etc")
+add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 
 # Copy logger config to runtime dir
 configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
@@ -85,3 +86,4 @@ add_subdirectory(./extern/events)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
 add_subdirectory(./include/imonitoringplugin)
 add_subdirectory(./test/utility)
+add_subdirectory(./test/settingsprovider)

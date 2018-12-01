@@ -53,17 +53,15 @@ class SettingBase : public ISetting<ValueType> {
   ValueType value() const override { return this->value_; }
 
   ///
-  /// \brief Set the value of the setting
-  /// \param value The new value
-  /// \param msg A pointer to a string, filled in case the value is not valid
-  /// \return True, if the new value passes the verifier
+  /// \brief Get the underlying type
+  /// \return The underlying type
   ///
-  bool set_value(const ValueType& value, std::string* msg) {
-    if (this->verifier_(value, msg)) {
-      this->value_ = value;
-      return true;
+  ISettingIdentifier::Type type() const override {
+    if (std::is_same<ValueType, int>::value) {
+      return ISettingIdentifier::Type::INT;
+    } else if (std::is_same<ValueType, std::string>::value) {
+      return ISettingIdentifier::Type::STRING;
     }
-    return false;
   }
 
   ///
@@ -74,7 +72,7 @@ class SettingBase : public ISetting<ValueType> {
   ///
   bool set_value(const std::string value, std::string* msg) {
     try {
-      return this->set_value(this->string_converter_(value), msg);
+      return this->set_value_internal(this->string_converter_(value), msg);
     } catch (...) {
       *msg = "Failed to convert the value.";
       return false;
@@ -82,6 +80,13 @@ class SettingBase : public ISetting<ValueType> {
   }
 
  private:
+  bool set_value_internal(const ValueType& value, std::string* msg) {
+    if (this->verifier_(value, msg)) {
+      this->value_ = value;
+      return true;
+    }
+    return false;
+  }
   std::string key_;
   std::string section_;
   ValueType value_;
@@ -93,17 +98,7 @@ class SettingBase : public ISetting<ValueType> {
 /// \brief The default Setting class
 ///
 template <typename ValueType>
-class Setting : public SettingBase<ValueType> {
- public:
-  Setting(std::string key, std::string section, const ValueType& default_value,
-          const typename SettingBase<ValueType>::Verifier& verifier,
-          const typename SettingBase<ValueType>::Converter& converter)
-      : SettingBase<ValueType>(key, section, default_value, verifier,
-                               converter) {}
-  ~Setting();
-};
-template <typename ValueType>
-Setting<ValueType>::~Setting() {}
+class Setting : public SettingBase<ValueType> {};
 
 ///
 /// \brief Specialized setting class for string types
@@ -116,9 +111,7 @@ class Setting<std::string> : public SettingBase<std::string> {
           const Verifier& verifier = Verifiers<std::string>::default_verifier)
       : SettingBase(key, section, default_value, verifier,
                     Converters<std::string>::converter) {}
-  ~Setting();
 };
-Setting<std::string>::~Setting() {}
 
 ///
 /// \brief Specialized setting class for int types
@@ -130,9 +123,7 @@ class Setting<int> : public SettingBase<int> {
           const Verifier& verifier = Verifiers<int>::default_verifier)
       : SettingBase(key, section, default_value, verifier,
                     Converters<int>::converter) {}
-  ~Setting();
 };
-Setting<int>::~Setting() {}
 
 }  // namespace settingsprovider
 
