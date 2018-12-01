@@ -31,7 +31,8 @@ unit-test:
   artifacts:
     reports:
       junit: 
-        - "*test_result.xml"
+        - "settingsprovider_test_result.xml"
+        - "utility_test_result.xml"
 
 
 
