@@ -30,7 +30,8 @@ unit-test:
     - ctest --verbose
   artifacts:
     reports:
-      junit: *test_result.xml
+      junit: 
+        - *test_result.xml
 
 
 
