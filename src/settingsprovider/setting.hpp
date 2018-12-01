@@ -4,7 +4,9 @@
 #include <functional>
 #include <string>
 #include <utility>
+#include "settingsprovider/converters.hpp"
 #include "settingsprovider/isetting.hpp"
+#include "settingsprovider/verifiers.hpp"
 
 namespace settingsprovider {
 ///
@@ -13,8 +15,8 @@ namespace settingsprovider {
 template <typename ValueType>
 class SettingBase : public ISetting<ValueType> {
  public:
-  using Verifier = std::function<bool(ValueType, std::string* msg)>;
-  using Converter = std::function<ValueType(const std::string&)>;
+  using Verifier = Verifier_t<ValueType>;
+  using Converter = Converter_t<ValueType>;
 
   ///
   /// \brief SettingBase
@@ -32,6 +34,8 @@ class SettingBase : public ISetting<ValueType> {
         value_(default_value),
         verifier_(verifier),
         string_converter_(converter) {}
+
+  virtual ~SettingBase() override {}
 
   ///
   /// \copydoc ISetting::key()
@@ -69,7 +73,12 @@ class SettingBase : public ISetting<ValueType> {
   /// \return True, if the new value passes the verifier
   ///
   bool set_value(const std::string value, std::string* msg) {
-    return this->set_value(this->string_converter_(value), msg);
+    try {
+      return this->set_value(this->string_converter_(value), msg);
+    } catch (...) {
+      *msg = "Failed to convert the value.";
+      return false;
+    }
   }
 
  private:
@@ -79,48 +88,6 @@ class SettingBase : public ISetting<ValueType> {
   Verifier verifier_;
   Converter string_converter_;
 };
-
-///
-/// \brief Verifiers struct
-/// \details Provides the default verifier, that always returns true
-///
-template <typename ValueType>
-struct Verifiers {
-  static const std::function<bool(const ValueType&, std::string*)>
-      default_verifier;
-};
-template <typename ValueType>
-const std::function<bool(const ValueType&, std::string*)>
-    Verifiers<ValueType>::default_verifier =
-        [](const ValueType&, std::string*) { return true; };
-
-///
-/// \brief Converts struct
-/// \details This is the undefined version
-///
-template <typename ValueType>
-struct Converters;
-
-///
-/// \brief The string converter
-///
-template <>
-struct Converters<std::string> {
-  static const std::function<std::string(const std::string&)> converter;
-};
-const std::function<std::string(const std::string&)>
-    Converters<std::string>::converter =
-        [](const std::string& s) -> std::string { return s; };
-
-///
-/// \brief The int converter
-///
-template <>
-struct Converters<int> {
-  static const std::function<int(const std::string&)> converter;
-};
-const std::function<int(const std::string&)> Converters<int>::converter =
-    [](const std::string& s) -> int { return std::stoi(s); };
 
 ///
 /// \brief The default Setting class
@@ -133,7 +100,10 @@ class Setting : public SettingBase<ValueType> {
           const typename SettingBase<ValueType>::Converter& converter)
       : SettingBase<ValueType>(key, section, default_value, verifier,
                                converter) {}
+  ~Setting();
 };
+template <typename ValueType>
+Setting<ValueType>::~Setting() {}
 
 ///
 /// \brief Specialized setting class for string types
@@ -146,7 +116,9 @@ class Setting<std::string> : public SettingBase<std::string> {
           const Verifier& verifier = Verifiers<std::string>::default_verifier)
       : SettingBase(key, section, default_value, verifier,
                     Converters<std::string>::converter) {}
+  ~Setting();
 };
+Setting<std::string>::~Setting() {}
 
 ///
 /// \brief Specialized setting class for int types
@@ -158,7 +130,9 @@ class Setting<int> : public SettingBase<int> {
           const Verifier& verifier = Verifiers<int>::default_verifier)
       : SettingBase(key, section, default_value, verifier,
                     Converters<int>::converter) {}
+  ~Setting();
 };
+Setting<int>::~Setting() {}
 
 }  // namespace settingsprovider
 
