@@ -2,6 +2,7 @@ set(SOURCES
   main.cpp
   threading/callbacktimer_test.cpp
   datastructure/circularbuffer_test.cpp
+  filesystem/fileaccesshelper_test.cpp
 )
 
 add_executable(utility_unit_test ${SOURCES})

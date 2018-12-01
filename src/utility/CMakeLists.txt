@@ -1,5 +1,6 @@
 set(SOURCES
   ./threading/callbacktimer.cpp
+  ./filesystem/fileaccesshelper.cpp
 )
 
 ADD_LIBRARY(Utility STATIC ${SOURCES})
