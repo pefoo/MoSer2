@@ -31,7 +31,7 @@ unit-test:
   artifacts:
     reports:
       junit: 
-        - *test_result.xml
+        - "*test_result.xml"
 
 
 
