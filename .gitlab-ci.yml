@@ -28,6 +28,9 @@ unit-test:
   script:
     - cd runtime 
     - ctest --verbose
+  artifacts:
+    reports:
+      junit: *test_result.xml
 
 
 

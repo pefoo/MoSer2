@@ -7,4 +7,4 @@ set(SOURCES
 
 add_executable(utility_unit_test ${SOURCES})
 target_link_libraries(utility_unit_test Utility)
-add_test(Utility_Test "${CMAKE_BINARY_DIR}/utility_unit_test")
+add_test(NAME Utility_Test COMMAND "${CMAKE_BINARY_DIR}/utility_unit_test" "-r junit" "-o ${CMAKE_BINARY_DIR}/utility_test_result.xml")
