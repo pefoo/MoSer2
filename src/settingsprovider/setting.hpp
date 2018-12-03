@@ -98,7 +98,7 @@ class SettingBase : public ISetting<ValueType> {
 /// \brief The default Setting class
 ///
 template <typename ValueType>
-class Setting : public SettingBase<ValueType> {};
+class Setting;
 
 ///
 /// \brief Specialized setting class for string types
