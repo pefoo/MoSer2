@@ -15,7 +15,10 @@ namespace settingsprovider {
 ///
 /// \brief The settings provider.
 /// \details Register settings before actually loading them from a file to setup
-/// type constraints
+/// type constraints. If not registered settings are read from a file, their
+/// type is set to std::string.
+/// Specifying a wrong type when getting value will yield a runtime_error
+/// (Setting type and identifier do not match).
 ///
 class SettingsProvider {
  public:
