@@ -1,6 +1,7 @@
 set(SOURCES
   ./settingsprovider.cpp
   ./converters.cpp
+  settingidentifier.cpp
 )
 
 ADD_LIBRARY(SettingsProvider STATIC ${SOURCES})

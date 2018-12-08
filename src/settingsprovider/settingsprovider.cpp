@@ -39,7 +39,7 @@ bool SettingsProvider::ReadFromFile(const std::string file,
           return false;
         }
       } else {
-        this->RegisterSetting(
+        this->RegisterSettingInternal(
             new Setting<std::string>{key, current_section, value});
       }
     } else {

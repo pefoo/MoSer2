@@ -6,6 +6,7 @@
 #include <utility>
 #include "settingsprovider/converters.hpp"
 #include "settingsprovider/isetting.hpp"
+#include "settingsprovider/settingidentifier.hpp"
 #include "settingsprovider/verifiers.hpp"
 
 namespace settingsprovider {
@@ -13,7 +14,7 @@ namespace settingsprovider {
 /// \brief The setting implementation
 ///
 template <typename ValueType>
-class SettingBase : public ISetting<ValueType> {
+class SettingBase : public SettingIdentifier, public ISetting<ValueType> {
  public:
   using Verifier = Verifier_t<ValueType>;
   using Converter = Converter_t<ValueType>;
@@ -29,28 +30,12 @@ class SettingBase : public ISetting<ValueType> {
   SettingBase(std::string key, std::string section,
               const ValueType& default_value, const Verifier& verifier,
               const Converter& converter)
-      : key_(std::move(key)),
-        section_(std::move(section)),
+      : SettingIdentifier(key, section, this->type()),
         value_(default_value),
         verifier_(verifier),
         string_converter_(converter) {}
 
   ~SettingBase() override {}
-
-  ///
-  /// \copydoc ISetting::key()
-  ///
-  std::string key() const override { return this->key_; }
-
-  ///
-  /// \copydoc ISetting::section()
-  ///
-  std::string section() const override { return this->section_; }
-
-  ///
-  /// \copydoc ISetting::value()
-  ///
-  ValueType value() const override { return this->value_; }
 
   ///
   /// \brief Get the underlying type
@@ -63,6 +48,11 @@ class SettingBase : public ISetting<ValueType> {
       return ISettingIdentifier::Type::STRING;
     }
   }
+
+  ///
+  /// \copydoc ISetting::value()
+  ///
+  ValueType value() const override { return this->value_; }
 
   ///
   /// \brief Set the value of the setting
@@ -87,8 +77,6 @@ class SettingBase : public ISetting<ValueType> {
     }
     return false;
   }
-  std::string key_;
-  std::string section_;
   ValueType value_;
   Verifier verifier_;
   Converter string_converter_;

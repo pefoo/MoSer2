@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 #include "settingsprovider/isetting.hpp"
+#include "settingsprovider/isettingidentifier.hpp"
 #include "settingsprovider/setting.hpp"
 
 namespace settingsprovider {
@@ -45,12 +46,66 @@ class SettingsProvider {
   }
 
   ///
-  /// \brief Register a setting
-  /// \param s The setting to register
+  /// \brief Get value
+  /// \param si The setting identifier
+  /// \return  The value
   ///
   template <typename ValueType>
-  void RegisterSetting(ISetting<ValueType>* s) {
-    this->settings_.Add(std::unique_ptr<ISettingIdentifier>{s});
+  ValueType GetValue(const ISettingIdentifier* const si) const {
+    try {
+      return this->GetValue<ValueType>(si->key(), si->section());
+    } catch (...) {
+      throw;
+    }
+  }
+
+  ///
+  /// \brief Register a setting
+  /// \param key The key of the setting
+  /// \param section The section
+  /// \param default_value The default value
+  /// \param verifier The verifier to use
+  ///
+  template <typename ValueType>
+  void RegisterSetting(const std::string& key, const std::string& section,
+                       const ValueType& default_value,
+                       const Verifier_t<ValueType>& verifier) {
+    this->RegisterSettingInternal(
+        new Setting<ValueType>{key, section, default_value, verifier});
+  }
+
+  ///
+  /// \brief Register a setting
+  /// \param s The setting identifier
+  /// \param default_value The default value
+  /// \param verifier The verifier to use
+  ///
+  template <typename ValueType>
+  void RegisterSetting(const ISettingIdentifier* const s,
+                       const ValueType& default_value,
+                       const Verifier_t<ValueType>& verifier) {
+    this->RegisterSettingInternal(new Setting<ValueType>{
+        s->key(), s->section(), default_value, verifier});
+  }
+
+  ///
+  /// \brief Register a setting
+  /// \param s The setting identifier
+  ///
+  template <typename ValueType>
+  void RegisterSetting(const ISettingIdentifier* const s) {
+    this->RegisterSettingInternal(
+        new Setting<ValueType>{s->key(), s->section()});
+  }
+
+  ///
+  /// \brief Register a setting
+  /// \param key The key
+  /// \param section The section
+  ///
+  template <typename ValueType>
+  void RegisterSetting(const std::string& key, const std::string& section) {
+    this->RegisterSettingInternal(new Setting<ValueType>{key, section});
   }
 
   ///
@@ -120,6 +175,16 @@ class SettingsProvider {
     std::unordered_map<std::string, std::unique_ptr<ISettingIdentifier>>
         settings_;
   };
+
+  ///
+  /// \brief Register a setting
+  /// \param s The setting to register
+  ///
+  template <typename ValueType>
+  void RegisterSettingInternal(ISetting<ValueType>* s) {
+    this->settings_.Add(std::unique_ptr<ISettingIdentifier>{s});
+  }
+
   SettingsMap settings_;
 };
 }  // namespace settingsprovider
