@@ -53,9 +53,9 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
   std::ifstream stream{file};
   std::string line;
   bool result = true;
-  std::string current_section = "";
-  std::regex section_rgx("^\\[(.*)\\]\\s*$");
-  std::regex kv_rgx("^([\\w\\d\\S]+)\\s*=\\s*([\\w\\d\\S]+)\\s*$");
+  std::string current_section;
+  std::regex section_rgx(R"(^\[(.*)\]\s*$)");
+  std::regex kv_rgx(R"(^([\w\d\S]+)\s*=\s*([\w\d\S]+)\s*$)");
   int line_c = 0;
 
   while (std::getline(stream, line)) {
