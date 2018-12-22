@@ -2,26 +2,22 @@
 #define SETTINGIDENTIFIER_H
 
 #include <string>
-#include "settingsprovider/isettingidentifier.hpp"
 
 namespace settingsprovider {
 ///
 /// \brief The identifier for a setting
 ///
-class SettingIdentifier : public virtual ISettingIdentifier {
+class SettingIdentifier {
  public:
-  SettingIdentifier(std::string key, std::string section,
-                    Type type = Type::STRING);
+  SettingIdentifier(std::string key, std::string section);
 
-  ~SettingIdentifier() override;
-  std::string key() const override;
-  std::string section() const override;
-  Type type() const override;
+  ~SettingIdentifier();
+  std::string key() const;
+  std::string section() const;
 
  private:
   std::string key_;
   std::string section_;
-  Type type_;
 };
 
 }  // namespace settingsprovider
