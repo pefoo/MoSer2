@@ -9,7 +9,7 @@
 void settingsprovider::SettingsFactory::RegisterSetting(
     const std::string &key, const std::string &section,
     const std::string &default_value, const Verifier &verifier) {
-  this->settings_.push_back(Setting{key, section, default_value, verifier});
+  this->settings_.emplace_back(key, section, default_value, verifier);
 }
 
 void settingsprovider::SettingsFactory::RegisterSetting(
