@@ -60,13 +60,13 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
 
   while (std::getline(stream, line)) {
     ++line_c;
-    std::smatch match;
     if (line.find("#") == 0) {  // line starts with # -> comment
       continue;
-    } else if (std::regex_match(line, match,
-                                section_rgx)) {  // line is a section header
+    }
+    std::smatch match;
+    if (std::regex_match(line, match,
+                         section_rgx)) {  // line is a section header
       current_section = match[1];
-      continue;
     } else if (std::regex_match(line, match,
                                 kv_rgx)) {  // line is a key value pair
       std::string key = match[1];
