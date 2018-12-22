@@ -1,10 +1,12 @@
 #ifndef MEASUREMENTPLUGINBASE_H
 #define MEASUREMENTPLUGINBASE_H
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 #include "imonitoringplugin/imonitorplugin.hpp"
+#include "settingsprovider/isettingsprovider.hpp"
 
 namespace monitoringpluginbase {
 /*
@@ -20,7 +22,9 @@ namespace monitoringpluginbase {
 
 ///
 /// \brief The base class of each monitoring plugin.
-/// \details Provides basic functionality for plugins
+/// \details Provides basic functionality for plugins. Settings are loaded from
+/// files if they are placed next to the plugin library and the file name
+/// matches the plugin name + .conf
 ///
 class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
  public:
@@ -61,6 +65,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
  private:
   std::int64_t MakeTimestamp() const;
   std::string name_;
+  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
 };
 }  // namespace monitoringpluginbase
 #endif  // MEASUREMENTPLUGINBASE_H

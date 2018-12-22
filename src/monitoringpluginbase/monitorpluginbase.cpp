@@ -2,10 +2,20 @@
 #include <ctime>
 #include <string>
 #include <utility>
+#include <vector>
 #include "imonitoringplugin/plugindata.hpp"
+#include "settingsprovider/isettingsprovider.hpp"
+#include "settingsprovider/settingsfactory.hpp"
+#include "utility/filesystem/fileaccesshelper.hpp"
 
 monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
-    : name_(std::move(name)) {}
+    : name_(std::move(name)) {
+  if (utility::filesystem::FileExists(this->name() + ".conf")) {
+    settingsprovider::SettingsFactory factory{};
+    std::vector<std::string> msg;
+    this->settings_ = factory.ReadFromFile(this->name() + ".conf", &msg);
+  }
+}
 
 std::string monitoringpluginbase::MonitorPluginBase::name() const {
   return this->name_;
