@@ -60,7 +60,7 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
 
   while (std::getline(stream, line)) {
     ++line_c;
-    if (line.find("#") == 0) {  // line starts with # -> comment
+    if (line.find('#') == 0) {  // line starts with # -> comment
       continue;
     }
     std::smatch match;
