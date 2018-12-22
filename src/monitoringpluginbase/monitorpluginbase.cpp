@@ -29,8 +29,7 @@ monitoringpluginbase::MonitorPluginBase::AcquireData() const {
 }
 
 void monitoringpluginbase::MonitorPluginBase::Sleep100ms() const {
-  using namespace std::chrono_literals;
-  std::this_thread::sleep_for(100ms);
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 std::int64_t monitoringpluginbase::MonitorPluginBase::MakeTimestamp() const {
