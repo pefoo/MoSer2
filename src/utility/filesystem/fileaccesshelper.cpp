@@ -3,6 +3,6 @@
 #include <string>
 
 bool utility::filesystem::FileExists(const std::string& name) {
-  struct stat buffer;
+  struct stat buffer {};
   return (stat(name.c_str(), &buffer) == 0);
 }
