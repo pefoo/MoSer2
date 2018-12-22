@@ -57,7 +57,7 @@ class SettingsProvider : public ISettingsProvider {
   /// \param msg A message vector. Used to fill with error messages.
   /// \return True, if everything is fine.
   ///
-  bool ReadFromFile(const std::string file, std::vector<std::string>* msg);
+  bool ReadFromFile(const std::string& file, std::vector<std::string>* msg);
 
  private:
   struct Setting {

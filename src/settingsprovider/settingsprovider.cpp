@@ -44,7 +44,7 @@ std::string SettingsProvider::BuildKey(const std::string &key,
   return std::string(key + section);
 }
 
-bool SettingsProvider::ReadFromFile(const std::string file,
+bool SettingsProvider::ReadFromFile(const std::string &file,
                                     std::vector<std::string> *msg) {
   if (!utility::filesystem::FileExists(file)) {
     msg->push_back("The file was not found!");
