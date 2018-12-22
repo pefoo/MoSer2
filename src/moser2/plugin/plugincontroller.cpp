@@ -24,8 +24,7 @@ void PluginController::LoadPlugin(const std::string &path) {
                << path << ". " << e.what();
   }
 }
-
-void PluginController::LoadPlugins(const std::string &path) {
+void PluginController::LoadPlugins([[gnu::unused]] const std::string &path) {
   // TODO implement LoadPlugins
   throw std::runtime_error("Not implemented");
 }

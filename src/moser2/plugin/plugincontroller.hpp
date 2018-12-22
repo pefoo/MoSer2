@@ -31,7 +31,7 @@ class PluginController {
   /// \brief Try to load plugins from all shared libraries in a folder
   /// \param path The path to the folder to the plugins from
   ///
-  [[noreturn]] void LoadPlugins(const std::string& path);
+  [[noreturn]] void LoadPlugins([[gnu::unused]] const std::string& path);
 
   ///
   /// \brief Run the plugins
