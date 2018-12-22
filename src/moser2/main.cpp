@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
 
