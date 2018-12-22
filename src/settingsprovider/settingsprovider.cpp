@@ -74,8 +74,15 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
       if (this->settings_.find(this->BuildKey(key, current_section)) !=
           std::end(this->settings_)) {
         if (!this->SetValue(key, current_section, value)) {
-          msg->push_back("Line " + std::to_string(line_c) + ": Bad value for " +
-                         key + " (" + value + ").");
+          std::string line_msg;
+          line_msg.append("Line ")
+              .append(std::to_string(line_c))
+              .append(": Bad value for ")
+              .append(key)
+              .append(" (")
+              .append(value)
+              .append(").");
+          msg->push_back(line_msg);
           return false;
         }
       } else {
