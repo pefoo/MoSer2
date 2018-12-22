@@ -1,6 +1,7 @@
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 #include <ctime>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
 #include "imonitoringplugin/plugindata.hpp"
@@ -28,10 +29,8 @@ monitoringpluginbase::MonitorPluginBase::AcquireData() const {
 }
 
 void monitoringpluginbase::MonitorPluginBase::Sleep100ms() const {
-  struct timespec dur = {0, 0};
-  dur.tv_sec = 0;
-  dur.tv_nsec = 100000000;
-  nanosleep(&dur, (struct timespec*)nullptr);
+  using namespace std::chrono_literals;
+  std::this_thread::sleep_for(100ms);
 }
 
 std::int64_t monitoringpluginbase::MonitorPluginBase::MakeTimestamp() const {
