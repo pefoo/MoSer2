@@ -65,7 +65,7 @@ add_custom_target(coverage
 
 #
 # include sub projects
-#
+# TODO This might suck !?!
 include_directories(
   SYSTEM
   ./extern
@@ -81,6 +81,7 @@ add_subdirectory(./src/monitoringpluginbase)
 add_subdirectory(./src/monitoringplugins/cpuplugin)
 add_subdirectory(./src/utility)
 add_subdirectory(./src/settingsprovider)
+add_subdirectory(./src/persistenceservice)
 add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/events)
 add_subdirectory(./extern/easyloggingpp-9.96.5)

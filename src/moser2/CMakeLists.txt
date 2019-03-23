@@ -13,6 +13,7 @@ target_link_libraries(${EXEC_NAME} PluginLoader ${CMAKE_DL_LIBS})
 target_link_libraries(${EXEC_NAME} easyloggingpp)
 target_link_libraries(${EXEC_NAME} IMonitorPlugin)
 target_link_libraries(${EXEC_NAME} Utility)
+target_link_libraries(${EXEC_NAME} PersistenceService)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
