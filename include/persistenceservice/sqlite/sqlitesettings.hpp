@@ -15,7 +15,7 @@ class SqliteSettings : public AdapterSettings {
   /// \brief Create a new instance
   /// \param file_name The name (+path) of the database file
   ///
-  SqliteSettings(std::string file_name);
+  explicit SqliteSettings(std::string file_name);
 
   ///
   /// \brief Get the database file name and path

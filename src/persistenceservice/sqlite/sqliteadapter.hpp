@@ -3,6 +3,7 @@
 
 #include <sqlite3.h>
 #include <memory>
+#include <string>
 #include "persistenceservice/adaptersettings.hpp"
 #include "persistenceservice/idataadapter.hpp"
 

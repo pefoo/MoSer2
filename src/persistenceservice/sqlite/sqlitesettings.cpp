@@ -1,4 +1,5 @@
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
+#include <string>
 #include <utility>
 
 persistenceservice::sqlite::SqliteSettings::SqliteSettings(
