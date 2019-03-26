@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.2)
 project(MoSer2 LANGUAGES CXX VERSION 0.1.0)
 
 #
+# Load modules from cmake dir
+#
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+#
 # Options
 #
 option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
@@ -17,6 +22,7 @@ include(GNUInstallDirs)
 # cmake / make flags
 #
 set(CMAKE_CXX_STANDARD 14)
+# TODO Remove the coverage flag for certain build types
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC --coverage")
 
 #

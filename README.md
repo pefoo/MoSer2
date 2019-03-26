@@ -11,6 +11,9 @@ Reports are generated and send as email notifications.
 
 TODO README
 
+# Required packages to build
+- libsqlite3-dev
+
 # Overview 
 ## Monitoring 
 
