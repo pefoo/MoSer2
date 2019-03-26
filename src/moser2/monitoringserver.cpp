@@ -14,7 +14,7 @@ moser2::MonitoringServer::MonitoringServer() {
 
   // TODO remove this sample code :P
   auto settings =
-      std::make_unique<persistenceservice::sqlite::SqliteSettings>();
+      std::make_unique<persistenceservice::sqlite::SqliteSettings>("foobar.db");
   auto adapter_factory =
       new persistenceservice::AdapterFactory(std::move(settings));
   auto adapter = adapter_factory->CreateAdapter();

@@ -1,18 +1,30 @@
 #ifndef SQLITESETTINGS_H
 #define SQLITESETTINGS_H
 
+#include <string>
 #include "persistenceservice/adaptersettings.hpp"
 
 namespace persistenceservice {
 namespace sqlite {
 ///
-/// \brief TODO implement the sqlite data adapter settings
+/// \brief Sqlite database adapter settings
 ///
 class SqliteSettings : public AdapterSettings {
  public:
-  SqliteSettings();
+  ///
+  /// \brief Create a new instance
+  /// \param file_name The name (+path) of the database file
+  ///
+  SqliteSettings(std::string file_name);
+
+  ///
+  /// \brief Get the database file name and path
+  /// \return The database file name and path
+  ///
+  std::string file_name() const;
 
  private:
+  std::string file_name_;
 };
 }  // namespace sqlite
 }  // namespace persistenceservice

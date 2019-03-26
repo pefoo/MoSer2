@@ -1,8 +1,11 @@
 #ifndef SQLITEADAPTER_H
 #define SQLITEADAPTER_H
 
+#include <sqlite3.h>
+#include <memory>
 #include "persistenceservice/adaptersettings.hpp"
 #include "persistenceservice/idataadapter.hpp"
+
 // TODO Implement the adapter
 namespace persistenceservice {
 namespace sqlite {
@@ -26,6 +29,12 @@ class SqliteAdapter : public IDataAdapter {
   /// \copydoc IDataAdapter::Store()
   ///
   bool Store(const imonitorplugin::PluginData &) const override;
+
+ private:
+  // c interfaces dont like smart pointers...
+  sqlite3 *db_;
+  void ThrowIfBadCall(int rc, const std::string &action,
+                      const std::string &execution_info = "") const;
 };
 
 }  // namespace sqlite
