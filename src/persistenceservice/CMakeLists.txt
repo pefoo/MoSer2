@@ -3,6 +3,7 @@ set(SOURCES
   ./adaptersettings.cpp
   ./sqlite/sqliteadapter.cpp
   ./sqlite/sqlitesettings.cpp
+  ./sqlite/queryhelper.cpp
 )
 
 find_package(sqlite3 REQUIRED)
