@@ -9,23 +9,27 @@
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 
 const std::string database_file = "sqlite3_adapter_test.db";
+static imonitorplugin::PluginData::data_vector data_vec = {
+    {"c_int", utility::datastructure::Any(17)},
+    {"c_float", utility::datastructure::Any(17.17f)},
+    {"c_double", utility::datastructure::Any(17.17)},
+    {"c_int64_t", utility::datastructure::Any(int64_t(17))},
+    {"c_string", utility::datastructure::Any(std::string("foobar"))}};
+static imonitorplugin::PluginData data("unit_test_plugin", 1546329600,
+                                       data_vec);
 
 TEST_CASE("Sqlite3 adapter test", "[PersistenceService]") {
-  // use sections to ensure the setup and teardown are executed
-
-  // setup
   auto settings = std::make_unique<persistenceservice::sqlite::SqliteSettings>(
       database_file);
   auto adapter_factory =
       new persistenceservice::AdapterFactory(std::move(settings));
 
-  SECTION("Open database") {
-    std::unique_ptr<persistenceservice::IDataAdapter> adapter;
-    REQUIRE_NOTHROW([&]() { adapter = adapter_factory->CreateAdapter(); }());
-    REQUIRE(access(database_file.c_str(), F_OK) != -1);
-  }
+  std::unique_ptr<persistenceservice::IDataAdapter> adapter;
+  REQUIRE_NOTHROW([&]() { adapter = adapter_factory->CreateAdapter(); }());
+  REQUIRE(access(database_file.c_str(), F_OK) != -1);
 
-  // teardown
-  // TODO might want to rename the test database files for debugging purpose
+  REQUIRE_NOTHROW([&]() { adapter->Store(data); }());
+  // TODO Once Load is implemented, test add tests
+
   std::remove(database_file.c_str());
 }

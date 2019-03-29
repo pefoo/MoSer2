@@ -4,10 +4,10 @@
 #include <sqlite3.h>
 #include <memory>
 #include <string>
+#include <vector>
 #include "persistenceservice/adaptersettings.hpp"
 #include "persistenceservice/idataadapter.hpp"
 
-// TODO Implement the adapter
 namespace persistenceservice {
 namespace sqlite {
 ///
@@ -29,13 +29,16 @@ class SqliteAdapter : public IDataAdapter {
   ///
   /// \copydoc IDataAdapter::Store()
   ///
-  bool Store(const imonitorplugin::PluginData &) const override;
+  void Store(const imonitorplugin::PluginData &) override;
 
  private:
+  std::vector<std::string> known_plugins_;
   // c interfaces dont like smart pointers...
   sqlite3 *db_;
   void ThrowIfBadCall(int rc, const std::string &action,
                       const std::string &execution_info = "") const;
+  void ThrowIfBadCall(int rc, const std::string &action,
+                      char *execution_info) const;
 };
 
 }  // namespace sqlite

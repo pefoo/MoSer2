@@ -18,7 +18,7 @@ class IDataAdapter {
   /// \brief Store some data
   /// \return True, if storing succeeded
   ///
-  virtual bool Store(const imonitorplugin::PluginData&) const = 0;
+  virtual void Store(const imonitorplugin::PluginData&) = 0;
   // TODO add Load(...)
 };
 
