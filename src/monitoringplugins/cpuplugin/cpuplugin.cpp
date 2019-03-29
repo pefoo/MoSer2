@@ -6,7 +6,6 @@
 #include <thread>
 #include <utility>
 #include <vector>
-
 namespace monitoringplugins {
 namespace cpuplugin {
 // Each field contains a vector (one value in vector per core)
@@ -41,12 +40,11 @@ CpuPlugin::CpuPlugin()
     : monitoringpluginbase::MonitorPluginBase("CpuPlugin"),
       core_count_(std::thread::hardware_concurrency()) {}
 
-monitoringpluginbase::MonitorPluginBase::data CpuPlugin::AcquireDataInternal()
-    const {
+imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal() const {
   auto p0 = this->GetCpuStat();
   this->Sleep100ms();
   auto p1 = this->GetCpuStat();
-  data usage;
+  imonitorplugin::PluginData::data_vector usage;
   for (size_t i = 0; i < this->core_count_; ++i) {
     float user_delta = p1.user[i] - p0.user[i];
     float nice_delta = p1.nice[i] - p0.nice[i];
@@ -62,7 +60,8 @@ monitoringpluginbase::MonitorPluginBase::data CpuPlugin::AcquireDataInternal()
                     (user_delta + nice_delta + system_delta + idle_delta)) *
                    100;
     }
-    usage.push_back({"core" + std::to_string(i), std::to_string(core_usage)});
+    usage.push_back({"core" + std::to_string(i),
+                     utility::datastructure::Any(std::move(core_usage))});
   }
 
   return usage;
