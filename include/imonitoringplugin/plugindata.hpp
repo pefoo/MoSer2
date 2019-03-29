@@ -1,10 +1,12 @@
 #ifndef PLUGINDATA_H
 #define PLUGINDATA_H
 
+#include <functional>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
+#include "utility/datastructure/Any.hpp"
 
 namespace imonitorplugin {
 ///
@@ -12,11 +14,14 @@ namespace imonitorplugin {
 ///
 class PluginData {
  public:
+  using data_vector =
+      std::vector<std::pair<std::string, utility::datastructure::Any>>;
+
   ///
   /// \brief PluginData
   ///
   PluginData(std::string name = "", std::int64_t timestamp = 0,
-             std::vector<std::pair<std::string, std::string>> data = {})
+             data_vector data = {})
       : plugin_name_(name), timestamp_(timestamp), data_(data) {}
 
   ///
@@ -35,9 +40,7 @@ class PluginData {
   /// \brief data
   /// \return
   ///
-  std::vector<std::pair<std::string, std::string>> data() const {
-    return this->data_;
-  }
+  data_vector data() const { return this->data_; }
 
   ///
   /// \brief ToString
@@ -47,16 +50,40 @@ class PluginData {
     std::stringstream ss;
     ss << this->plugin_name() << std::string(" [")
        << std::to_string(this->timestamp()) << std::string("]: ");
-    for (const auto& d : this->data()) {
-      ss << d.first << std::string("(") << d.second << std::string(");");
+    auto converter =
+        this->GetStringConverter(this->data_.front().second.type());
+    for (auto& d : this->data()) {
+      ss << d.first << std::string("(") << converter(d.second)
+         << std::string(");");
     }
     return ss.str();
   }
 
  private:
+  std::function<std::string(utility::datastructure::Any&)> GetStringConverter(
+      const std::type_info& type) const {
+    if (type == typeid(int)) {
+      return [](utility::datastructure::Any& data) -> std::string {
+        return std::to_string(data.get<int>());
+      };
+    } else if (type == typeid(float)) {
+      return [](utility::datastructure::Any& data) -> std::string {
+        return std::to_string(data.get<float>());
+      };
+    } else if (type == typeid(double)) {
+      return [](utility::datastructure::Any& data) -> std::string {
+        return std::to_string(data.get<double>());
+      };
+    } else if (type == typeid(std::string)) {
+      return [](utility::datastructure::Any& data) -> std::string {
+        return data.get<std::string>();
+      };
+    }
+    throw std::runtime_error("Not supported data type.");
+  }
   std::string plugin_name_;
   std::int64_t timestamp_;
-  std::vector<std::pair<std::string, std::string>> data_;
+  data_vector data_;
 };
 }  // namespace imonitorplugin
 #endif  // PLUGINDATA_H

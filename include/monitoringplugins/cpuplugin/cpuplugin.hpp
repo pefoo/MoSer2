@@ -14,7 +14,7 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
   CpuPlugin();
 
  protected:
-  data AcquireDataInternal() const override;
+  imonitorplugin::PluginData::data_vector AcquireDataInternal() const override;
 
  private:
   struct CpuStat;

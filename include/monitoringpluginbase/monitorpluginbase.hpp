@@ -48,13 +48,14 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   imonitorplugin::PluginData AcquireData() const override;
 
  protected:
-  typedef std::vector<std::pair<std::string, std::string>> data;
   ///
   /// \brief Here the actual work happens. Plugins override this method.
-  /// \details Plugins are not responsible for packing the data.
+  /// \details Plugins are not responsible for packing the data. Make sure to
+  /// MOVE the data into the array.
   /// \return A vector of key value pairs
   ///
-  virtual data AcquireDataInternal() const = 0;
+  virtual imonitorplugin::PluginData::data_vector AcquireDataInternal()
+      const = 0;
 
   ///
   /// \brief Sleep 100ms. Plugins that need to calculate their stats using

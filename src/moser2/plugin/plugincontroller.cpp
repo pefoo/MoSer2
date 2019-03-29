@@ -49,6 +49,8 @@ void PluginController::RunPlugins(const int interval_ms) {
       std::for_each(
           std::begin(this->plugins_), std::end(this->plugins_),
           [](MonitoringPluginManager::plugin_t *&plug) {
+            auto d = plug->Instance()->AcquireData();
+            auto t = d.data()[0].second.get<float>();
             PluginFacade::Instance().Put(plug->Instance()->AcquireData());
           });
     }

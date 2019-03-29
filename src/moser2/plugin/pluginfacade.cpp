@@ -6,7 +6,7 @@
 
 moser2::plugin::PluginFacade::PluginFacade()
     : buffer_(std::make_unique<utility::datastructure::CircularBuffer<
-                 imonitorplugin::PluginData>>(1000)) {}
+                  imonitorplugin::PluginData>>(1000)) {}
 
 void moser2::plugin::PluginFacade::Put(const imonitorplugin::PluginData &data) {
   LOG(DEBUG) << data.ToString();

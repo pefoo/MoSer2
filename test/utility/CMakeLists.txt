@@ -2,6 +2,7 @@ set(SOURCES
   main.cpp
   threading/callbacktimer_test.cpp
   datastructure/circularbuffer_test.cpp
+  datastructure/any_test.cpp
   filesystem/fileaccesshelper_test.cpp
 )
 
