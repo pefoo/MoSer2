@@ -1,6 +1,7 @@
 set(SOURCES
   main.cpp
   ./sqlite3adapter_test.cpp
+  sqlite3querybuilder_test.cpp
 )
 
 add_executable(persistenceservice_unit_test ${SOURCES})

@@ -50,10 +50,11 @@ class PluginData {
     std::stringstream ss;
     ss << this->plugin_name() << std::string(" [")
        << std::to_string(this->timestamp()) << std::string("]: ");
-    auto converter =
-        this->GetStringConverter(this->data_.front().second.type());
     for (auto& d : this->data()) {
-      ss << d.first << std::string("(") << converter(d.second)
+      auto name = d.first;
+      auto tname = d.second.type().name();
+      ss << d.first << std::string("(")
+         << this->GetStringConverter(d.second.type())(d.second)
          << std::string(");");
     }
     return ss.str();
@@ -65,6 +66,10 @@ class PluginData {
     if (type == typeid(int)) {
       return [](utility::datastructure::Any& data) -> std::string {
         return std::to_string(data.get<int>());
+      };
+    } else if (type == typeid(int64_t)) {
+      return [](utility::datastructure::Any& data) -> std::string {
+        return std::to_string(data.get<int64_t>());
       };
     } else if (type == typeid(float)) {
       return [](utility::datastructure::Any& data) -> std::string {
