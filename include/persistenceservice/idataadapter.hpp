@@ -1,7 +1,10 @@
 #ifndef IDATAADAPTER_H
 #define IDATAADAPTER_H
 
+#include <string>
+#include <vector>
 #include "imonitoringplugin/plugindata.hpp"
+
 namespace persistenceservice {
 ///
 /// \brief The data adapter interface

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <exception>
 #include <string>
+#include <vector>
 #include "persistenceservice/sqlite/queryhelper.hpp"
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 
