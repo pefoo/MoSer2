@@ -11,7 +11,8 @@
 static int QueryCallback(void *data, int argc, char **argv, char **col_name) {}
 
 persistenceservice::sqlite::SqliteAdapter::SqliteAdapter(
-    AdapterSettings *adapter_settings) {
+    AdapterSettings *adapter_settings)
+    : db_(nullptr) {
   auto settings = dynamic_cast<persistenceservice::sqlite::SqliteSettings *>(
       adapter_settings);
   auto rc = sqlite3_open(settings->file_name().c_str(), &this->db_);

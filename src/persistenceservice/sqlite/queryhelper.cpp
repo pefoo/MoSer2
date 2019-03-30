@@ -45,10 +45,11 @@ std::string persistenceservice::sqlite::QueryHelper::GetSqliteType(
   if (type.operator==(typeid(int)) || type.operator==(typeid(int64_t)) ||
       type.operator==(typeid(bool))) {
     return "INTEGER";
-  } else if (type.operator==(typeid(float)) ||
-             type.operator==(typeid(double))) {
+  }
+  if (type.operator==(typeid(float)) || type.operator==(typeid(double))) {
     return "REAL";
-  } else if (type == typeid(std::string)) {
+  }
+  if (type == typeid(std::string)) {
     return "TEXT";
   }
 
@@ -59,13 +60,17 @@ std::string persistenceservice::sqlite::QueryHelper::GetEscapedValueAsString(
     utility::datastructure::Any& value) {
   if (value.type() == typeid(int)) {
     return std::to_string(value.get<int>());
-  } else if (value.type() == typeid(float)) {
+  }
+  if (value.type() == typeid(float)) {
     return std::to_string(value.get<float>());
-  } else if (value.type() == typeid(double)) {
+  }
+  if (value.type() == typeid(double)) {
     return std::to_string(value.get<double>());
-  } else if (value.type() == typeid(int64_t)) {
+  }
+  if (value.type() == typeid(int64_t)) {
     return std::to_string(value.get<int64_t>());
-  } else if (value.type() == typeid(std::string)) {
+  }
+  if (value.type() == typeid(std::string)) {
     return "'" + value.get<std::string>() + "'";
   }
   throw std::runtime_error("Type not supported");
