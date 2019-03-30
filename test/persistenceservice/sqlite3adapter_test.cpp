@@ -24,12 +24,19 @@ TEST_CASE("Sqlite3 adapter test", "[PersistenceService]") {
   auto adapter_factory =
       new persistenceservice::AdapterFactory(std::move(settings));
 
-  std::unique_ptr<persistenceservice::IDataAdapter> adapter;
-  REQUIRE_NOTHROW([&]() { adapter = adapter_factory->CreateAdapter(); }());
-  REQUIRE(access(database_file.c_str(), F_OK) != -1);
+  // A section is used to ensure the database file is removed, even if a test
+  // statement fails
+  SECTION("Adapter test") {
+    std::unique_ptr<persistenceservice::IDataAdapter> adapter;
+    REQUIRE_NOTHROW([&]() { adapter = adapter_factory->CreateAdapter(); }());
+    REQUIRE(access(database_file.c_str(), F_OK) != -1);
 
-  REQUIRE_NOTHROW([&]() { adapter->Store(data); }());
-  // TODO Once Load is implemented, test add tests
+    REQUIRE_NOTHROW([&]() { adapter->Store(data); }());
 
+    std::vector<imonitorplugin::PluginData> records;
+    REQUIRE_NOTHROW([&]() { records = adapter->Load(data.plugin_name()); }());
+    REQUIRE(records.size() == 1);
+    REQUIRE(records.front().ToString() == data.ToString());
+  }
   std::remove(database_file.c_str());
 }

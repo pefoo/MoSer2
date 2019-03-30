@@ -27,6 +27,15 @@ class QueryHelper {
   ///
   static std::string BuildInsertQuery(const imonitorplugin::PluginData&);
 
+  ///
+  /// \brief Build a select (all) query
+  /// \param plugin_name The name of the plugin (equals the name of the table)
+  /// \param min_timestamp The min time stamp
+  /// \return A query to retrieve data from a sqlite3 database
+  ///
+  static std::string BuildSelectQuery(const std::string& plugin_name,
+                                      int64_t min_timestamp = 0);
+
  private:
   QueryHelper() {}
   static std::string GetSqliteType(const std::type_info& type);

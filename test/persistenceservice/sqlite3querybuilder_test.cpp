@@ -31,3 +31,10 @@ TEST_CASE("Query helper - insert", "[PersistenceService]") {
           "(C_INT,C_FLOAT,C_DOUBLE,C_INT64_T,C_STRING,TIMESTAMP) VALUES "
           "(17,17.170000,17.170000,17,'FOOBAR',1546329600)");
 }
+
+TEST_CASE("Query helper - select", "[PersistenceService]") {
+  auto query =
+      persistenceservice::sqlite::QueryHelper::BuildSelectQuery("foobar", 10);
+  std::transform(query.begin(), query.end(), query.begin(), ::toupper);
+  REQUIRE(query == "SELECT * FROM FOOBAR WHERE TIMESTAMP > 10");
+}

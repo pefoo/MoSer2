@@ -25,6 +25,15 @@ std::string persistenceservice::sqlite::QueryHelper::BuildInsertQuery(
   return query;
 }
 
+std::string persistenceservice::sqlite::QueryHelper::BuildSelectQuery(
+    const std::string& plugin_name, int64_t min_timestamp) {
+  std::string query = "select * from " + plugin_name;
+  if (min_timestamp != 0) {
+    query += " where timestamp > " + std::to_string(min_timestamp);
+  }
+  return query;
+}
+
 std::string persistenceservice::sqlite::QueryHelper::GetSqliteType(
     const std::type_info& type) {
   // use operator== on some types. Cpplint gets confused about the comparison
