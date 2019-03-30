@@ -1,13 +1,16 @@
 #include "persistenceservice/sqlite/queryhelper.hpp"
 #include <string>
 
+const std::string
+    persistenceservice::sqlite::QueryHelper::kSpecialColTimestamp = "timestamp";
+
 std::string persistenceservice::sqlite::QueryHelper::BuildCreateTableQuery(
     const imonitorplugin::PluginData& data) {
   std::string query = "create table if not exists " + data.plugin_name() + "(";
   for (const auto& d : data.data()) {
     query += d.first + " " + GetSqliteType(d.second.type()) + ",";
   }
-  query += "timestamp INTEGER)";
+  query += kSpecialColTimestamp + " INTEGER)";
   return query;
 }
 
@@ -17,7 +20,7 @@ std::string persistenceservice::sqlite::QueryHelper::BuildInsertQuery(
   for (const auto& d : data.data()) {
     query += d.first + ",";
   }
-  query += "timestamp) values (";
+  query += kSpecialColTimestamp + ") values (";
   for (auto& d : data.data()) {
     query += GetEscapedValueAsString(d.second) + ",";
   }
@@ -29,7 +32,8 @@ std::string persistenceservice::sqlite::QueryHelper::BuildSelectQuery(
     const std::string& plugin_name, int64_t min_timestamp) {
   std::string query = "select * from " + plugin_name;
   if (min_timestamp != 0) {
-    query += " where timestamp > " + std::to_string(min_timestamp);
+    query += " where " + kSpecialColTimestamp + " > " +
+             std::to_string(min_timestamp);
   }
   return query;
 }

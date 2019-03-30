@@ -36,6 +36,8 @@ class QueryHelper {
   static std::string BuildSelectQuery(const std::string& plugin_name,
                                       int64_t min_timestamp = 0);
 
+  static const std::string kSpecialColTimestamp;
+
  private:
   QueryHelper() {}
   static std::string GetSqliteType(const std::type_info& type);

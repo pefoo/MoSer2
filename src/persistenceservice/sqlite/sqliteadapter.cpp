@@ -65,9 +65,9 @@ persistenceservice::sqlite::SqliteAdapter::Load(const std::string &plugin_name,
     for (int col = 0; col < sqlite3_data_count(stmt); ++col) {
       std::string col_name = sqlite3_column_name(stmt, col);
 
-      // TODO move the timestamp string to some constant
       // Handle special column(s)
-      if (col_name == "timestamp") {
+      if (col_name ==
+          persistenceservice::sqlite::QueryHelper::kSpecialColTimestamp) {
         ts = sqlite3_column_int(stmt, col);
         continue;
       }
