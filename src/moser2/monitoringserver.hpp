@@ -23,8 +23,25 @@ class MonitoringServer {
   ///
   ~MonitoringServer();
 
+  ///
+  /// \brief Run the monitoring server
+  ///
+  void Run();
+
+  ///
+  /// \brief Stop the monitoring server
+  ///
+  void Stop();
+
+  ///
+  /// \brief Get whether the server is running
+  /// \return True, if the server is running
+  ///
+  bool is_running() const;
+
  private:
   std::unique_ptr<plugin::PluginController> plugin_controller_;
+  bool is_running_;
 };
 }  // namespace moser2
 

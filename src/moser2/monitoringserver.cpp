@@ -10,7 +10,6 @@ moser2::MonitoringServer::MonitoringServer() {
   this->plugin_controller_ = std::make_unique<plugin::PluginController>();
   // TODO remove this test implementation
   this->plugin_controller_->LoadPlugin("./libcpuplugin.so");
-  this->plugin_controller_->RunPlugins();
 
   // TODO remove this sample code :P
   auto settings =
@@ -25,3 +24,25 @@ moser2::MonitoringServer::~MonitoringServer() {
     this->plugin_controller_->StopPlugins();
   }
 }
+
+void moser2::MonitoringServer::Run() {
+  if (this->is_running()) {
+    return;
+  }
+
+  // TODO add measurement frequency to the config file and pass the value to
+  // RunPlugins()
+  this->plugin_controller_->RunPlugins();
+  this->is_running_ = true;
+}
+
+void moser2::MonitoringServer::Stop() {
+  if (!this->is_running()) {
+    return;
+  }
+
+  this->plugin_controller_->StopPlugins();
+  this->is_running_ = false;
+}
+
+bool moser2::MonitoringServer::is_running() const { return this->is_running_; }

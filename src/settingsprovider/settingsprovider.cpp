@@ -63,6 +63,9 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
     if (line.find('#') == 0) {  // line starts with # -> comment
       continue;
     }
+    if (line == "") {
+      continue;
+    }
     std::smatch match;
     if (std::regex_match(line, match,
                          section_rgx)) {  // line is a section header

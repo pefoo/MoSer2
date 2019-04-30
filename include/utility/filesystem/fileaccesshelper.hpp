@@ -12,6 +12,12 @@ namespace filesystem {
 ///
 bool FileExists(const std::string&);
 
+///
+/// \brief Get current working directory
+/// \return The current working directory
+///
+std::string GetCurrentWorkingDir();
+
 }  // namespace filesystem
 }  // namespace utility
 
