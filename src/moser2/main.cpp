@@ -19,10 +19,10 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings();
 
 int main() {
   ConfigureLogger();
-  auto settings = GetSettings();
-
-  moser2::MonitoringServer server{};
+  moser2::MonitoringServer server{GetSettings()};
+  server.Run();
   getchar();
+  server.Stop();
   return 0;
 }
 

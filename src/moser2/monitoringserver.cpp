@@ -6,17 +6,19 @@
 #include "plugin/plugincontroller.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
 
-moser2::MonitoringServer::MonitoringServer() {
+moser2::MonitoringServer::MonitoringServer(
+    std::unique_ptr<settingsprovider::ISettingsProvider> settings)
+    : settings_(std::move(settings)) {
   this->plugin_controller_ = std::make_unique<plugin::PluginController>();
   // TODO remove this test implementation
   this->plugin_controller_->LoadPlugin("./libcpuplugin.so");
 
   // TODO remove this sample code :P
-  auto settings =
-      std::make_unique<persistenceservice::sqlite::SqliteSettings>("foobar.db");
-  auto adapter_factory =
-      new persistenceservice::AdapterFactory(std::move(settings));
-  auto adapter = adapter_factory->CreateAdapter();
+  //  auto settings =
+  //      std::make_unique<persistenceservice::sqlite::SqliteSettings>("foobar.db");
+  //  auto adapter_factory =
+  //      new persistenceservice::AdapterFactory(std::move(settings));
+  //  auto adapter = adapter_factory->CreateAdapter();
 }
 
 moser2::MonitoringServer::~MonitoringServer() {
