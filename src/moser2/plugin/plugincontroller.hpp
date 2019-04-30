@@ -30,8 +30,11 @@ class PluginController {
   ///
   /// \brief Try to load plugins from all shared libraries in a folder
   /// \param path The path to the folder to the plugins from
+  /// \param name_filter A regular expression to filter libraries (matching ones
+  /// are loaded)
   ///
-  [[noreturn]] void LoadPlugins([[gnu::unused]] const std::string& path);
+  void LoadPlugins(const std::string& path,
+                   const std::string& name_filter = "");
 
   ///
   /// \brief Run the plugins

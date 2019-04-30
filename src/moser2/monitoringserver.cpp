@@ -5,13 +5,16 @@
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 #include "plugin/plugincontroller.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
+#include "settings/settingsidentifier.hpp"
 
 moser2::MonitoringServer::MonitoringServer(
     std::unique_ptr<settingsprovider::ISettingsProvider> settings)
-    : settings_(std::move(settings)) {
+    : settings_(std::move(settings)), is_running_(false) {
   this->plugin_controller_ = std::make_unique<plugin::PluginController>();
   // TODO remove this test implementation
-  this->plugin_controller_->LoadPlugin("./libcpuplugin.so");
+  this->plugin_controller_->LoadPlugins(
+      this->settings_->GetValue(moser2::settings::PluginBasePath()),
+      this->settings_->GetValue(moser2::settings::PluginFilter()));
 
   // TODO remove this sample code :P
   //  auto settings =
@@ -34,7 +37,8 @@ void moser2::MonitoringServer::Run() {
 
   // TODO add measurement frequency to the config file and pass the value to
   // RunPlugins()
-  this->plugin_controller_->RunPlugins();
+  this->plugin_controller_->RunPlugins(std::stoi(
+      this->settings_->GetValue(moser2::settings::MeasurementDelay())));
   this->is_running_ = true;
 }
 

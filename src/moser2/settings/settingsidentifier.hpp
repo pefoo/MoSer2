@@ -19,6 +19,8 @@ namespace settings {
   }
 
 MAKESETTING(MeasurementDelay, "MeasurementDelay", "Core")
+MAKESETTING(PluginBasePath, "PluginBasePath", "Core");
+MAKESETTING(PluginFilter, "PluginFilter", "Core");
 MAKESETTING(SqliteDatabaseFile, "DatabaseFile", "SqliteAdapter")
 }  // namespace settings
 }  // namespace moser2
