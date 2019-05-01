@@ -10,8 +10,8 @@
 
 INITIALIZE_EASYLOGGINGPP
 
-static const std::string logger_conf = "logger.conf";
-static const std::string moser2_conf = "moser2.conf";
+static const char logger_conf[] = "logger.conf";
+static const char moser2_conf[] = "moser2.conf";
 
 std::string GetConfigFile();
 void ConfigureLogger();
@@ -52,7 +52,7 @@ void ConfigureLogger() {
   }
   LOG(ERROR) << "Failed to find the logger configuration file: " << logger_conf;
   throw std::runtime_error("Failed to find the logger configuration file: " +
-                           logger_conf);
+                           std::string(logger_conf));
 }
 
 ///
@@ -70,7 +70,8 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings() {
       LOG(ERROR) << e;
     }
     throw std::runtime_error("Detected invalid configuration. See " +
-                             logger_conf + " for more information.");
+                             std::string(logger_conf) +
+                             " for more information.");
   }
   return settings;
 }

@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 bool utility::filesystem::FileExists(const std::string& name) {
   struct stat buffer {};

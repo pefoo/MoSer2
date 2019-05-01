@@ -3,10 +3,10 @@
 #include "moser2/settings/settingsidentifier.hpp"
 #include "settingsprovider/settingsfactory.hpp"
 
-using namespace moser2::settings;
+namespace moser2 {
+namespace settings {
 
-std::unique_ptr<settingsprovider::SettingsFactory>
-moser2::settings::RegisterFactory() {
+std::unique_ptr<settingsprovider::SettingsFactory> RegisterFactory() {
   auto factory = std::make_unique<settingsprovider::SettingsFactory>();
 
   // TODO some default values??
@@ -18,3 +18,5 @@ moser2::settings::RegisterFactory() {
 
   return factory;
 }
+}  // namespace settings
+}  // namespace moser2

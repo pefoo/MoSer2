@@ -8,7 +8,7 @@
  */
 
 #include <memory>
-#include <settingsprovider/settingsfactory.hpp>
+#include "settingsprovider/settingsfactory.hpp"
 
 namespace moser2 {
 namespace settings {
