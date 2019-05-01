@@ -39,6 +39,8 @@ add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 
 # Copy logger config to runtime dir
 configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
+# Copy the application config to runtime dir 
+configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.conf" COPYONLY)
 
 #
 # Testing

@@ -2,6 +2,7 @@
 #define MONITORINGSERVER_H
 
 #include <memory>
+#include "settingsprovider/isettingsprovider.hpp"
 
 namespace moser2 {
 namespace plugin {
@@ -16,15 +17,34 @@ class MonitoringServer {
   ///
   /// \brief MonitoringServer
   ///
-  MonitoringServer();
+  MonitoringServer(
+      std::unique_ptr<settingsprovider::ISettingsProvider> settings);
 
   ///
   /// \brief ~MonitoringServer
   ///
   ~MonitoringServer();
 
+  ///
+  /// \brief Run the monitoring server
+  ///
+  void Run();
+
+  ///
+  /// \brief Stop the monitoring server
+  ///
+  void Stop();
+
+  ///
+  /// \brief Get whether the server is running
+  /// \return True, if the server is running
+  ///
+  bool is_running() const;
+
  private:
   std::unique_ptr<plugin::PluginController> plugin_controller_;
+  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
+  bool is_running_;
 };
 }  // namespace moser2
 

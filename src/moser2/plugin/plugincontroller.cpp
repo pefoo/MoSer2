@@ -2,9 +2,11 @@
 #include <condition_variable>
 #include <memory>
 #include <mutex>
+#include <regex>
 #include <string>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "pluginfacade.hpp"
+#include "utility/filesystem/fileaccesshelper.hpp"
 #include "utility/threading/callbacktimer.hpp"
 
 namespace moser2 {
@@ -24,9 +26,20 @@ void PluginController::LoadPlugin(const std::string &path) {
                << path << ". " << e.what();
   }
 }
-void PluginController::LoadPlugins([[gnu::unused]] const std::string &path) {
-  // TODO implement LoadPlugins
-  throw std::runtime_error("Not implemented");
+void PluginController::LoadPlugins(const std::string &path,
+                                   const std::string &name_filter) {
+  auto files = utility::filesystem::ListFiles(path);
+  if (files.size() == 0) {
+    LOG(WARNING) << "No plugins found in " << path;
+    return;
+  }
+
+  std::regex rgx{name_filter};
+  for (const auto &file : files) {
+    if (name_filter == "" || std::regex_match(file, rgx)) {
+      this->LoadPlugin(path + "/" + file);
+    }
+  }
 }
 
 void PluginController::RunPlugins(const int interval_ms) {
