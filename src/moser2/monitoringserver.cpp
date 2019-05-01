@@ -11,12 +11,11 @@ moser2::MonitoringServer::MonitoringServer(
     std::unique_ptr<settingsprovider::ISettingsProvider> settings)
     : settings_(std::move(settings)), is_running_(false) {
   this->plugin_controller_ = std::make_unique<plugin::PluginController>();
-  // TODO remove this test implementation
   this->plugin_controller_->LoadPlugins(
       this->settings_->GetValue(moser2::settings::PluginBasePath()),
       this->settings_->GetValue(moser2::settings::PluginFilter()));
 
-  // TODO remove this sample code :P
+  // TODO remove this sample code once the persistence runner exists
   //  auto settings =
   //      std::make_unique<persistenceservice::sqlite::SqliteSettings>("foobar.db");
   //  auto adapter_factory =
@@ -35,8 +34,6 @@ void moser2::MonitoringServer::Run() {
     return;
   }
 
-  // TODO add measurement frequency to the config file and pass the value to
-  // RunPlugins()
   this->plugin_controller_->RunPlugins(std::stoi(
       this->settings_->GetValue(moser2::settings::MeasurementDelay())));
   this->is_running_ = true;
