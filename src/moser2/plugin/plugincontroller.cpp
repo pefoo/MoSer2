@@ -37,7 +37,8 @@ void PluginController::LoadPlugins(const std::string &path,
   std::regex rgx{name_filter};
   for (const auto &file : files) {
     if (name_filter == "" || std::regex_match(file, rgx)) {
-      this->LoadPlugin(path + "/" + file);
+      this->LoadPlugin(
+          utility::filesystem::MakeAbsolutePath(path + "/" + file));
     }
   }
 }
