@@ -60,12 +60,26 @@ void PluginController::RunPlugins(const int interval_ms) {
       std::unique_lock<std::mutex> lk(cond_lock);
       // TODO timeout handling please
       cv.wait(lk);
+      if (!this->execute_.load(std::memory_order_acquire)) break;
       std::for_each(
           std::begin(this->plugins_), std::end(this->plugins_),
           [](MonitoringPluginManager::plugin_t *&plug) {
-            auto d = plug->Instance()->AcquireData();
-            auto t = d.data()[0].second.get<float>();
-            PluginFacade::Instance().Put(plug->Instance()->AcquireData());
+            // Bug notes:
+            // Workaround: this actually copies the wrapped data of the
+            // any class
+            // Works only for data type float though...
+            // The copy constructor of the the Any type should actually deep
+            // copy the wrapped data
+            imonitorplugin::PluginData::data_vector c;
+            auto orig_data = plug->Instance()->AcquireData();
+
+            for (auto d : orig_data.data()) {
+              auto t = d.second.get<float>();
+              c.push_back({d.first, utility::datastructure::Any{std::move(t)}});
+            }
+            imonitorplugin::PluginData d{orig_data.plugin_name(),
+                                         orig_data.timestamp(), c};
+            plugin::PluginFacade::Instance().Put(d);
           });
     }
     cb_timer.Stop();
