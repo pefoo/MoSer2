@@ -63,7 +63,7 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
     if (line.find('#') == 0) {  // line starts with # -> comment
       continue;
     }
-    if (line == "") {
+    if (line.empty()) {
       continue;
     }
     std::smatch match;

@@ -1,14 +1,12 @@
 #include "monitoringserver.hpp"
 #include <memory>
 #include <utility>
-#include "persistenceservice/adapterfactory.hpp"
-#include "persistenceservice/sqlite/sqlitesettings.hpp"
 #include "plugin/plugincontroller.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
 #include "settings/settingsidentifier.hpp"
 
 moser2::MonitoringServer::MonitoringServer(
-    std::unique_ptr<settingsprovider::ISettingsProvider> settings)
+    std::shared_ptr<settingsprovider::ISettingsProvider> settings)
     : settings_(std::move(settings)), is_running_(false) {
   this->plugin_controller_ = std::make_unique<plugin::PluginController>();
   this->plugin_controller_->LoadPlugins(
