@@ -23,7 +23,7 @@ include(GNUInstallDirs)
 #
 set(CMAKE_CXX_STANDARD 14)
 # TODO Remove the coverage flag for certain build types
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC --coverage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 #
 # set output dirs

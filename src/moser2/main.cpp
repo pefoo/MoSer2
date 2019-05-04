@@ -30,16 +30,19 @@ int main() {
   std::shared_ptr<settingsprovider::ISettingsProvider> settings = GetSettings();
 
   // Start the monitoring server
+  LOG(DEBUG) << "Starting the monitoring server";
   moser2::MonitoringServer server{settings};
   server.Run();
 
   // Create the default data adapter
+  LOG(DEBUG) << "Creating sqlite3 adapter";
   auto adapter_factory = new persistenceservice::AdapterFactory(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
           settings->GetValue(moser2::settings::SqliteDatabaseFile())));
   auto adapter = adapter_factory->CreateAdapter();
 
   // Start the persistence runner
+  LOG(DEBUG) << "Starting the persistence service";
   persistenceservice::PersistenceRunner p_runner{
       std::move(adapter), std::bind(&moser2::plugin::PluginFacade::GetNext,
                                     &moser2::plugin::PluginFacade::Instance(),
@@ -49,7 +52,9 @@ int main() {
   getchar();
 
   // Sop running servers
+  LOG(DEBUG) << "Stopping the persistence service";
   p_runner.Stop();
+  LOG(DEBUG) << "Stopping the monitoring server";
   server.Stop();
   return 0;
 }
@@ -91,6 +96,7 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings() {
   auto settings_factory = moser2::settings::RegisterFactory();
   std::vector<std::string> errors;
   auto config_file = GetConfigFile();
+  LOG(DEBUG) << "Reading settings from " << config_file;
   auto settings = settings_factory->ReadFromFile(config_file, &errors);
 
   if (errors.size() != 0) {
