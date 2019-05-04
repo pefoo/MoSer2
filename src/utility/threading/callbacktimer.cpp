@@ -1,14 +1,16 @@
 #include "utility/threading/callbacktimer.hpp"
+#include <chrono>
 #include <exception>
+#include <mutex>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 
 namespace utility {
 namespace threading {
 
-CallbackTimer::CallbackTimer() : execute_(false) {}
+CallbackTimer::CallbackTimer() : is_running_(false) {}
 
 CallbackTimer::~CallbackTimer() {
-  if (this->execute_.load(std::memory_order_acquire)) {
+  if (this->is_running()) {
     this->Stop();
   }
 }
@@ -18,9 +20,14 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
     this->Stop();
   }
 
-  this->execute_.store(true, std::memory_order_release);
   this->thread_ = std::thread([=]() {
-    while (this->execute_.load(std::memory_order_acquire)) {
+    std::mutex mutex;
+    std::unique_lock<std::mutex> lk(mutex);
+    while (true) {
+      if (this->cv_.wait_for(lk, std::chrono::milliseconds(interval_ms)) ==
+          std::cv_status::no_timeout) {
+        break;
+      }
       try {
         func();
       } catch (const std::exception& e) {
@@ -28,21 +35,21 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
                       "callback timer. "
                    << e.what();
       }
-      std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
     }
   });
+  this->is_running_ = true;
 }
 
 void CallbackTimer::Stop() {
-  this->execute_.store(false, std::memory_order_release);
+  this->cv_.notify_one();
   if (this->thread_.joinable()) {
     this->thread_.join();
   }
+  this->is_running_ = false;
 }
 
 bool CallbackTimer::is_running() const {
-  return this->execute_.load(std::memory_order_acquire) &&
-         this->thread_.joinable();
+  return this->is_running_ && this->thread_.joinable();
 }
 
 }  // namespace threading

@@ -2,6 +2,7 @@
 #define CALLBACKTIMER_H
 
 #include <atomic>
+#include <condition_variable>
 #include <functional>
 #include <thread>
 
@@ -41,8 +42,9 @@ class CallbackTimer {
   bool is_running() const;
 
  private:
-  std::atomic_bool execute_;
+  bool is_running_;
   std::thread thread_;
+  std::condition_variable cv_;
 };
 
 }  // namespace threading
