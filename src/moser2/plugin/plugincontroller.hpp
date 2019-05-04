@@ -1,13 +1,12 @@
 #ifndef PLUGINCONTROLLER_H
 #define PLUGINCONTROLLER_H
 
-#include <atomic>
 #include <memory>
 #include <string>
-#include <thread>
 #include <vector>
 #include "imonitoringplugin/imonitorplugin.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
+#include "utility/threading/callbacktimer.hpp"
 
 namespace moser2 {
 namespace plugin {
@@ -63,9 +62,8 @@ class PluginController {
                                        imonitorplugin::destroy_t>
       MonitoringPluginManager;
   std::unique_ptr<MonitoringPluginManager> plugin_manager_;
-  std::atomic_bool execute_;
-  std::thread plugin_thread_;
   std::vector<MonitoringPluginManager::plugin_t*> plugins_;
+  std::unique_ptr<utility::threading::CallbackTimer> timer_;
 };
 }  // namespace plugin
 }  // namespace moser2

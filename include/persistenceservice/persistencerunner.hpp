@@ -1,13 +1,11 @@
 #ifndef PERSISTENCERUNNER_H
 #define PERSISTENCERUNNER_H
 
-#include <atomic>
-#include <condition_variable>
 #include <functional>
 #include <memory>
-#include <thread>
 #include "imonitoringplugin/plugindata.hpp"
 #include "persistenceservice/idataadapter.hpp"
+#include "utility/threading/callbacktimer.hpp"
 
 namespace persistenceservice {
 ///
@@ -38,9 +36,7 @@ class PersistenceRunner {
  private:
   std::unique_ptr<IDataAdapter> data_adapter_;
   std::function<bool(imonitorplugin::PluginData*)> source_func_;
-  std::atomic_bool execute_;
-  std::thread thread_;
-  std::condition_variable cv_;
+  std::unique_ptr<utility::threading::CallbackTimer> timer_;
 };
 }  // namespace persistenceservice
 
