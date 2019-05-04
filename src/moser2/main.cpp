@@ -31,8 +31,8 @@ int main() {
 /// \return The default config file
 ///
 std::string GetConfigFile() {
-  auto config_file =
-      utility::filesystem::GetCurrentWorkingDir() + "/" + moser2_conf;
+  auto config_file = utility::filesystem::PathCombine(
+      {utility::filesystem::GetCurrentWorkingDir(), "/", moser2_conf});
   if (utility::filesystem::FileExists(config_file)) {
     return config_file;
   }
