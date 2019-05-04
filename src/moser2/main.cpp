@@ -4,7 +4,12 @@
 #include <vector>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
+#include "persistenceservice/adapterfactory.hpp"
+#include "persistenceservice/persistencerunner.hpp"
+#include "persistenceservice/sqlite/sqlitesettings.hpp"
+#include "plugin/pluginfacade.hpp"
 #include "settings/settingshelper.hpp"
+#include "settings/settingsidentifier.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
 
@@ -19,8 +24,25 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings();
 
 int main() {
   ConfigureLogger();
-  moser2::MonitoringServer server{GetSettings()};
+  // Read the settings
+  std::shared_ptr<settingsprovider::ISettingsProvider> settings = GetSettings();
+
+  // Start the monitoring server
+  moser2::MonitoringServer server{settings};
   server.Run();
+
+  // Create the default data adapter
+  auto adapter_factory = new persistenceservice::AdapterFactory(
+      std::make_unique<persistenceservice::sqlite::SqliteSettings>(
+          settings->GetValue(moser2::settings::SqliteDatabaseFile())));
+  auto adapter = adapter_factory->CreateAdapter();
+
+  // Start the persistence runner
+  persistenceservice::PersistenceRunner p_runner{
+      std::move(adapter), std::bind(&moser2::plugin::PluginFacade::GetNext,
+                                    &moser2::plugin::PluginFacade::Instance(),
+                                    std::placeholders::_1)};
+
   getchar();
   server.Stop();
   return 0;

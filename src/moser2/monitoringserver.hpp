@@ -18,7 +18,7 @@ class MonitoringServer {
   /// \brief MonitoringServer
   ///
   MonitoringServer(
-      std::unique_ptr<settingsprovider::ISettingsProvider> settings);
+      std::shared_ptr<settingsprovider::ISettingsProvider> settings);
 
   ///
   /// \brief ~MonitoringServer
@@ -43,7 +43,7 @@ class MonitoringServer {
 
  private:
   std::unique_ptr<plugin::PluginController> plugin_controller_;
-  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
+  std::shared_ptr<settingsprovider::ISettingsProvider> settings_;
   bool is_running_;
 };
 }  // namespace moser2
