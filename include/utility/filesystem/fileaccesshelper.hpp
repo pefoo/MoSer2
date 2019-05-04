@@ -36,6 +36,12 @@ std::vector<std::string> ListFiles(const std::string& path);
 ///
 std::string MakeAbsolutePath(const std::string& path);
 
+///
+/// \brief Combine arguments to a path
+/// \param parts Any number of path elements
+/// \return A new path that contains all provided parts
+///
+std::string PathCombine(const std::vector<std::string>& parts);
 }  // namespace filesystem
 }  // namespace utility
 

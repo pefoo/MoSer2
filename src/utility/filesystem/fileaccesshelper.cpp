@@ -45,3 +45,20 @@ std::string utility::filesystem::MakeAbsolutePath(const std::string& path) {
   }
   return path;
 }
+
+std::string utility::filesystem::PathCombine(
+    const std::vector<std::string>& parts) {
+  std::string path;
+  for (const auto& part : parts) {
+    if (path != "" && part.front() == '/') {
+      path += part.substr(1, part.size() - 1);
+    } else {
+      path += part;
+    }
+    if (path.back() != '/') {
+      path += "/";
+    }
+  }
+  // Return path without the last slash
+  return path.substr(0, path.size() - 1);
+}
