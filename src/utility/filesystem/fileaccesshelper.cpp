@@ -27,7 +27,7 @@ std::vector<std::string> utility::filesystem::ListFiles(
   if ((dir = opendir(path.c_str())) != nullptr) {
     while ((ent = readdir(dir)) != nullptr) {
       if (ent->d_type == DT_REG) {
-        files.push_back(std::string(ent->d_name));
+        files.emplace_back(std::string(ent->d_name));
       }
     }
   } else {
@@ -37,7 +37,7 @@ std::vector<std::string> utility::filesystem::ListFiles(
 }
 
 std::string utility::filesystem::MakeAbsolutePath(const std::string& path) {
-  if (path.size() == 0) {
+  if (path.empty()) {
     return "";
   }
   if (path.at(0) == '.') {
@@ -50,7 +50,7 @@ std::string utility::filesystem::PathCombine(
     const std::vector<std::string>& parts) {
   std::string path;
   for (const auto& part : parts) {
-    if (path != "" && part.front() == '/') {
+    if (!path.empty() && part.front() == '/') {
       path += part.substr(1, part.size() - 1);
     } else {
       path += part;

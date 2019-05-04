@@ -97,7 +97,7 @@ persistenceservice::sqlite::SqliteAdapter::Load(const std::string &plugin_name,
           throw std::runtime_error("Not supported sql type.");
       }
     }
-    records.push_back(imonitorplugin::PluginData(plugin_name, ts, data));
+    records.emplace_back(imonitorplugin::PluginData(plugin_name, ts, data));
   }
   this->ThrowIfBadCall(rc, "Get table row", sqlite3_errmsg(this->db_),
                        SQLITE_DONE);

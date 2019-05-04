@@ -4,6 +4,7 @@
 #include <mutex>
 #include <regex>
 #include <string>
+#include <utility>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "pluginfacade.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
@@ -29,14 +30,14 @@ void PluginController::LoadPlugin(const std::string &path) {
 void PluginController::LoadPlugins(const std::string &path,
                                    const std::string &name_filter) {
   auto files = utility::filesystem::ListFiles(path);
-  if (files.size() == 0) {
+  if (files.empty()) {
     LOG(WARNING) << "No plugins found in " << path;
     return;
   }
 
   std::regex rgx{name_filter};
   for (const auto &file : files) {
-    if (name_filter == "" || std::regex_match(file, rgx)) {
+    if (name_filter.empty() || std::regex_match(file, rgx)) {
       this->LoadPlugin(utility::filesystem::MakeAbsolutePath(
           utility::filesystem::PathCombine({path, "/", file})));
     }

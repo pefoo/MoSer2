@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
@@ -99,7 +100,7 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings() {
   LOG(DEBUG) << "Reading settings from " << config_file;
   auto settings = settings_factory->ReadFromFile(config_file, &errors);
 
-  if (errors.size() != 0) {
+  if (!errors.empty()) {
     for (const auto& e : errors) {
       LOG(ERROR) << e;
     }
