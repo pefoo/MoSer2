@@ -23,7 +23,9 @@ void ConfigureLogger();
 std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings();
 
 int main() {
+  // Setup the logger
   ConfigureLogger();
+
   // Read the settings
   std::shared_ptr<settingsprovider::ISettingsProvider> settings = GetSettings();
 
@@ -42,8 +44,12 @@ int main() {
       std::move(adapter), std::bind(&moser2::plugin::PluginFacade::GetNext,
                                     &moser2::plugin::PluginFacade::Instance(),
                                     std::placeholders::_1)};
+  p_runner.Run(10000);
 
   getchar();
+
+  // Sop running servers
+  p_runner.Stop();
   server.Stop();
   return 0;
 }
