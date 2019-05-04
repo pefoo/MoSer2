@@ -14,7 +14,7 @@ namespace moser2 {
 namespace plugin {
 PluginController::PluginController()
     : plugin_manager_(std::make_unique<MonitoringPluginManager>()),
-      execute_(false) {}
+      timer_(new utility::threading::CallbackTimer{}) {}
 
 void PluginController::LoadPlugin(const std::string &path) {
   try {
@@ -49,54 +49,32 @@ void PluginController::RunPlugins(const int interval_ms) {
     this->StopPlugins();
   }
 
-  this->execute_.store(true, std::memory_order_release);
-  this->plugin_thread_ = std::thread([=]() {
-    utility::threading::CallbackTimer cb_timer{};
-    std::mutex cond_lock;
-    std::condition_variable cv;
+  this->timer_->Start(interval_ms, [&]() {
+    std::for_each(
+        std::begin(this->plugins_), std::end(this->plugins_),
+        [](MonitoringPluginManager::plugin_t *&plug) {
+          // Bug notes:
+          // Workaround: this actually copies the wrapped data of the
+          // any class
+          // Works only for data type float though...
+          // The copy constructor of the the Any type should actually deep
+          // copy the wrapped data
+          imonitorplugin::PluginData::data_vector c;
+          auto orig_data = plug->Instance()->AcquireData();
 
-    cb_timer.Start(interval_ms, [&cv]() { cv.notify_one(); });
-
-    while (this->execute_.load(std::memory_order_acquire)) {
-      std::unique_lock<std::mutex> lk(cond_lock);
-      // TODO timeout handling please
-      cv.wait(lk);
-      if (!this->execute_.load(std::memory_order_acquire)) break;
-      std::for_each(
-          std::begin(this->plugins_), std::end(this->plugins_),
-          [](MonitoringPluginManager::plugin_t *&plug) {
-            // Bug notes:
-            // Workaround: this actually copies the wrapped data of the
-            // any class
-            // Works only for data type float though...
-            // The copy constructor of the the Any type should actually deep
-            // copy the wrapped data
-            imonitorplugin::PluginData::data_vector c;
-            auto orig_data = plug->Instance()->AcquireData();
-
-            for (auto d : orig_data.data()) {
-              auto t = d.second.get<float>();
-              c.push_back({d.first, utility::datastructure::Any{std::move(t)}});
-            }
-            imonitorplugin::PluginData d{orig_data.plugin_name(),
-                                         orig_data.timestamp(), c};
-            plugin::PluginFacade::Instance().Put(d);
-          });
-    }
-    cb_timer.Stop();
+          for (auto d : orig_data.data()) {
+            auto t = d.second.get<float>();
+            c.push_back({d.first, utility::datastructure::Any{std::move(t)}});
+          }
+          imonitorplugin::PluginData d{orig_data.plugin_name(),
+                                       orig_data.timestamp(), c};
+          plugin::PluginFacade::Instance().Put(d);
+        });
   });
 }
 
-void PluginController::StopPlugins() {
-  this->execute_.store(false, std::memory_order_release);
-  if (this->plugin_thread_.joinable()) {
-    this->plugin_thread_.join();
-  }
-}
+void PluginController::StopPlugins() { this->timer_->Stop(); }
 
-bool PluginController::plugins_running() {
-  return this->execute_.load(std::memory_order_acquire) &&
-         this->plugin_thread_.joinable();
-}
+bool PluginController::plugins_running() { return this->timer_->is_running(); }
 }  // namespace plugin
 }  // namespace moser2
