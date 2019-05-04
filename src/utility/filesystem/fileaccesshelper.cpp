@@ -35,3 +35,13 @@ std::vector<std::string> utility::filesystem::ListFiles(
   }
   return files;
 }
+
+std::string utility::filesystem::MakeAbsolutePath(const std::string& path) {
+  if (path.size() == 0) {
+    return "";
+  }
+  if (path.at(0) == '.') {
+    return GetCurrentWorkingDir() + path.substr(1, path.size() - 1);
+  }
+  return path;
+}

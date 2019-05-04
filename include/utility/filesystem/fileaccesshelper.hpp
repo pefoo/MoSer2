@@ -29,6 +29,13 @@ std::string GetCurrentWorkingDir();
 ///
 std::vector<std::string> ListFiles(const std::string& path);
 
+///
+/// \brief Build a absolute path using a relative one (does nothing, of the
+/// provided path does not start with a dot \param path The relative path to
+/// translate \return A absolute path
+///
+std::string MakeAbsolutePath(const std::string& path);
+
 }  // namespace filesystem
 }  // namespace utility
 
