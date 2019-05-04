@@ -23,29 +23,29 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
   this->thread_ = std::thread([=]() {
     std::mutex mutex;
     std::unique_lock<std::mutex> lk(mutex);
-    while (true) {
-      if (this->cv_.wait_for(lk, std::chrono::milliseconds(interval_ms)) ==
-          std::cv_status::no_timeout) {
-        break;
-      }
-      try {
-        func();
-      } catch (const std::exception& e) {
-        LOG(ERROR) << "An error occurred during function execution in a "
-                      "callback timer. "
-                   << e.what();
+    while (this->cv_.wait_for(
+        lk, std::chrono::milliseconds(interval_ms),
+        [&]() { return this->is_running_.load(std::memory_order_acquire); })) {
+      {
+        try {
+          func();
+        } catch (const std::exception& e) {
+          LOG(ERROR) << "An error occurred during function execution in a "
+                        "callback timer. "
+                     << e.what();
+        }
       }
     }
   });
-  this->is_running_ = true;
+  this->is_running_.store(true, std::memory_order_release);
 }
 
 void CallbackTimer::Stop() {
+  this->is_running_.store(false, std::memory_order_release);
   this->cv_.notify_one();
   if (this->thread_.joinable()) {
     this->thread_.join();
   }
-  this->is_running_ = false;
 }
 
 bool CallbackTimer::is_running() const {

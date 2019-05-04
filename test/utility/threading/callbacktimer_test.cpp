@@ -36,17 +36,19 @@ TEST_CASE("Callback timer auto stop", "[utility]") {
   std::mutex mut;
 
   // Timer stops when the destructor is called
-  cb->Start(100, [&cv]() { cv.notify_one(); });
+  cb->Start(1000, [&cv]() { cv.notify_one(); });
   delete cb;
   std::unique_lock<std::mutex> lk(mut);
   auto status = cv.wait_for(lk, std::chrono::milliseconds(250));
   REQUIRE(status == std::cv_status::timeout);
 
   // Timer stops when start is called again
+  int a = 0;
   cb = new utility::threading::CallbackTimer{};
-  cb->Start(10, [&cv]() { cv.notify_one(); });
-  cb->Start(200, [&cv]() { cv.notify_one(); });
+  cb->Start(50, [&a]() { a++; });
+  cb->Start(200000, []() {});
   std::this_thread::sleep_for(std::chrono::milliseconds(50));
-  status = cv.wait_for(lk, std::chrono::milliseconds(100));
-  REQUIRE(status == std::cv_status::timeout);
+  REQUIRE(a == 0);
+  //  status = cv.wait_for(lk, std::chrono::milliseconds(100));
+  //  REQUIRE(status == std::cv_status::timeout);
 }

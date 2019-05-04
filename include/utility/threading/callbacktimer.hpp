@@ -42,7 +42,7 @@ class CallbackTimer {
   bool is_running() const;
 
  private:
-  bool is_running_;
+  std::atomic_bool is_running_;
   std::thread thread_;
   std::condition_variable cv_;
 };
