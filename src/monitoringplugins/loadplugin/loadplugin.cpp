@@ -4,6 +4,7 @@
 #include <regex>
 #include <streambuf>
 #include <string>
+#include <utility>
 
 monitoringplugins::loadplugin::LoadPlugin::LoadPlugin()
     : monitoringpluginbase::MonitorPluginBase("LoadPlugin") {}
