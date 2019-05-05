@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 #include "imonitoringplugin/plugindata.hpp"
+#include "imonitoringplugin/pluginexception.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 #include "settingsprovider/settingsfactory.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
@@ -26,6 +27,11 @@ imonitorplugin::PluginData
 monitoringpluginbase::MonitorPluginBase::AcquireData() const {
   return imonitorplugin::PluginData{this->name(), this->MakeTimestamp(),
                                     this->AcquireDataInternal()};
+}
+
+void monitoringpluginbase::MonitorPluginBase::ThrowPluginException(
+    const std::string msg) const {
+  throw imonitorplugin::PluginException(this->name(), msg.c_str());
 }
 
 void monitoringpluginbase::MonitorPluginBase::Sleep100ms() const {

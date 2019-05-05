@@ -58,6 +58,12 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
       const = 0;
 
   ///
+  /// \brief Raise a plugin exception
+  /// \param msg The message to raise
+  ///
+  void ThrowPluginException[[noreturn]](const std::string msg) const;
+
+  ///
   /// \brief Sleep 100ms. Plugins that need to calculate their stats using
   /// consecutive reads should employ this method
   ///
