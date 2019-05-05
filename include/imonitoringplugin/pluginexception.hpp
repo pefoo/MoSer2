@@ -4,6 +4,7 @@
 #include <cstring>
 #include <exception>
 #include <string>
+#include <utility>
 
 namespace imonitorplugin {
 
@@ -25,15 +26,13 @@ class PluginException : public std::exception {
   ///
   /// \brief ~PluginException
   ///
-  virtual ~PluginException() noexcept override = default;
+  ~PluginException() noexcept override = default;
 
   ///
   /// \brief The exception message including the plugin name
   /// \return A c style string with the exception message
   ///
-  virtual const char* what() const noexcept override {
-    return this->what_.c_str();
-  }
+  const char* what() const noexcept override { return this->what_.c_str(); }
 
   ///
   /// \brief Get the plugin name
