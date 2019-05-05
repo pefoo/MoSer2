@@ -19,14 +19,28 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
   if (this->is_running()) {
     this->Stop();
   }
+  this->is_running_.store(true, std::memory_order_release);
 
   this->thread_ = std::thread([=]() {
     std::mutex mutex;
     std::unique_lock<std::mutex> lk(mutex);
-    while (this->cv_.wait_for(
-        lk, std::chrono::milliseconds(interval_ms),
-        [&]() { return this->is_running_.load(std::memory_order_acquire); })) {
+    auto last_run = std::chrono::system_clock::now();
+    while (this->is_running_.load(std::memory_order_acquire)) {
+      // Since condition variables tend to signal spurious, double check using a
+      // calculated duration
+      if (!this->cv_.wait_for(
+              lk, std::chrono::milliseconds(interval_ms), [&]() {
+                auto elapsed =
+                    std::chrono::duration_cast<std::chrono::milliseconds>(
+                        std::chrono::system_clock::now() - last_run)
+                        .count();
+                return this->is_running_.load(std::memory_order_acquire) &&
+                       elapsed >= interval_ms;
+              })) {
+        continue;
+      }
       {
+        last_run = std::chrono::system_clock::now();
         try {
           func();
         } catch (const std::exception& e) {
@@ -37,7 +51,6 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
       }
     }
   });
-  this->is_running_.store(true, std::memory_order_release);
 }
 
 void CallbackTimer::Stop() {
