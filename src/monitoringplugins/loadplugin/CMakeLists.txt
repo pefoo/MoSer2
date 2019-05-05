@@ -1,0 +1,2 @@
+add_library(loadplugin SHARED loadplugin.cpp)
+target_link_libraries(loadplugin MeasurementPluginBase)
