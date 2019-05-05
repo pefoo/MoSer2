@@ -11,9 +11,10 @@ monitoringplugins::loadplugin::LoadPlugin::LoadPlugin()
 
 imonitorplugin::PluginData::data_vector
 monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal() const {
+  this->ThrowPluginException("test");
   std::string proc_loadavg = "/proc/loadavg";
   if (access(proc_loadavg.c_str(), R_OK) == -1) {
-    // TODO Error handling
+    this->ThrowPluginException("Failed to read from /proc/loadavg");
   }
 
   std::ifstream stream(proc_loadavg);
@@ -32,6 +33,7 @@ monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal() const {
             {"m5", utility::datastructure::Any{std::move(m5)}},
             {"m15", utility::datastructure::Any{std::move(m15)}}};
   } else {
-    // TODO error handling
+    this->ThrowPluginException(
+        "Failed to parse content of /proc/loadavg. Content: " + content);
   }
 }

@@ -70,7 +70,7 @@ imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal() const {
 CpuPlugin::CpuStat CpuPlugin::GetCpuStat() const {
   std::string proc_stat = "/proc/stat";
   if (access(proc_stat.c_str(), R_OK) == -1) {
-    return CpuStat{};
+    this->ThrowPluginException("Failed to read from /proc/stat");
   }
   CpuStat::v_type user, nice, system, idle;
   std::regex rgx(R"(cpu\d+ (\d+) (\d+) (\d+) (\d+))");

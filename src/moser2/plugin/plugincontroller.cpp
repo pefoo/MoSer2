@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "imonitoringplugin/pluginexception.hpp"
 #include "pluginfacade.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
 #include "utility/threading/callbacktimer.hpp"
@@ -60,7 +61,12 @@ void PluginController::RunPlugins(const int interval_ms) {
           // The copy constructor of the the Any type should actually deep
           // copy the wrapped data
           imonitorplugin::PluginData::data_vector c;
-          auto orig_data = plug->Instance()->AcquireData();
+          imonitorplugin::PluginData orig_data;
+          try {
+            orig_data = plug->Instance()->AcquireData();
+          } catch (const imonitorplugin::PluginException &pe) {
+            LOG(ERROR) << pe.what();
+          }
 
           for (auto d : orig_data.data()) {
             auto t = d.second.get<float>();
