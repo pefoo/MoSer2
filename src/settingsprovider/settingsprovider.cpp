@@ -1,4 +1,5 @@
 #include "settingsprovider/settingsprovider.hpp"
+#include <filesystem>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -46,7 +47,7 @@ std::string SettingsProvider::BuildKey(const std::string &key,
 
 bool SettingsProvider::ReadFromFile(const std::string &file,
                                     std::vector<std::string> *msg) {
-  if (!utility::filesystem::FileExists(file)) {
+  if (!std::filesystem::exists(file)) {
     msg->push_back("The file was not found!");
     return false;
   }

@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <utility>
@@ -66,20 +67,20 @@ int main() {
 ///
 std::string GetConfigFile() {
   auto config_file = utility::filesystem::PathCombine(
-      {utility::filesystem::GetCurrentWorkingDir(), "/", moser2_conf});
-  if (utility::filesystem::FileExists(config_file)) {
+      {std::filesystem::current_path(), "/", moser2_conf});
+  if (std::filesystem::exists(config_file)) {
     return config_file;
   }
   LOG(ERROR) << "Failed to find the configuration file: " << config_file;
   throw std::runtime_error("Failed to find the configuration file: " +
-                           config_file);
+                           config_file.string());
 }
 
 ///
 /// \brief Configure the logger
 ///
 void ConfigureLogger() {
-  if (utility::filesystem::FileExists(logger_conf)) {
+  if (std::filesystem::exists(logger_conf)) {
     el::Configurations conf(logger_conf);
     el::Loggers::reconfigureAllLoggers(conf);
     return;

@@ -1,5 +1,6 @@
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 #include <ctime>
+#include <filesystem>
 #include <string>
 #include <thread>
 #include <utility>
@@ -12,7 +13,7 @@
 
 monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
     : name_(std::move(name)) {
-  if (utility::filesystem::FileExists(this->name() + ".conf")) {
+  if (std::filesystem::exists(this->name() + ".conf")) {
     settingsprovider::SettingsFactory factory{};
     std::vector<std::string> msg;
     this->settings_ = factory.ReadFromFile(this->name() + ".conf", &msg);
