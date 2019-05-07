@@ -1,5 +1,6 @@
 #include "plugincontroller.hpp"
 #include <condition_variable>
+#include <filesystem>
 #include <memory>
 #include <mutex>
 #include <regex>
@@ -30,17 +31,15 @@ void PluginController::LoadPlugin(const std::string &path) {
 }
 void PluginController::LoadPlugins(const std::string &path,
                                    const std::string &name_filter) {
-  auto files = utility::filesystem::ListFiles(path);
-  if (files.empty()) {
-    LOG(WARNING) << "No plugins found in " << path;
-    return;
-  }
-
+  LOG(DEBUG) << "Loading plugins from " + path << " using the filter "
+             << name_filter;
   std::regex rgx{name_filter};
-  for (const auto &file : files) {
-    if (name_filter.empty() || std::regex_match(file, rgx)) {
+  for (const auto &file : std::filesystem::directory_iterator(path)) {
+    if (name_filter.empty() ||
+        std::regex_match(file.path().filename().string(), rgx)) {
       this->LoadPlugin(utility::filesystem::MakeAbsolutePath(
-          utility::filesystem::PathCombine({path, "/", file})));
+          utility::filesystem::PathCombine(
+              {path, "/", file.path().filename().string()})));
     }
   }
 }

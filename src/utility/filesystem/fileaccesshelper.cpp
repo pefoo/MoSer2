@@ -8,24 +8,6 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> utility::filesystem::ListFiles(
-    const std::string& path) {
-  DIR* dir;
-  dirent* ent;
-  std::vector<std::string> files;
-
-  if ((dir = opendir(path.c_str())) != nullptr) {
-    while ((ent = readdir(dir)) != nullptr) {
-      if (ent->d_type == DT_REG) {
-        files.emplace_back(std::string(ent->d_name));
-      }
-    }
-  } else {
-    throw std::runtime_error("Failed to open the directory " + path);
-  }
-  return files;
-}
-
 std::string utility::filesystem::MakeAbsolutePath(const std::string& path) {
   throw std::runtime_error("Not supported anymore");
   if (path.empty()) {
