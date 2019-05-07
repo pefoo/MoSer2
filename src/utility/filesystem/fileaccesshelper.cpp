@@ -8,17 +8,6 @@
 #include <string>
 #include <vector>
 
-std::string utility::filesystem::MakeAbsolutePath(const std::string& path) {
-  throw std::runtime_error("Not supported anymore");
-  if (path.empty()) {
-    return "";
-  }
-  if (path.at(0) == '.') {
-    return path.substr(1, path.size() - 1);
-  }
-  return path;
-}
-
 std::string utility::filesystem::PathCombine(
     const std::vector<std::string>& parts) {
   std::string path;
