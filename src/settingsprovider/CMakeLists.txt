@@ -5,5 +5,5 @@ set(SOURCES
 )
 
 ADD_LIBRARY(SettingsProvider STATIC ${SOURCES})
-target_link_libraries(SettingsProvider easyloggingpp Utility)
+target_link_libraries(SettingsProvider easyloggingpp Utility stdc++fs)
 

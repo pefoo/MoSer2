@@ -7,11 +7,6 @@
 #include <string>
 #include <vector>
 
-bool utility::filesystem::FileExists(const std::string& name) {
-  struct stat buffer {};
-  return (stat(name.c_str(), &buffer) == 0);
-}
-
 std::string utility::filesystem::GetCurrentWorkingDir() {
   char cwd[FILENAME_MAX];
   getcwd(cwd, FILENAME_MAX);

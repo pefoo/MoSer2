@@ -8,13 +8,6 @@ namespace utility {
 namespace filesystem {
 
 ///
-/// \brief Check if the file exists
-/// \param path The file path to check
-/// \return True, if the file exists
-///
-bool FileExists(const std::string& path);
-
-///
 /// \brief Get current working directory
 /// \return The current working directory
 ///
