@@ -8,12 +8,6 @@ namespace utility {
 namespace filesystem {
 
 ///
-/// \brief Get current working directory
-/// \return The current working directory
-///
-std::string GetCurrentWorkingDir();
-
-///
 /// \brief List all files in a directory
 /// \details Lists only regular files, not directories or any other sort of
 /// directory entries

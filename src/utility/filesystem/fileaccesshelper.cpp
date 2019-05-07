@@ -3,15 +3,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <cstdio>
+#include <filesystem>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-std::string utility::filesystem::GetCurrentWorkingDir() {
-  char cwd[FILENAME_MAX];
-  getcwd(cwd, FILENAME_MAX);
-  return std::string(cwd);
-}
 
 std::vector<std::string> utility::filesystem::ListFiles(
     const std::string& path) {
@@ -32,11 +27,12 @@ std::vector<std::string> utility::filesystem::ListFiles(
 }
 
 std::string utility::filesystem::MakeAbsolutePath(const std::string& path) {
+  throw std::runtime_error("Not supported anymore");
   if (path.empty()) {
     return "";
   }
   if (path.at(0) == '.') {
-    return GetCurrentWorkingDir() + path.substr(1, path.size() - 1);
+    return path.substr(1, path.size() - 1);
   }
   return path;
 }
