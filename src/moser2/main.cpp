@@ -73,7 +73,7 @@ std::string GetConfigFile() {
   }
   LOG(ERROR) << "Failed to find the configuration file: " << config_file;
   throw std::runtime_error("Failed to find the configuration file: " +
-                           config_file);
+                           config_file.string());
 }
 
 ///
