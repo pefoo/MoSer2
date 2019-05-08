@@ -1,15 +1,16 @@
 #include <algorithm>
+#include <any>
 #include <string>
 #include "catch2/catch.hpp"
 #include "imonitoringplugin/plugindata.hpp"
 #include "persistenceservice/sqlite/queryhelper.hpp"
 
 static imonitorplugin::PluginData::data_vector data_vec = {
-    {"c_int", utility::datastructure::Any(17)},
-    {"c_float", utility::datastructure::Any(17.17f)},
-    {"c_double", utility::datastructure::Any(17.17)},
-    {"c_int64_t", utility::datastructure::Any(int64_t(17))},
-    {"c_string", utility::datastructure::Any(std::string("foobar"))}};
+    {"c_int", 17},
+    {"c_float", 17.17f},
+    {"c_double", 17.17},
+    {"c_int64_t", int64_t(17)},
+    {"c_string", std::string("foobar")}};
 static imonitorplugin::PluginData data("unit_test_plugin", 1546329600,
                                        data_vec);
 

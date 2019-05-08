@@ -1,4 +1,5 @@
 #include "persistenceservice/sqlite/queryhelper.hpp"
+#include <any>
 #include <string>
 
 const std::string
@@ -57,21 +58,21 @@ std::string persistenceservice::sqlite::QueryHelper::GetSqliteType(
 }
 
 std::string persistenceservice::sqlite::QueryHelper::GetEscapedValueAsString(
-    utility::datastructure::Any& value) {
+    std::any& value) {
   if (value.type() == typeid(int)) {
-    return std::to_string(value.get<int>());
+    return std::to_string(std::any_cast<int>(value));
   }
   if (value.type() == typeid(float)) {
-    return std::to_string(value.get<float>());
+    return std::to_string(std::any_cast<float>(value));
   }
   if (value.type() == typeid(double)) {
-    return std::to_string(value.get<double>());
+    return std::to_string(std::any_cast<double>(value));
   }
   if (value.type() == typeid(int64_t)) {
-    return std::to_string(value.get<int64_t>());
+    return std::to_string(std::any_cast<int64_t>(value));
   }
   if (value.type() == typeid(std::string)) {
-    return "'" + value.get<std::string>() + "'";
+    return "'" + std::any_cast<std::string>(value) + "'";
   }
   throw std::runtime_error("Type not supported");
 }
