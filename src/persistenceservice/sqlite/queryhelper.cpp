@@ -1,6 +1,7 @@
 #include "persistenceservice/sqlite/queryhelper.hpp"
 #include <any>
 #include <string>
+#include <utility/datastructure/anyhelper.hpp>
 
 const std::string
     persistenceservice::sqlite::QueryHelper::kSpecialColTimestamp = "timestamp";
@@ -59,20 +60,8 @@ std::string persistenceservice::sqlite::QueryHelper::GetSqliteType(
 
 std::string persistenceservice::sqlite::QueryHelper::GetEscapedValueAsString(
     std::any& value) {
-  if (value.type() == typeid(int)) {
-    return std::to_string(std::any_cast<int>(value));
-  }
-  if (value.type() == typeid(float)) {
-    return std::to_string(std::any_cast<float>(value));
-  }
-  if (value.type() == typeid(double)) {
-    return std::to_string(std::any_cast<double>(value));
-  }
-  if (value.type() == typeid(int64_t)) {
-    return std::to_string(std::any_cast<int64_t>(value));
-  }
   if (value.type() == typeid(std::string)) {
     return "'" + std::any_cast<std::string>(value) + "'";
   }
-  throw std::runtime_error("Type not supported");
+  return utility::datastructure::PrimitiveAnyToString(value);
 }
