@@ -76,20 +76,17 @@ persistenceservice::sqlite::SqliteAdapter::Load(const std::string &plugin_name,
       // Handle data columns
       switch (sqlite3_column_type(stmt, col)) {
         case SQLITE_INTEGER: {
-          data.push_back({col_name, utility::datastructure::Any(
-                                        sqlite3_column_int(stmt, col))});
+          data.push_back({col_name, sqlite3_column_int(stmt, col)});
           break;
         }
         case SQLITE_FLOAT: {
-          data.push_back({col_name, utility::datastructure::Any(
-                                        sqlite3_column_double(stmt, col))});
+          data.push_back({col_name, sqlite3_column_double(stmt, col)});
           break;
         }
         case SQLITE_TEXT: {
           // Thanks for the unsigned char.
-          data.push_back({col_name, utility::datastructure::Any(std::string(
-                                        reinterpret_cast<const char *>(
-                                            sqlite3_column_text(stmt, col))))});
+          data.push_back({col_name, std::string(reinterpret_cast<const char *>(
+                                        sqlite3_column_text(stmt, col)))});
           break;
         }
         case SQLITE_NULL:

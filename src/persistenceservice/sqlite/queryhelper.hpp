@@ -5,7 +5,6 @@
 #include <map>
 #include <string>
 #include "imonitoringplugin/plugindata.hpp"
-#include "utility/datastructure/Any.hpp"
 
 namespace persistenceservice {
 namespace sqlite {
