@@ -1,7 +1,7 @@
 #include "persistenceservice/sqlite/queryhelper.hpp"
 #include <any>
 #include <string>
-#include <utility/datastructure/anyhelper.hpp>
+#include "utility/datastructure/anyhelper.hpp"
 
 const std::string
     persistenceservice::sqlite::QueryHelper::kSpecialColTimestamp = "timestamp";
