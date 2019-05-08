@@ -50,8 +50,6 @@ class PluginData {
     ss << this->plugin_name() << std::string(" [")
        << std::to_string(this->timestamp()) << std::string("]: ");
     for (auto& d : this->data()) {
-      auto name = d.first;
-      auto tname = d.second.type().name();
       ss << d.first << std::string("(")
          << this->GetStringConverter(d.second.type())(d.second)
          << std::string(");");
