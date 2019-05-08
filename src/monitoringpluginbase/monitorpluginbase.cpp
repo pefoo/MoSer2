@@ -1,5 +1,4 @@
 #include "monitoringpluginbase/monitorpluginbase.hpp"
-#include <ctime>
 #include <filesystem>
 #include <string>
 #include <thread>

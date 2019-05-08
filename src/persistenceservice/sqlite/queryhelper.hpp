@@ -1,10 +1,10 @@
 #ifndef QUERYHELPER_H
 #define QUERYHELPER_H
 
+#include <any>
 #include <map>
 #include <string>
 #include "imonitoringplugin/plugindata.hpp"
-#include "utility/datastructure/Any.hpp"
 
 namespace persistenceservice {
 namespace sqlite {
@@ -41,7 +41,7 @@ class QueryHelper {
  private:
   QueryHelper() {}
   static std::string GetSqliteType(const std::type_info& type);
-  static std::string GetEscapedValueAsString(utility::datastructure::Any&);
+  static std::string GetEscapedValueAsString(std::any&);
 };
 }  // namespace sqlite
 }  // namespace persistenceservice

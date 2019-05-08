@@ -1,12 +1,12 @@
 #ifndef PLUGINDATA_H
 #define PLUGINDATA_H
 
+#include <any>
 #include <functional>
 #include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
-#include "utility/datastructure/Any.hpp"
 
 namespace imonitorplugin {
 ///
@@ -14,8 +14,7 @@ namespace imonitorplugin {
 ///
 class PluginData {
  public:
-  using data_vector =
-      std::vector<std::pair<std::string, utility::datastructure::Any>>;
+  using data_vector = std::vector<std::pair<std::string, std::any>>;
 
   ///
   /// \brief PluginData
@@ -51,8 +50,6 @@ class PluginData {
     ss << this->plugin_name() << std::string(" [")
        << std::to_string(this->timestamp()) << std::string("]: ");
     for (auto& d : this->data()) {
-      auto name = d.first;
-      auto tname = d.second.type().name();
       ss << d.first << std::string("(")
          << this->GetStringConverter(d.second.type())(d.second)
          << std::string(");");
@@ -61,27 +58,27 @@ class PluginData {
   }
 
  private:
-  std::function<std::string(utility::datastructure::Any&)> GetStringConverter(
+  std::function<std::string(std::any&)> GetStringConverter(
       const std::type_info& type) const {
     if (type == typeid(int)) {
-      return [](utility::datastructure::Any& data) -> std::string {
-        return std::to_string(data.get<int>());
+      return [](std::any& data) -> std::string {
+        return std::to_string(std::any_cast<int>(data));
       };
     } else if (type == typeid(int64_t)) {
-      return [](utility::datastructure::Any& data) -> std::string {
-        return std::to_string(data.get<int64_t>());
+      return [](std::any& data) -> std::string {
+        return std::to_string(std::any_cast<int64_t>(data));
       };
     } else if (type == typeid(float)) {
-      return [](utility::datastructure::Any& data) -> std::string {
-        return std::to_string(data.get<float>());
+      return [](std::any& data) -> std::string {
+        return std::to_string(std::any_cast<float>(data));
       };
     } else if (type == typeid(double)) {
-      return [](utility::datastructure::Any& data) -> std::string {
-        return std::to_string(data.get<double>());
+      return [](std::any& data) -> std::string {
+        return std::to_string(std::any_cast<double>(data));
       };
     } else if (type == typeid(std::string)) {
-      return [](utility::datastructure::Any& data) -> std::string {
-        return data.get<std::string>();
+      return [](std::any& data) -> std::string {
+        return std::any_cast<std::string>(data);
       };
     }
     throw std::runtime_error("Not supported data type.");
