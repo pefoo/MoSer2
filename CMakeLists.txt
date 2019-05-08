@@ -85,6 +85,7 @@ include_directories(
 
 
 add_subdirectory(./src/moser2)
+add_subdirectory(./src/reporter)
 add_subdirectory(./src/monitoringpluginbase)
 add_subdirectory(./src/monitoringplugins/cpuplugin)
 add_subdirectory(./src/monitoringplugins/loadplugin)
