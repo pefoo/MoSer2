@@ -2,6 +2,8 @@ set(EXEC_NAME MoSerep)
 
 set(SOURCES
   main.cpp
+  templateprocessor/templateprocessor.cpp
+  templateprocessor/templatetoken.cpp
 )
 
 add_executable(${EXEC_NAME} ${SOURCES})
