@@ -4,6 +4,9 @@
 #include <functional>
 #include <string>
 
+namespace reporter {
+namespace templateprocessor {
+
 ///
 /// \brief A template token with lazy value evaluation
 /// \details The token value is evaluated once the value() function is called.
@@ -38,5 +41,7 @@ class TemplateToken {
   std::function<std::string()> value_func_;
   bool cache_;
 };
+}  // namespace templateprocessor
+}  // namespace reporter
 
 #endif  // TEMPLATETOKEN_H
