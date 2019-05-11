@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Options
 #
 option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
+option(BUILD_REPORTER_TESTS "Build the report generator as a library and its tests" OFF)
 
 #
 # includes
@@ -100,3 +101,4 @@ add_subdirectory(./include/imonitoringplugin)
 add_subdirectory(./test/utility)
 add_subdirectory(./test/settingsprovider)
 add_subdirectory(./test/persistenceservice)
+add_subdirectory(./test/reporter)

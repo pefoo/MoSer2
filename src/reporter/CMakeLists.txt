@@ -6,10 +6,20 @@ set(SOURCES
   templateprocessor/templatetoken.cpp
 )
 
+set(LIBRARIES
+  easyloggingpp
+  IMonitorPlugin
+  Utility
+  PersistenceService
+  SettingsProvider
+  stdc++fs
+)
+
 add_executable(${EXEC_NAME} ${SOURCES})
-target_link_libraries(${EXEC_NAME} easyloggingpp)
-target_link_libraries(${EXEC_NAME} IMonitorPlugin)
-target_link_libraries(${EXEC_NAME} Utility)
-target_link_libraries(${EXEC_NAME} PersistenceService)
-target_link_libraries(${EXEC_NAME} SettingsProvider)
-target_link_libraries(${EXEC_NAME} stdc++fs)
+
+if(BUILD_REPORTER_TESTS)
+  add_library(MoSerepLib ${SOURCES})
+  target_link_libraries(MoSerepLib ${LIBRARIES})
+endif()
+
+target_link_libraries(${EXEC_NAME} ${LIBRARIES})

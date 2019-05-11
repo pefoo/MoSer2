@@ -25,7 +25,7 @@ std::string reporter::templateprocessor::TemplateProcessor::ProcessTemplate(
     for (auto& token : this->tokens_) {
       processed_line = this->ReplaceAll(processed_line, token);
     }
-    buffer << processed_line;
+    buffer << processed_line << std::endl;
   }
   template_stream.close();
 
