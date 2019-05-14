@@ -6,7 +6,7 @@
 
 std::string core::GetApplicationConfigFile() {
   auto config_file = utility::filesystem::PathCombine(
-      {std::filesystem::current_path(), constants::moser2_conf});
+      {std::filesystem::current_path(), constants::kMoser2Conf});
   if (std::filesystem::exists(config_file)) {
     return config_file;
   }
@@ -16,13 +16,13 @@ std::string core::GetApplicationConfigFile() {
 }
 
 void core::ConfigureLogger() {
-  if (std::filesystem::exists(constants::logger_conf)) {
-    el::Configurations conf(constants::logger_conf);
+  if (std::filesystem::exists(constants::kLoggerConf)) {
+    el::Configurations conf(constants::kLoggerConf);
     el::Loggers::reconfigureAllLoggers(conf);
     return;
   }
   LOG(ERROR) << "Failed to find the logger configuration file: "
-             << constants::logger_conf;
+             << constants::kLoggerConf;
   throw std::runtime_error("Failed to find the logger configuration file: " +
-                           std::string(constants::logger_conf));
+                           std::string(constants::kLoggerConf));
 }

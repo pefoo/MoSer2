@@ -36,7 +36,7 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetApplicationSettings() {
       LOG(ERROR) << e;
     }
     throw std::runtime_error("Detected invalid configuration. See " +
-                             std::string(constants::logger_conf) +
+                             std::string(constants::kLoggerConf) +
                              " for more information.");
   }
   return settings;
