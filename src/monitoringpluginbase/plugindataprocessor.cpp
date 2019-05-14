@@ -1,9 +1,10 @@
 #include "monitoringpluginbase/plugindataprocessor.hpp"
+#include <utility>
 
 monitoringpluginbase::PluginDataProcessor::PluginDataProcessor(
     std::string token,
     imonitorplugin::IPluginDataProcessor::DataProcessor processor)
-    : token_(token), processor_(processor) {}
+    : token_(std::move(token)), processor_(processor) {}
 
 imonitorplugin::IPluginDataProcessor::DataProcessor
 monitoringpluginbase::PluginDataProcessor::processor() const {
