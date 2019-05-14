@@ -13,6 +13,8 @@ set(LIBRARIES
   PersistenceService
   SettingsProvider
   stdc++fs
+  Constants
+  Core
 )
 
 add_executable(${EXEC_NAME} ${SOURCES})
