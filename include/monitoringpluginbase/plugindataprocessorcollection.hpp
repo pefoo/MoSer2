@@ -3,8 +3,20 @@
 
 #include <memory>
 #include "imonitoringplugin/iplugindataprocessorcollection.hpp"
+#include "imonitoringplugin/constants.hpp"
 
 namespace monitoringpluginbase {
+///*
+// * Macros to define the default function factories.
+// * Pass the plugin type as argument.
+// * Note that these macros may not be placed inside a class!
+// */
+//#define CREATE_PROCESSORS(plugin_name, processors) \
+//  extern "C" ::imonitorplugin::IPluginDataProcessorCollection* create_processors() { return new PluginDataProcessorCollection{plugin_name, processors} }
+
+#define DESYTROY_PROCESSORS() \
+  extern "C" void DATA_PROCESSOR_DESTRUCTOR(imonitorplugin::IPluginDataProcessorCollection* p) { delete p; }
+
 ///
 /// The imonitorplugin::IPluginDataProcessorCollection implementation
 ///
