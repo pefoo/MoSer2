@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "constants/constants.hpp"
 #include "constants/settings/settingsidentifier.hpp"
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
@@ -15,9 +16,6 @@
 #include "utility/filesystem/fileaccesshelper.hpp"
 
 INITIALIZE_EASYLOGGINGPP
-
-static const char logger_conf[] = "logger.conf";
-static const char moser2_conf[] = "moser2.conf";
 
 std::string GetConfigFile();
 void ConfigureLogger();
@@ -66,7 +64,7 @@ int main() {
 ///
 std::string GetConfigFile() {
   auto config_file = utility::filesystem::PathCombine(
-      {std::filesystem::current_path(), "/", moser2_conf});
+      {std::filesystem::current_path(), "/", constants::moser2_conf});
   if (std::filesystem::exists(config_file)) {
     return config_file;
   }
@@ -79,14 +77,15 @@ std::string GetConfigFile() {
 /// \brief Configure the logger
 ///
 void ConfigureLogger() {
-  if (std::filesystem::exists(logger_conf)) {
-    el::Configurations conf(logger_conf);
+  if (std::filesystem::exists(constants::logger_conf)) {
+    el::Configurations conf(constants::logger_conf);
     el::Loggers::reconfigureAllLoggers(conf);
     return;
   }
-  LOG(ERROR) << "Failed to find the logger configuration file: " << logger_conf;
+  LOG(ERROR) << "Failed to find the logger configuration file: "
+             << constants::logger_conf;
   throw std::runtime_error("Failed to find the logger configuration file: " +
-                           std::string(logger_conf));
+                           std::string(constants::logger_conf));
 }
 
 ///
@@ -105,7 +104,7 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings() {
       LOG(ERROR) << e;
     }
     throw std::runtime_error("Detected invalid configuration. See " +
-                             std::string(logger_conf) +
+                             std::string(constants::logger_conf) +
                              " for more information.");
   }
   return settings;
