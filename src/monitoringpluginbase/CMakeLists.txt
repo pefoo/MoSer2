@@ -1,5 +1,6 @@
 set(SOURCES
   monitorpluginbase.cpp
+  plugindataprocessor.cpp
 )
 
 ADD_LIBRARY(MeasurementPluginBase STATIC ${SOURCES})
