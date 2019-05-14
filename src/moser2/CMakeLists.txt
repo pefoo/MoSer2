@@ -17,6 +17,7 @@ target_link_libraries(${EXEC_NAME} Utility)
 target_link_libraries(${EXEC_NAME} PersistenceService)
 target_link_libraries(${EXEC_NAME} SettingsProvider)
 target_link_libraries(${EXEC_NAME} stdc++fs)
+target_link_libraries(${EXEC_NAME} Constants)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

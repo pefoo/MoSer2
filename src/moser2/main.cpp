@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "constants/settings/settingsidentifier.hpp"
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
 #include "persistenceservice/adapterfactory.hpp"
@@ -10,7 +11,6 @@
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 #include "plugin/pluginfacade.hpp"
 #include "settings/settingshelper.hpp"
-#include "settings/settingsidentifier.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
 
@@ -39,7 +39,7 @@ int main() {
   LOG(DEBUG) << "Creating sqlite3 adapter";
   auto adapter_factory = new persistenceservice::AdapterFactory(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
-          settings->GetValue(moser2::settings::SqliteDatabaseFile())));
+          settings->GetValue(constants::settings::SqliteDatabaseFile())));
   auto adapter = adapter_factory->CreateAdapter();
 
   // Start the persistence runner

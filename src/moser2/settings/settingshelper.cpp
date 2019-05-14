@@ -1,6 +1,6 @@
 #include "settingshelper.hpp"
 #include <memory>
-#include "moser2/settings/settingsidentifier.hpp"
+#include "constants/settings/settingsidentifier.hpp"
 #include "settingsprovider/settingsfactory.hpp"
 
 namespace moser2 {
@@ -10,11 +10,11 @@ std::unique_ptr<settingsprovider::SettingsFactory> RegisterFactory() {
   auto factory = std::make_unique<settingsprovider::SettingsFactory>();
 
   // TODO some default values??
-  factory->RegisterSetting(MeasurementDelay(), "",
+  factory->RegisterSetting(constants::settings::MeasurementDelay(), "",
                            settingsprovider::TypeVerifier<int>::VerifierFunc);
-  factory->RegisterSetting(PluginBasePath());
-  factory->RegisterSetting(PluginFilter());
-  factory->RegisterSetting(SqliteDatabaseFile());
+  factory->RegisterSetting(constants::settings::PluginBasePath());
+  factory->RegisterSetting(constants::settings::PluginFilter());
+  factory->RegisterSetting(constants::settings::SqliteDatabaseFile());
 
   return factory;
 }

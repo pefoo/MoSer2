@@ -1,17 +1,17 @@
 #include "monitoringserver.hpp"
 #include <memory>
 #include <utility>
+#include "constants/settings/settingsidentifier.hpp"
 #include "plugin/plugincontroller.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
-#include "settings/settingsidentifier.hpp"
 
 moser2::MonitoringServer::MonitoringServer(
     std::shared_ptr<settingsprovider::ISettingsProvider> settings)
     : settings_(std::move(settings)), is_running_(false) {
   this->plugin_controller_ = std::make_unique<plugin::PluginController>();
   this->plugin_controller_->LoadPlugins(
-      this->settings_->GetValue(moser2::settings::PluginBasePath()),
-      this->settings_->GetValue(moser2::settings::PluginFilter()));
+      this->settings_->GetValue(constants::settings::PluginBasePath()),
+      this->settings_->GetValue(constants::settings::PluginFilter()));
 
   // TODO remove this sample code once the persistence runner exists
   //  auto settings =
@@ -33,7 +33,7 @@ void moser2::MonitoringServer::Run() {
   }
 
   this->plugin_controller_->RunPlugins(std::stoi(
-      this->settings_->GetValue(moser2::settings::MeasurementDelay())));
+      this->settings_->GetValue(constants::settings::MeasurementDelay())));
   this->is_running_ = true;
 }
 
