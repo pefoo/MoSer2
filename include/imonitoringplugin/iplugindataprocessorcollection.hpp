@@ -2,9 +2,9 @@
 #define IPLUGINDATAPROCESSORCOLLECTION_H
 
 #include <imonitoringplugin/iplugindataprocessor.hpp>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace imonitorplugin {
 
@@ -31,8 +31,25 @@ class IPluginDataProcessorCollection {
   /// \details Note that this list might be empty, if the plugin does not define
   /// a processor \return A vector with pointers to the processors
   ///
-  virtual std::vector<std::shared_ptr<IPluginDataProcessor>> processors() const = 0;
+  virtual std::vector<std::shared_ptr<IPluginDataProcessor>> processors()
+      const = 0;
 };
+
+///
+/// \brief A typedef for the plugin data processor factory function
+/// (constructor)
+/// \note This type is required when loading the processor
+/// collection as a plugin
+///
+typedef imonitorplugin::IPluginDataProcessorCollection* create_processors_t();
+
+///
+/// \brief A typedef for the plugin data processor factory function (destructor)
+/// \note This type is required when loading the processor collection as a
+/// plugin
+///
+typedef void destroy_processors_t(
+    imonitorplugin::IPluginDataProcessorCollection*);
 }  // namespace imonitorplugin
 
 #endif  // IPLUGINDATAPROCESSORCOLLECTION_H

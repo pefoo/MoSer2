@@ -38,7 +38,8 @@ namespace imonitoringplugin {
 ///
 /// \brief Convert a macro expansion to string
 ///
-#define TO_STRING(x) #x
+#define TO_STRING2(x) #x
+#define TO_STRING(x) TO_STRING2(x)
 
 ///
 /// \brief \copybrief imonitoringplugin::MONITORING_PLUGIN_CONSTRUCTOR

@@ -17,10 +17,12 @@ namespace monitoringpluginbase {
 /// \param processors A vector with processors (see constructor of
 /// monitoringpluginbase::PluginDataProcessorCollection
 ///
-#define CREATRE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors)   \
-  extern "C" ::imonitorplugin::IPluginDataProcessorCollection*           \
-  DATA_PROCESSOR_CONSTRUCTOR() {                                         \
-    return new PluginDataProcessorCollection { plugin_name, processors } \
+#define CREATE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors)  \
+  extern "C" ::imonitorplugin::IPluginDataProcessorCollection*         \
+  DATA_PROCESSOR_CONSTRUCTOR() {                                       \
+    return new ::monitoringpluginbase::PluginDataProcessorCollection { \
+      plugin_name, processors                                          \
+    }                                                                  \
   }
 
 ///
@@ -31,10 +33,10 @@ namespace monitoringpluginbase {
 /// \note Required, when processors are exposed. Do not place this macro inside
 /// a class or function.
 ///
-#define CREATE_PROCESSOR_DESTRUCTOR_FACTORY()              \
-  extern "C" void DATA_PROCESSOR_DESTRUCTOR(               \
-      imonitorplugin::IPluginDataProcessorCollection* p) { \
-    delete p;                                              \
+#define CREATE_PROCESSOR_DESTRUCTOR_FACTORY()                \
+  extern "C" void DATA_PROCESSOR_DESTRUCTOR(                 \
+      ::imonitorplugin::IPluginDataProcessorCollection* p) { \
+    delete p;                                                \
   }
 
 ///
