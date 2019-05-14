@@ -2,20 +2,40 @@
 #define PLUGINDATAPROCESSORCOLLECTION_H
 
 #include <memory>
-#include "imonitoringplugin/iplugindataprocessorcollection.hpp"
 #include "imonitoringplugin/constants.hpp"
+#include "imonitoringplugin/iplugindataprocessorcollection.hpp"
 
 namespace monitoringpluginbase {
-///*
-// * Macros to define the default function factories.
-// * Pass the plugin type as argument.
-// * Note that these macros may not be placed inside a class!
-// */
-//#define CREATE_PROCESSORS(plugin_name, processors) \
-//  extern "C" ::imonitorplugin::IPluginDataProcessorCollection* create_processors() { return new PluginDataProcessorCollection{plugin_name, processors} }
 
-#define DESYTROY_PROCESSORS() \
-  extern "C" void DATA_PROCESSOR_DESTRUCTOR(imonitorplugin::IPluginDataProcessorCollection* p) { delete p; }
+///
+/// \brief A macro to create the factory function for the processor collection
+/// \details This function is used to load the processors as a plugin.
+/// \note To actually expose any processor, use this macro and pass your
+/// processors. Do not place this macro inside a class or function.
+/// \param plugin_name The name of the plugin, this collection
+/// belongs to
+/// \param processors A vector with processors (see constructor of
+/// monitoringpluginbase::PluginDataProcessorCollection
+///
+#define CREATRE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors)   \
+  extern "C" ::imonitorplugin::IPluginDataProcessorCollection*           \
+  DATA_PROCESSOR_CONSTRUCTOR() {                                         \
+    return new PluginDataProcessorCollection { plugin_name, processors } \
+  }
+
+///
+/// \brief A macro to create the factory function for the processor collection
+/// destructor
+/// \details This function is used to destroy the processor
+/// collection, when loaded as a plugin
+/// \note Required, when processors are exposed. Do not place this macro inside
+/// a class or function.
+///
+#define CREATE_PROCESSOR_DESTRUCTOR_FACTORY()              \
+  extern "C" void DATA_PROCESSOR_DESTRUCTOR(               \
+      imonitorplugin::IPluginDataProcessorCollection* p) { \
+    delete p;                                              \
+  }
 
 ///
 /// The imonitorplugin::IPluginDataProcessorCollection implementation
@@ -26,7 +46,7 @@ class PluginDataProcessorCollection
   PluginDataProcessorCollection(
       std::string plugin,
       std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>
-      processors = {});
+          processors = {});
 
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessorCollection::plugin()
