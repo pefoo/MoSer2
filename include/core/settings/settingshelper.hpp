@@ -25,7 +25,7 @@ std::unique_ptr<settingsprovider::SettingsFactory> RegisterFactory();
 ///
 std::unique_ptr<settingsprovider::ISettingsProvider> GetApplicationSettings();
 
+}  // namespace settings
 }  // namespace core
-}  // namespace moser2
 
 #endif  // SETTINGSHELPER_HPP

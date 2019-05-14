@@ -1,6 +1,8 @@
 #include "reporter/templateprocessor/templateprocessor.hpp"
 #include <filesystem>
 #include <fstream>
+#include <string>
+#include <vector>
 #include "utility/filesystem/fileaccesshelper.hpp"
 
 reporter::templateprocessor::TemplateProcessor::TemplateProcessor(
@@ -23,7 +25,7 @@ std::string reporter::templateprocessor::TemplateProcessor::ProcessTemplate(
   while (std::getline(template_stream, line)) {
     std::string processed_line = line;
     for (auto& token : this->tokens_) {
-      processed_line = this->ReplaceAll(processed_line, token);
+      processed_line = this->ReplaceAll(processed_line, &token);
     }
     buffer << processed_line << std::endl;
   }
@@ -36,11 +38,11 @@ std::string reporter::templateprocessor::TemplateProcessor::ProcessTemplate(
 }
 
 std::string reporter::templateprocessor::TemplateProcessor::ReplaceAll(
-    std::string subject, TemplateToken& token) {
+    std::string subject, TemplateToken* token) {
   size_t pos = 0;
-  while ((pos = subject.find(token.key(), pos)) != std::string::npos) {
-    subject.replace(pos, token.key().length(), token.value());
-    pos += token.value().size();
+  while ((pos = subject.find(token->key(), pos)) != std::string::npos) {
+    subject.replace(pos, token->key().length(), token->value());
+    pos += token->value().size();
   }
   return subject;
 }

@@ -1,4 +1,5 @@
 #include "core/appsetup.hpp"
+#include <string>
 #include "constants/constants.hpp"
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "utility/filesystem/fileaccesshelper.hpp"

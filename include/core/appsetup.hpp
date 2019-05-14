@@ -16,6 +16,6 @@ std::string GetApplicationConfigFile();
 ///
 void ConfigureLogger();
 
-} // namespace core
+}  // namespace core
 
-#endif //APPSETUP_H
+#endif  // APPSETUP_H

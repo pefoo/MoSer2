@@ -1,6 +1,7 @@
 #ifndef TEMPLATEPROCESSOR_H
 #define TEMPLATEPROCESSOR_H
 
+#include <string>
 #include <vector>
 #include "reporter/templateprocessor/templatetoken.hpp"
 
@@ -16,7 +17,7 @@ class TemplateProcessor {
   /// \brief Create a new instance
   /// \param tokens The tokens to be used for replacement
   ///
-  TemplateProcessor(std::vector<TemplateToken> tokens);
+  explicit TemplateProcessor(std::vector<TemplateToken> tokens);
 
   ///
   /// \brief Process a template file
@@ -32,7 +33,7 @@ class TemplateProcessor {
  private:
   std::vector<TemplateToken> tokens_;
 
-  std::string ReplaceAll(std::string subject, TemplateToken& token);
+  std::string ReplaceAll(std::string subject, TemplateToken* token);
 };
 }  // namespace templateprocessor
 }  // namespace reporter

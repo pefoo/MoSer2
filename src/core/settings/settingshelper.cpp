@@ -1,5 +1,7 @@
 #include "core/settings/settingshelper.hpp"
 #include <memory>
+#include <string>
+#include <vector>
 #include "constants/constants.hpp"
 #include "constants/settings/settingsidentifier.hpp"
 #include "core/appsetup.hpp"
