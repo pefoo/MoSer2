@@ -5,6 +5,7 @@
 #include <vector>
 #include "constants/constants.hpp"
 #include "constants/settings/settingsidentifier.hpp"
+#include "core/appsetup.hpp"
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 #include "monitoringserver.hpp"
 #include "persistenceservice/adapterfactory.hpp"
@@ -17,13 +18,11 @@
 
 INITIALIZE_EASYLOGGINGPP
 
-std::string GetConfigFile();
-void ConfigureLogger();
 std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings();
 
 int main() {
   // Setup the logger
-  ConfigureLogger();
+  core::ConfigureLogger();
 
   // Read the settings
   std::shared_ptr<settingsprovider::ISettingsProvider> settings = GetSettings();
@@ -59,43 +58,13 @@ int main() {
 }
 
 ///
-/// \brief Get the default config file.
-/// \return The default config file
-///
-std::string GetConfigFile() {
-  auto config_file = utility::filesystem::PathCombine(
-      {std::filesystem::current_path(), "/", constants::moser2_conf});
-  if (std::filesystem::exists(config_file)) {
-    return config_file;
-  }
-  LOG(ERROR) << "Failed to find the configuration file: " << config_file;
-  throw std::runtime_error("Failed to find the configuration file: " +
-                           config_file.string());
-}
-
-///
-/// \brief Configure the logger
-///
-void ConfigureLogger() {
-  if (std::filesystem::exists(constants::logger_conf)) {
-    el::Configurations conf(constants::logger_conf);
-    el::Loggers::reconfigureAllLoggers(conf);
-    return;
-  }
-  LOG(ERROR) << "Failed to find the logger configuration file: "
-             << constants::logger_conf;
-  throw std::runtime_error("Failed to find the logger configuration file: " +
-                           std::string(constants::logger_conf));
-}
-
-///
 /// \brief Find and read the settings file
 /// \return The settings object
 ///
 std::unique_ptr<settingsprovider::ISettingsProvider> GetSettings() {
   auto settings_factory = moser2::settings::RegisterFactory();
   std::vector<std::string> errors;
-  auto config_file = GetConfigFile();
+  auto config_file = core::GetConfigFile();
   LOG(DEBUG) << "Reading settings from " << config_file;
   auto settings = settings_factory->ReadFromFile(config_file, &errors);
 
