@@ -4,6 +4,7 @@
 #include <regex>
 #include <string>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/pluginexception.hpp"
 #include "pluginfacade.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
@@ -17,7 +18,9 @@ PluginController::PluginController()
 
 void PluginController::LoadPlugin(const std::string &path) {
   try {
-    this->plugins_.push_back(this->plugin_manager_->LoadPlugin(path));
+    this->plugins_.push_back(this->plugin_manager_->LoadPlugin(
+        path, imonitoringplugin::kMonitoringPluginConstructor,
+        imonitoringplugin::kMonitoringPluginDestructor));
     LOG(INFO) << "Loaded plugin " << this->plugins_.back()->Instance()->name()
               << " from " << path;
   } catch (const std::exception &e) {
