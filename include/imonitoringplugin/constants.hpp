@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_HPP
-#define CONSTANTS_HPP
+#ifndef IMONITORINGPLUGINCONSTANTS_HPP
+#define IMONITORINGPLUGINCONSTANTS_HPP
 
 namespace imonitoringplugin {
 

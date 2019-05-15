@@ -17,12 +17,11 @@ namespace monitoringpluginbase {
 /// \param processors A vector with processors (see constructor of
 /// monitoringpluginbase::PluginDataProcessorCollection
 ///
-#define CREATE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors)  \
-  extern "C" ::imonitorplugin::IPluginDataProcessorCollection*         \
-  DATA_PROCESSOR_CONSTRUCTOR() {                                       \
-    return new ::monitoringpluginbase::PluginDataProcessorCollection { \
-      plugin_name, processors                                          \
-    }                                                                  \
+#define CREATE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors) \
+  extern "C" ::imonitorplugin::IPluginDataProcessorCollection*        \
+  DATA_PROCESSOR_CONSTRUCTOR() {                                      \
+    return new ::monitoringpluginbase::PluginDataProcessorCollection{ \
+        plugin_name, processors};                                     \
   }
 
 ///
