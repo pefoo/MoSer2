@@ -2,10 +2,8 @@
 #include <utility>
 
 monitoringpluginbase::PluginDataProcessorCollection::
-    PluginDataProcessorCollection(
-        std::string plugin,
-        std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor> >
-            processors)
+    PluginDataProcessorCollection(std::string plugin,
+                                  ProcessorVector processors)
     : plugin_(std::move(plugin)), processors_(processors) {}
 
 std::string monitoringpluginbase::PluginDataProcessorCollection::plugin()
@@ -13,7 +11,7 @@ std::string monitoringpluginbase::PluginDataProcessorCollection::plugin()
   return this->plugin_;
 }
 
-std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor> >
+monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringpluginbase::PluginDataProcessorCollection::processors() const {
   return this->processors_;
 }

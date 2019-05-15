@@ -45,10 +45,11 @@ namespace monitoringpluginbase {
 class PluginDataProcessorCollection
     : public imonitorplugin::IPluginDataProcessorCollection {
  public:
-  PluginDataProcessorCollection(
-      std::string plugin,
-      std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>
-          processors = {});
+  using ProcessorVector =
+      std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>;
+
+  PluginDataProcessorCollection(std::string plugin,
+                                ProcessorVector processors = {});
 
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessorCollection::plugin()
@@ -58,13 +59,11 @@ class PluginDataProcessorCollection
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessorCollection::processors()
   ///
-  std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>
-  processors() const override;
+  ProcessorVector processors() const override;
 
  private:
   const std::string plugin_;
-  std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>
-      processors_;
+  ProcessorVector processors_;
 };
 
 }  // namespace monitoringpluginbase
