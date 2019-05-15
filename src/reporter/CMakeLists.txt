@@ -15,6 +15,8 @@ set(LIBRARIES
   stdc++fs
   Constants
   Core
+  PluginLoader
+  ${CMAKE_DL_LIBS}
 )
 
 add_executable(${EXEC_NAME} ${SOURCES})
