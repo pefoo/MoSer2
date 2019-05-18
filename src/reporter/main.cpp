@@ -61,7 +61,6 @@ int main() {
     reporter::templateprocessor::TemplateTokenFactory token_factory{adapter};
     std::vector<reporter::templateprocessor::TemplateToken> tokens;
     for (const auto &processor : processor_plugins) {
-      // TODO pass actual min_age
       auto t = token_factory.BuildTokens(
           processor->Instance(),
           std::stoi(settings->GetValue(constants::settings::DataAge())));
