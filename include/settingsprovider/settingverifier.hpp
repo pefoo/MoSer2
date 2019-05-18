@@ -1,6 +1,7 @@
 #ifndef SETTINGVERIFIER_H
 #define SETTINGVERIFIER_H
 
+#include <filesystem>
 #include <functional>
 #include <regex>
 #include <string>
@@ -14,6 +15,10 @@ using Verifier = std::function<bool(const std::string&)>;
 ///
 constexpr bool DefaultVerifier([[gnu::unused]] const std::string& v) {
   return true;
+}
+
+static bool FileExistVerifier(const std::string& v) {
+  return std::filesystem::exists(v);
 }
 
 template <typename T>

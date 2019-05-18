@@ -22,7 +22,8 @@ std::unique_ptr<settingsprovider::SettingsFactory> RegisterFactory() {
   factory->RegisterSetting(constants::settings::SqliteDatabaseFile());
   factory->RegisterSetting(constants::settings::DataAge(), "1440",
                            settingsprovider::TypeVerifier<int>::VerifierFunc);
-  factory->RegisterSetting(constants::settings::ReporTemplate());
+  factory->RegisterSetting(constants::settings::ReporTemplate(), "",
+                           settingsprovider::FileExistVerifier);
 
   return factory;
 }
@@ -38,9 +39,7 @@ std::unique_ptr<settingsprovider::ISettingsProvider> GetApplicationSettings() {
     for (const auto& e : errors) {
       LOG(ERROR) << e;
     }
-    throw std::runtime_error("Detected invalid configuration. See " +
-                             std::string(constants::kLoggerConf) +
-                             " for more information.");
+    throw std::runtime_error("Detected invalid configuration.");
   }
   return settings;
 }
