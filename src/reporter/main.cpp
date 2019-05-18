@@ -59,7 +59,9 @@ int main() {
   std::vector<reporter::templateprocessor::TemplateToken> tokens;
   for (const auto &processor : processor_plugins) {
     // TODO pass actual min_age
-    auto t = token_factory.BuildTokens(processor->Instance(), 0);
+    auto t = token_factory.BuildTokens(
+        processor->Instance(),
+        std::stoi(settings->GetValue(constants::settings::DataAge())));
     tokens.insert(tokens.end(), t.begin(), t.end());
   }
 
