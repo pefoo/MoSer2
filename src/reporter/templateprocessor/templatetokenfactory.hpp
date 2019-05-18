@@ -27,7 +27,7 @@ class TemplateTokenFactory {
   /// by the processor collection
   /// \param processor_collection The processor collection defined in some
   /// plugin
-  /// \param min_age The time to look back.
+  /// \param min_age The minimal age of the data to acquire (unix timestamp)
   /// \return A vector with template tokens
   ///
   std::vector<TemplateToken> BuildTokens(

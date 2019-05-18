@@ -20,6 +20,9 @@ std::unique_ptr<settingsprovider::SettingsFactory> RegisterFactory() {
   factory->RegisterSetting(constants::settings::PluginBasePath());
   factory->RegisterSetting(constants::settings::PluginFilter());
   factory->RegisterSetting(constants::settings::SqliteDatabaseFile());
+  factory->RegisterSetting(constants::settings::DataAge(), "1440",
+                           settingsprovider::TypeVerifier<int>::VerifierFunc);
+  factory->RegisterSetting(constants::settings::ReporTemplate());
 
   return factory;
 }
