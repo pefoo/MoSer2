@@ -15,7 +15,8 @@ reporter::templateprocessor::TemplateTokenFactory::BuildTokens(
 
   for (const auto& processor : processor_collection->processors()) {
     tokens.push_back(reporter::templateprocessor::TemplateToken{
-        processor->key(), [=]() { return processor->processor()(data); }});
+        processor->key(),
+        [processor, data]() { return processor->processor()(data); }});
   }
 
   return tokens;

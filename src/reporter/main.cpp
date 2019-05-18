@@ -54,20 +54,24 @@ int main() {
     }
   }
 
-  // Move the actual data into the processors and get the tokens
-  reporter::templateprocessor::TemplateTokenFactory token_factory{adapter};
-  std::vector<reporter::templateprocessor::TemplateToken> tokens;
-  for (const auto &processor : processor_plugins) {
-    // TODO pass actual min_age
-    auto t = token_factory.BuildTokens(
-        processor->Instance(),
-        std::stoi(settings->GetValue(constants::settings::DataAge())));
-    tokens.insert(tokens.end(), t.begin(), t.end());
-  }
+  // Make sure anything that depends on plugins is freed before the plugins are
+  // closed (DestroyAll() is called)
+  {
+    // Move the actual data into the processors and get the tokens
+    reporter::templateprocessor::TemplateTokenFactory token_factory{adapter};
+    std::vector<reporter::templateprocessor::TemplateToken> tokens;
+    for (const auto &processor : processor_plugins) {
+      // TODO pass actual min_age
+      auto t = token_factory.BuildTokens(
+          processor->Instance(),
+          std::stoi(settings->GetValue(constants::settings::DataAge())));
+      tokens.insert(tokens.end(), t.begin(), t.end());
+    }
 
-  // Run the template processor
-  reporter::templateprocessor::TemplateProcessor template_processor{tokens};
-  // TODO actually execute the template processor
+    // Run the template processor
+    reporter::templateprocessor::TemplateProcessor template_processor{tokens};
+    // TODO actually execute the template processor
+  }
 
   // Destroy loaded plugins
   loader.DestroyAll();
