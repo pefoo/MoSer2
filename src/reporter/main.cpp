@@ -11,6 +11,8 @@
 #include "persistenceservice/adapterfactory.hpp"
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
+#include "reporter/templateprocessor/templatetokenfactory.hpp"
+#include "templateprocessor/templateprocessor.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -31,7 +33,8 @@ int main() {
   auto adapter_factory = std::make_shared<persistenceservice::AdapterFactory>(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
           settings->GetValue(constants::settings::SqliteDatabaseFile())));
-  auto adapter = adapter_factory->CreateAdapter();
+  std::shared_ptr<persistenceservice::IDataAdapter> adapter =
+      adapter_factory->CreateAdapter();
 
   // Load data processors from plugins
   ProcessorLoader loader{};
@@ -50,6 +53,19 @@ int main() {
                    << " does not define any template processors.";
     }
   }
+
+  // Move the actual data into the processors and get the tokens
+  reporter::templateprocessor::TemplateTokenFactory token_factory{adapter};
+  std::vector<reporter::templateprocessor::TemplateToken> tokens;
+  for (const auto &processor : processor_plugins) {
+    // TODO pass actual min_age
+    auto t = token_factory.BuildTokens(processor->Instance(), 0);
+    tokens.insert(tokens.end(), t.begin(), t.end());
+  }
+
+  // Run the template processor
+  reporter::templateprocessor::TemplateProcessor template_processor{tokens};
+  // TODO actually execute the template processor
 
   // Destroy loaded plugins
   loader.DestroyAll();

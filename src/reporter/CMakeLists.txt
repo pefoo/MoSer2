@@ -4,6 +4,7 @@ set(SOURCES
   main.cpp
   templateprocessor/templateprocessor.cpp
   templateprocessor/templatetoken.cpp
+  templateprocessor/templatetokenfactory.cpp
 )
 
 set(LIBRARIES
