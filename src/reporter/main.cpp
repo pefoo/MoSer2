@@ -23,6 +23,7 @@ using ProcessorLoader =
 
 std::vector<std::string> DiscoverPlugins(const std::string &path,
                                          const std::string &name_filter);
+int64_t GetDataMinAge(const std::string &v);
 
 int main() {
   // setup logging
@@ -61,15 +62,17 @@ int main() {
     reporter::templateprocessor::TemplateTokenFactory token_factory{adapter};
     std::vector<reporter::templateprocessor::TemplateToken> tokens;
     for (const auto &processor : processor_plugins) {
-      auto t = token_factory.BuildTokens(
-          processor->Instance(),
-          std::stoi(settings->GetValue(constants::settings::DataAge())));
+      auto min_age =
+          GetDataMinAge(settings->GetValue(constants::settings::DataAge()));
+      auto t = token_factory.BuildTokens(processor->Instance(), min_age);
       tokens.insert(tokens.end(), t.begin(), t.end());
     }
 
     // Run the template processor
     reporter::templateprocessor::TemplateProcessor template_processor{tokens};
-    // TODO actually execute the template processor
+    auto result_file = template_processor.ProcessTemplate(
+        settings->GetValue(constants::settings::ReporTemplate()));
+    LOG(DEBUG) << "Report file was written to " << result_file;
   }
 
   // Destroy loaded plugins
@@ -91,4 +94,9 @@ std::vector<std::string> DiscoverPlugins(const std::string &path,
     }
   }
   return files;
+}
+
+int64_t GetDataMinAge(const std::string &v) {
+  auto now = std::time(nullptr);
+  return now - std::stoi(v) * 60;
 }
