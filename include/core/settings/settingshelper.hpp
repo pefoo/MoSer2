@@ -10,7 +10,7 @@
 #include <memory>
 #include "settingsprovider/settingsfactory.hpp"
 
-namespace moser2 {
+namespace core {
 namespace settings {
 
 ///
@@ -19,7 +19,13 @@ namespace settings {
 ///
 std::unique_ptr<settingsprovider::SettingsFactory> RegisterFactory();
 
+///
+/// \brief Get the application settings
+/// \return A new settings provider
+///
+std::unique_ptr<settingsprovider::ISettingsProvider> GetApplicationSettings();
+
 }  // namespace settings
-}  // namespace moser2
+}  // namespace core
 
 #endif  // SETTINGSHELPER_HPP

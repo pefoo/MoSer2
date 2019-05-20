@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Options
 #
 option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
+option(BUILD_REPORTER_TESTS "Build the report generator as a library and its tests" OFF)
 
 #
 # includes
@@ -41,6 +42,8 @@ add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
 # Copy the application config to runtime dir 
 configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.conf" COPYONLY)
+# Copy the default template to runtime dir
+configure_file("${ETC_DIR}/report_template.html" "${CMAKE_BINARY_DIR}/template.html" COPYONLY)
 
 #
 # Testing
@@ -85,12 +88,15 @@ include_directories(
 
 
 add_subdirectory(./src/moser2)
+add_subdirectory(./src/reporter)
 add_subdirectory(./src/monitoringpluginbase)
 add_subdirectory(./src/monitoringplugins/cpuplugin)
 add_subdirectory(./src/monitoringplugins/loadplugin)
 add_subdirectory(./src/utility)
 add_subdirectory(./src/settingsprovider)
 add_subdirectory(./src/persistenceservice)
+add_subdirectory(./src/constants)
+add_subdirectory(./src/core)
 # TODO Use ExternalProject for externals (see https://cmake.org/cmake/help/latest/module/ExternalProject.html)
 add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/events)
@@ -99,3 +105,4 @@ add_subdirectory(./include/imonitoringplugin)
 add_subdirectory(./test/utility)
 add_subdirectory(./test/settingsprovider)
 add_subdirectory(./test/persistenceservice)
+add_subdirectory(./test/reporter)

@@ -9,7 +9,7 @@
 #include <vector>
 #include "settingsprovider/settingidentifier.hpp"
 
-namespace moser2 {
+namespace constants {
 namespace settings {
 // Because I am lazy...
 #define MAKESETTING(name, key, section)                                \
@@ -21,8 +21,10 @@ namespace settings {
 MAKESETTING(MeasurementDelay, "MeasurementDelay", "Core")
 MAKESETTING(PluginBasePath, "PluginBasePath", "Core");
 MAKESETTING(PluginFilter, "PluginFilter", "Core");
-MAKESETTING(SqliteDatabaseFile, "DatabaseFile", "SqliteAdapter")
+MAKESETTING(SqliteDatabaseFile, "DatabaseFile", "SqliteAdapter");
+MAKESETTING(DataAge, "DataAge", "Reporter");
+MAKESETTING(ReporTemplate, "ReportTemplate", "Reporter");
 }  // namespace settings
-}  // namespace moser2
+}  // namespace constants
 
 #endif  // SETTINGSIDENTIFIER_HPP

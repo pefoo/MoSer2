@@ -1,0 +1,37 @@
+#ifndef PLUGINDATAPROCESSOR_H
+#define PLUGINDATAPROCESSOR_H
+
+#include <imonitoringplugin/iplugindataprocessor.hpp>
+
+namespace monitoringpluginbase {
+
+///
+/// \brief The imonitorplugin::IPluginDataProcessor implementation
+///
+class PluginDataProcessor : public imonitorplugin::IPluginDataProcessor
+{
+public:
+  ///
+  /// \brief Create a new instance
+  /// \param token The token, this processor will replace
+  /// \param processor The processor
+  ///
+  PluginDataProcessor(std::string token, imonitorplugin::IPluginDataProcessor::DataProcessor processor);
+
+  ///
+  /// \copydoc imonitorplugin::IPluginDataProcessor::processor()
+  ///
+  DataProcessor processor() const override;
+
+  ///
+  /// \copydoc imonitorplugin::IPluginDataProcessor::key()
+  ///
+  std::string key() const override;
+
+private:
+  const std::string token_;
+  imonitorplugin::IPluginDataProcessor::DataProcessor processor_;
+};
+} // namespace monitoringpluginbase
+
+#endif //PLUGINDATAPROCESSOR_H

@@ -6,6 +6,8 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include "monitoringplugins/cpuplugin/constants.hpp"
+
 namespace monitoringplugins {
 namespace cpuplugin {
 // Each field contains a vector (one value in vector per core)
@@ -37,7 +39,7 @@ struct CpuPlugin::CpuStat {
 };
 
 CpuPlugin::CpuPlugin()
-    : monitoringpluginbase::MonitorPluginBase("CpuPlugin"),
+    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName),
       core_count_(std::thread::hardware_concurrency()) {}
 
 imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal() const {

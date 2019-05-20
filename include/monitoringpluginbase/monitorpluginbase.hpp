@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/imonitorplugin.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 
@@ -15,10 +16,13 @@ namespace monitoringpluginbase {
  * Note that these macros may not be placed inside a class!
  */
 #define CREATE_DETAULT_CONSTRUCTOR_FACTORY(type) \
-  extern "C" ::imonitorplugin::IMonitorPlugin* create() { return new type{}; }
+  extern "C" ::imonitorplugin::IMonitorPlugin*   \
+  MONITORING_PLUGIN_CONSTRUCTOR() {              \
+    return new type{};                           \
+  }
 
 #define CREATE_DEFAULT_DESTRUCTOR_FACTORY(type) \
-  extern "C" void destroy(type* p) { delete p; }
+  extern "C" void MONITORING_PLUGIN_DESTRUCTOR(type* p) { delete p; }
 
 ///
 /// \brief The base class of each monitoring plugin.
