@@ -5,4 +5,4 @@ set(SOURCES
 )
 
 ADD_LIBRARY(DataProcessorHelper STATIC ${SOURCES})
-#target_link_libraries(DataProcessorHelper)
+target_link_libraries(DataProcessorHelper stdc++fs)

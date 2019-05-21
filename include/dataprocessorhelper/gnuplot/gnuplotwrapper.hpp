@@ -15,12 +15,20 @@ namespace gnuplot {
 /// \param script The script to execute
 /// \param output_file The output file
 /// \param parameter The parameter for the script
-/// \return The return
-/// code of the gnuplot interpreter (most likely, actually depends on the
-/// implementation of std::system)
+/// \return The return code of the gnuplot interpreter
+/// (most likely, actually depends on the implementation of std::system)
 ///
 int ExecuteScript(const std::string& script, const std::string& output_file,
                   const GnuPlotParameterDict& parameter);
+
+///
+/// \brief Execute a gnuplot script and convert the output to base 64
+/// \param script The script the execute
+/// \param parameter The parameter for the script
+/// \return The base64 encoded output
+///
+std::string EncodeScriptOutputToBase64(const std::string& script,
+                                       const GnuPlotParameterDict& parameter);
 
 }  // namespace gnuplot
 }  // namespace dataprocessorhelper
