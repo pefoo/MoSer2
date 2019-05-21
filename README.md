@@ -1,20 +1,58 @@
-[![pipeline status](http://gitlab-server.fritz.box/root/moser2/badges/master/pipeline.svg)](http://gitlab-server.fritz.box/root/moser2/commits/master)
-[![coverage report](http://gitlab-server.fritz.box/root/moser2/badges/master/coverage.svg)](http://gitlab-server.fritz.box/root/moser2/commits/master)
 # MoSer2
 
 MoSer2 is a monitoring solution for linux systems.
 It employs a plugin infrastructure, that is capable of loading components during startup. 
-Thus, new metrics may be added without rebuilding the whole software. 
-The acquired data is stored using one of the provided data connectors.
-
 Reports are generated and send as email notifications. 
 
-TODO README
-
-# Required packages to build
+# How to build
+### Required packages 
 - libsqlite3-dev
 
+### Compiler
+A c++17 capable compiler is required. 
+MoSer2 is currently developed using gcc-8. 
+
+### Other dependencies 
+Integration in the source tree: 
+- catch2
+- easyloggingpp
+
+Integration as submodules: 
+- events 
+- pluginmanager 
+
 # Overview 
-## Monitoring 
+MoSer2 is build on top of a plugin framework. Each metric that is created during runtime is created using a dynamically loaded plugin. A plugin is responsible for data acquisition and data processing. The goal is to store the data in a arbitrary data sink and create html document based reports using the stored data at any given time. The reports may be send via email eventually. 
+
+## Features
+- [x] core plugin framework
+- [x] plugin samples (cpu usage, load average) 
+- [x] first data sink (sqlite3)
+- [x] basic report creation capabilities 
+- [ ] send report (mail) 
+- [ ] installation instructions 
+- [ ] scripting interface for report creation
+
+## Plugins
+The plugin framework is based on [dlopen](http://man7.org/linux/man-pages/man3/dlopen.3.html) and thus **linux only**. 
+To load a plugin, dlopen is used to load a dynamic shared object (aka shared library). To create a plugin, dlsym is used to locate the memory address of a factory function, defined in the shared libary. Using this address the factory function may be called. Along with the factory function, a function to delete the plugin must be defined. To actually call the function the signature of the factory functions must be known. 
+Factory functions are required, since loading classes using this approach is not possible. To load a class using polymorphism is employed. The interface library `IMonitorPlugin` defines interfaces for the plugin types. The factory functions create instances of the actual plugin and return a pointer of the interface type. Therefore the actual plugin implementation must not be known during compile time. 
+To ensure the compiler does not mangle to function name, the factory functions must be marked as extern "C". 
+
+A plugin consist of two main components. Actually, both of them are loaded as separate plugins. To keep things simple, the unions of both parts is considered a plugin. 
+
+The first one is responsible to create the actual data. Therefore the plugin framework calls each registered plugin periodically. The plugin class has to inherit from `monitoringpluginbase::MonitorPluginBase` and overwrite the virtual function `virtual imonitorplugin::PluginData::data_vector AcquireDataInternal()const = 0;`. This method is called by the plugin framework to acquire the data. The data is then stored in a circular buffer. Each record stored in the buffer is stored in a data sink eventually. To make a plugin loadable factory methods are required. You may use the macros `CREATE_DETAULT_CONSTRUCTOR_FACTORY` and `CREATE_DEFAULT_DESTRUCTOR_FACTORY` to add default implementations. Add these macros in some header, but do not wrap them in a class. See _include/monitoringplugins/cpuplugin/cpuplugin.hpp_ for more information.
+
+The second component are one or more data processors. These processors are used during report creation. A processor consists of a token and the processor function. The token is used in the report template, it is replaced by the processor functions output during report creation. Each processor functions get the available records for that plugin at report creation time. A processor function may calculate high order metric or generate charts (base64 encoded) to be embedded in the report. Again factory functions are required to make the processor collection loadable from the plugin. You may use the macros `CREATE_PROCESSOR_CONSTRUCTOR_FACTORY` and `CREATE_PROCESSOR_DESTRUCTOR_FACTORY` or see the implementation of the cpu plugin processor collection at _include/monitoringplugins/cpuplugin/cpupluginprocessors.hpp_.
+
+During report creation, the tokens in the report are replaced using the values from the data processors. To avoid unnecessary calculations, each token value is evaluated only if it is actually required. 
+
+Each plugin has to be compiled as a shared library. To use the basic plugin framework link `MeasurementPluginBase`. For some additional help generating the processors, add `DataProcessorHelper`. To detect plugins during startup, the settings hold a base bath and a library name filter. 
+
+## Data sinks
+The persistence service is capable of using any data sink, that implements the `persistenceservice::IDataAdapter` interface. At the moment, only a sqlite3 adapter is available. The data of each plugin is stored in a separate table. The table names equal the plugin names. The column names match the key of the data. 
 
 ## Reporting 
+The reporting component is provided as separate executable. The report creation is based on a template. The template contains tokens which get replaced by the data processors output during report creation. The template is written mainly in html. Eventually, the result of the replacement is send as an email. 
+
+
