@@ -2,6 +2,8 @@
 #define PLUGINDATAPROCESSORCOLLECTION_H
 
 #include <memory>
+#include <string>
+#include <vector>
 #include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/iplugindataprocessorcollection.hpp"
 
