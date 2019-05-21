@@ -32,8 +32,10 @@ class GnuPlotParameterDict {
   ///
   /// \brief Add a parameter
   /// \param dict The parameter dict to add parameters from
+  /// \param replace_existing True, if the parameter should overwrite a existing
+  /// one with the same key
   ///
-  void AddParameter(const GnuPlotParameterDict& dict);
+  void AddParameter(const GnuPlotParameterDict& dict, bool replace_existing = false);
 
   ///
   /// \brief Get the string representation, used to call gnuplot scripts

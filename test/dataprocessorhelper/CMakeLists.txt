@@ -1,6 +1,7 @@
 set(SOURCES
   main.cpp
   base64encoder_test.cpp
+  gnuplotparameterdict_test.cpp
 )
 
 add_executable(dataprocessorhelper_unit_test ${SOURCES})

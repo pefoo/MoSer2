@@ -11,16 +11,20 @@ void GnuPlotParameterDict::AddParameter(const std::string &key,
   if (!replace_existing && this->parameter_.count(key)) {
     return;
   }
-  this->parameter_.at(key) = {value, quote};
+  this->parameter_[key] = {value, quote};
 }
 
-void GnuPlotParameterDict::AddParameter(const GnuPlotParameterDict &dict) {
+void GnuPlotParameterDict::AddParameter(const GnuPlotParameterDict &dict,
+                                        bool replace_existing) {
   for (const auto &[key, value] : dict.parameter_) {
-    this->parameter_.at(key) = value;
+    this->AddParameter(key, value.first, value.second, replace_existing);
   }
 }
 
 std::string GnuPlotParameterDict::ToString() const {
+  if (this->parameter_.size() == 0) {
+    return "";
+  }
   std::string arg = "\"";
 
   for (const auto &[key, value] : this->parameter_) {
