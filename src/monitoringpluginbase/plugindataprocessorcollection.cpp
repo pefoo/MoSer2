@@ -1,4 +1,5 @@
 #include "monitoringpluginbase/plugindataprocessorcollection.hpp"
+#include <string>
 #include <utility>
 
 monitoringpluginbase::PluginDataProcessorCollection::

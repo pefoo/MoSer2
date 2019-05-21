@@ -1,4 +1,7 @@
 #include "monitoringplugins/cpuplugin/cpupluginprocessors.hpp"
+#include <memory>
+#include <string>
+#include <vector>
 
 monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringplugins::cpuplugin::CreateProcessors() {

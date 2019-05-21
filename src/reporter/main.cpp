@@ -2,6 +2,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 #include "constants/settings/settingsidentifier.hpp"
 #include "core/appsetup.hpp"
 #include "core/settings/settingshelper.hpp"

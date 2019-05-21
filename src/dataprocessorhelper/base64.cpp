@@ -21,7 +21,7 @@ enum SelectorMasks : int {
 /// \details The last sign (=) is not part of the actual alphabet. It was added
 /// to simplify translation
 ///
-static const std::string kBase64Alphabet =
+static const char kBase64Alphabet[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz"
     "0123456789"

@@ -49,21 +49,21 @@ static constexpr char kMonitoringPluginConstructor[] =
     TO_STRING(MONITORING_PLUGIN_CONSTRUCTOR);
 
 ///
-///\brief \copybrief imonitoringplugin::MONITORING_PLUGIN_DESTRUCTOR
+/// \brief \copybrief imonitoringplugin::MONITORING_PLUGIN_DESTRUCTOR
 /// \note Use this to get the symbol from the shared library.
 ///
 static constexpr char kMonitoringPluginDestructor[] =
     TO_STRING(MONITORING_PLUGIN_DESTRUCTOR);
 
 ///
-///\brief \copybrief imonitoringplugin::DATA_PROCESSOR_CONSTRUCTOR
+/// \brief \copybrief imonitoringplugin::DATA_PROCESSOR_CONSTRUCTOR
 /// \note Use this to get the symbol from the shared library.
 ///
 static constexpr char kDataProcessorConstructor[] =
     TO_STRING(DATA_PROCESSOR_CONSTRUCTOR);
 
 ///
-///\brief \copybrief imonitoringplugin::DATA_PROCESSOR_DESTRUCTOR
+/// \brief \copybrief imonitoringplugin::DATA_PROCESSOR_DESTRUCTOR
 /// \note Use this to get the symbol from the shared library.
 ///
 static constexpr char kDataProcessorDestructor[] =

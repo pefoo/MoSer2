@@ -1,4 +1,6 @@
 #include "reporter/templateprocessor/templatetokenfactory.hpp"
+#include <memory>
+#include <vector>
 
 reporter::templateprocessor::TemplateTokenFactory::TemplateTokenFactory(
     std::shared_ptr<persistenceservice::IDataAdapter> data_adapter)
