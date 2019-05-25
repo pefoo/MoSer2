@@ -44,6 +44,8 @@ configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYON
 configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.conf" COPYONLY)
 # Copy the default template to runtime dir
 configure_file("${ETC_DIR}/report_template.html" "${CMAKE_BINARY_DIR}/template.html" COPYONLY)
+# Copy the cpu chart script to runtime dir
+configure_file("${ETC_DIR}/cpu_charts.gp" "${CMAKE_BINARY_DIR}/cpu_charts.gp" COPYONLY)
 
 #
 # Testing
