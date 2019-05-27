@@ -57,6 +57,16 @@ The persistence service is capable of using any data sink, that implements the `
 The reporting component is provided as separate executable. The report creation is based on a template. The template contains tokens which get replaced by the data processors output during report creation. The template is written mainly in html. Eventually, the result of the replacement is send as an email.
 
 ###  Built-in Tokens
+**Data less:**
+
+|Token|Value|
+|---|---|
+|%%HOSTNAME%%|The host name of the machine.|
+|%%KERNEL_VERSION%%|The kernel version.|
+|%%SYSTEM_NAME%%|The system name (most likely linx...).|
+|%%MACHINE_ARCH%%|The machine architecture.|
+|%%DOMAIN_NAME%%|The current domain name.|
+
 **Cpu  plugin:**
 
 |Token|Value|
