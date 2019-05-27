@@ -5,8 +5,10 @@ set(SOURCES
   templateprocessor/templateprocessor.cpp
   templateprocessor/templatetoken.cpp
   templateprocessor/templatetokenfactory.cpp
+  email/emailsender.cpp
 )
 
+find_package(CURL REQUIRED)
 set(LIBRARIES
   easyloggingpp
   IMonitorPlugin
@@ -18,9 +20,11 @@ set(LIBRARIES
   Core
   PluginLoader
   ${CMAKE_DL_LIBS}
+  ${CURL_LIBRARIES}
 )
 
 add_executable(${EXEC_NAME} ${SOURCES})
+include_directories(${CURL_INCLUDE_DIR})
 
 if(BUILD_REPORTER_TESTS)
   add_library(MoSerepLib ${SOURCES})
