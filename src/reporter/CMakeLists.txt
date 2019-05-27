@@ -6,6 +6,7 @@ set(SOURCES
   templateprocessor/templatetoken.cpp
   templateprocessor/templatetokenfactory.cpp
   email/emailsender.cpp
+  tokens/datalesstokenfactory.cpp
 )
 
 find_package(CURL REQUIRED)

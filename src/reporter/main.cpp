@@ -14,6 +14,7 @@
 #include "pluginmanager/include/plugin_manager.hpp"
 #include "reporter/email/emailsender.hpp"
 #include "reporter/templateprocessor/templatetokenfactory.hpp"
+#include "reporter/tokens/datalesstokenfactory.hpp"
 #include "templateprocessor/templateprocessor.hpp"
 
 INITIALIZE_EASYLOGGINGPP
@@ -69,6 +70,10 @@ int main() {
       auto t = token_factory.BuildTokens(processor->Instance(), min_age);
       tokens.insert(tokens.end(), t.begin(), t.end());
     }
+
+    // Load the build in tokens
+    auto dataless_tokens = reporter::tokens::GetDatalessTokens();
+    tokens.insert(tokens.end(), dataless_tokens.begin(), dataless_tokens.end());
 
     // Run the template processor
     reporter::templateprocessor::TemplateProcessor template_processor{tokens};
