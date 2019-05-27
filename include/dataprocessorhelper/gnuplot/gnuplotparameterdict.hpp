@@ -1,9 +1,9 @@
 #ifndef GNUPLOTPARAMETERDICT_H
 #define GNUPLOTPARAMETERDICT_H
 
+#include <utility>
 #include <map>
 #include <string>
-#include <utility>
 
 namespace dataprocessorhelper {
 namespace gnuplot {
@@ -35,7 +35,8 @@ class GnuPlotParameterDict {
   /// \param replace_existing True, if the parameter should overwrite a existing
   /// one with the same key
   ///
-  void AddParameter(const GnuPlotParameterDict& dict, bool replace_existing = false);
+  void AddParameter(const GnuPlotParameterDict& dict,
+                    bool replace_existing = false);
 
   ///
   /// \brief Get the string representation, used to call gnuplot scripts

@@ -1,8 +1,4 @@
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
-#include <stddef.h>
-#include <array>
-#include <cstdio>
-#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -11,6 +7,7 @@
 #include <numeric>
 #include <random>
 #include <string>
+#include <vector>
 #include "dataprocessorhelper/base64.hpp"
 #include "utility/datastructure/anyhelper.hpp"
 
@@ -118,7 +115,8 @@ std::unique_ptr<std::string, decltype(&DeleteFile)> WriteIntermediateFile(
 
   for (size_t i = 0; i < records.size(); i++) {
     time_t t = records.at(i).timestamp();
-    struct tm *tm = localtime(&t);
+    struct tm *tm = new struct tm;
+    tm = localtime_r(&t, tm);
     data_stream << std::put_time(tm, time_format.c_str());
 
     for (const auto &data : records.at(i).data()) {
@@ -132,7 +130,7 @@ std::unique_ptr<std::string, decltype(&DeleteFile)> WriteIntermediateFile(
 }
 
 std::string MakeTmpFileName() {
-  static std::mt19937 gen{std::random_device{}()};
+  static std::mt19937 gen{std::random_device()()};
   static std::uniform_int_distribution<> dist{std::numeric_limits<int>::min(),
                                               std::numeric_limits<int>::max()};
   auto file_name = std::to_string(dist(gen));
