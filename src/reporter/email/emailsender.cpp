@@ -1,6 +1,8 @@
 #include "emailsender.hpp"
 #include <curl/curl.h>
 #include <filesystem>
+#include <string>
+#include <vector>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 
 ///

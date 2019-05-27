@@ -17,7 +17,8 @@ namespace email {
 /// \param password The password of the user
 /// \return True, if the email was send
 ///
-bool SendReport(const std::string& report_file, std::vector<std::string> recipients,
+bool SendReport(const std::string& report_file,
+                std::vector<std::string> recipients,
                 const std::string& smtp_server, const std::string& user,
                 const std::string password);
 
