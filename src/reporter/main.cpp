@@ -91,7 +91,7 @@ std::vector<std::string> DiscoverPlugins(const std::string &path,
   for (const auto &file : std::filesystem::directory_iterator(path)) {
     if (name_filter.empty() ||
         std::regex_match(file.path().filename().string(), rgx)) {
-      files.push_back(file.path());
+      files.push_back(std::filesystem::canonical(file.path()));
     }
   }
   return files;

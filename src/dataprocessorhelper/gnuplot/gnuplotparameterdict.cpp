@@ -1,5 +1,6 @@
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
 #include <string>
+
 namespace dataprocessorhelper {
 namespace gnuplot {
 
