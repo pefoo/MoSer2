@@ -3,6 +3,10 @@
 #include <filesystem>
 #include "easyloggingpp-9.96.5/src/easylogging++.h"
 
+///
+/// \brief Raii wrapper for curl
+/// \details Calls easy init and easy cleanup
+///
 class CurlRaiiWrapper {
  public:
   CurlRaiiWrapper() : curl_(curl_easy_init()) {}
@@ -13,6 +17,10 @@ class CurlRaiiWrapper {
   CURL *curl_;
 };
 
+///
+/// \brief Raii wrapper for curl recipients
+/// \details Clears to linked list upon destruction
+///
 class CurlRecipientsRaiiWrapper {
  public:
   CurlRecipientsRaiiWrapper() : recipients_(nullptr) {}
