@@ -12,6 +12,7 @@
 #include "persistenceservice/adapterfactory.hpp"
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 #include "pluginmanager/include/plugin_manager.hpp"
+#include "reporter/email/emailsender.hpp"
 #include "reporter/templateprocessor/templatetokenfactory.hpp"
 #include "templateprocessor/templateprocessor.hpp"
 
@@ -74,6 +75,12 @@ int main() {
     auto result_file = template_processor.ProcessTemplate(
         settings->GetValue(constants::settings::ReporTemplate()));
     LOG(DEBUG) << "Report file was written to " << result_file;
+    if (!reporter::email::SendReport(
+            result_file, "pepus.halt@gmail.com", "smtp.mailgun.org",
+            "postmaster@sandbox927c1c2e0b5c4a8085f75d247f70d6b1.mailgun.org",
+            "1b6f77bc258256136cc08b1ed143fa5d")) {
+      LOG(ERROR) << "Failed to send the report";
+    }
   }
 
   // Destroy loaded plugins
