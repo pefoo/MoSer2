@@ -76,9 +76,11 @@ int main() {
         settings->GetValue(constants::settings::ReporTemplate()));
     LOG(DEBUG) << "Report file was written to " << result_file;
     if (!reporter::email::SendReport(
-            result_file, "pepus.halt@gmail.com", "smtp.mailgun.org",
-            "postmaster@sandbox927c1c2e0b5c4a8085f75d247f70d6b1.mailgun.org",
-            "1b6f77bc258256136cc08b1ed143fa5d")) {
+            result_file,
+            settings->GetValue(constants::settings::MailRecipient()),
+            settings->GetValue(constants::settings::SmtpServer()),
+            settings->GetValue(constants::settings::MailUser()),
+            settings->GetValue(constants::settings::MailPassword()))) {
       LOG(ERROR) << "Failed to send the report";
     }
   }
