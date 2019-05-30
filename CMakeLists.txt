@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Options
 #
 option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
-option(BUILD_REPORTER_TESTS "Build the report generator as a library and its tests" OFF)
+option(BUILD_TESTS "Build the unit tests" OFF)
 
 #
 # includes
@@ -23,7 +23,6 @@ include(GNUInstallDirs)
 # cmake / make flags
 #
 set(CMAKE_CXX_STANDARD 17)
-# TODO Remove the coverage flag for certain build types
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 #
@@ -37,6 +36,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 # other directories
 set(ETC_DIR "./etc")
 add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
+add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
 # Copy logger config to runtime dir
 configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
@@ -46,11 +46,6 @@ configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.co
 configure_file("${ETC_DIR}/report_template.html" "${CMAKE_BINARY_DIR}/template.html" COPYONLY)
 # Copy the cpu chart script to runtime dir
 configure_file("${ETC_DIR}/cpu_charts.gp" "${CMAKE_BINARY_DIR}/cpu_charts.gp" COPYONLY)
-
-#
-# Testing
-#
-enable_testing()
 
 #
 # IDE support
@@ -101,12 +96,15 @@ add_subdirectory(./src/constants)
 add_subdirectory(./src/core)
 add_subdirectory(./src/dataprocessorhelper)
 # TODO Use ExternalProject for externals (see https://cmake.org/cmake/help/latest/module/ExternalProject.html)
-add_subdirectory(./extern/pluginmanager)
-add_subdirectory(./extern/events)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
+add_subdirectory(./include/pluginmanager)
 add_subdirectory(./include/imonitoringplugin)
-add_subdirectory(./test/utility)
-add_subdirectory(./test/settingsprovider)
-add_subdirectory(./test/persistenceservice)
-add_subdirectory(./test/reporter)
-add_subdirectory(./test/dataprocessorhelper)
+if (BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(./test/pluginmanager)
+  add_subdirectory(./test/utility)
+  add_subdirectory(./test/settingsprovider)
+  add_subdirectory(./test/persistenceservice)
+  add_subdirectory(./test/reporter)
+  add_subdirectory(./test/dataprocessorhelper)
+endif()
