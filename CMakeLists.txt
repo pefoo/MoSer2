@@ -23,7 +23,6 @@ include(GNUInstallDirs)
 # cmake / make flags
 #
 set(CMAKE_CXX_STANDARD 17)
-# TODO Remove the coverage flag for certain build types
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
 #
@@ -47,11 +46,6 @@ configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.co
 configure_file("${ETC_DIR}/report_template.html" "${CMAKE_BINARY_DIR}/template.html" COPYONLY)
 # Copy the cpu chart script to runtime dir
 configure_file("${ETC_DIR}/cpu_charts.gp" "${CMAKE_BINARY_DIR}/cpu_charts.gp" COPYONLY)
-
-#
-# Testing
-#
-enable_testing()
 
 #
 # IDE support
@@ -105,9 +99,12 @@ add_subdirectory(./src/dataprocessorhelper)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
 add_subdirectory(./include/pluginmanager)
 add_subdirectory(./include/imonitoringplugin)
-add_subdirectory(./test/pluginmanager)
-add_subdirectory(./test/utility)
-add_subdirectory(./test/settingsprovider)
-add_subdirectory(./test/persistenceservice)
-add_subdirectory(./test/reporter)
-add_subdirectory(./test/dataprocessorhelper)
+if (BUILD_TESTS)
+  enable_testing()
+  add_subdirectory(./test/pluginmanager)
+  add_subdirectory(./test/utility)
+  add_subdirectory(./test/settingsprovider)
+  add_subdirectory(./test/persistenceservice)
+  add_subdirectory(./test/reporter)
+  add_subdirectory(./test/dataprocessorhelper)
+endif()
