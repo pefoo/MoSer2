@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8.7)
 
-project(Easyloggingpp CXX)
-
 macro(require_cpp11)
         if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 3.0)
                 # CMake 3.1 has built-in CXX standard checks.
