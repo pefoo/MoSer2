@@ -24,10 +24,22 @@ set(LIBRARIES
   ${CURL_LIBRARIES}
 )
 
-add_executable(${EXEC_NAME} ${SOURCES})
+set(SETTINGS_FILE "${CMAKE_BINARY_DIR}/moser2.conf")
+set(LOGGER_CONFIG_FILE "${CMAKE_BINARY_DIR}/logger.conf")
+set(REPORT_TEMPLATE_FILE "${CMAKE_BINARY_DIR}/template.html")
+
+configure_file("${ETC_DIR}/report_template.html" ${REPORT_TEMPLATE_FILE} COPYONLY)
+if (NOT EXISTS "${SETTINGS_FILE}")
+  configure_file("${ETC_DIR}/default_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+endif()
+if (NOT EXISTS "${LOGGER_CONFIG_FILE}")
+  configure_file("${ETC_DIR}/logger.conf" "${LOGGER_CONFIG_FILE}" COPYONLY)
+endif()
+
+add_executable(${EXEC_NAME} ${SOURCES} ${SETTINGS_FILE} ${LOGGER_CONFIG_FILE})
 include_directories(${CURL_INCLUDE_DIR})
 
-if(BUILD_REPORTER_TESTS)
+if(BUILD_TESTS)
   add_library(MoSerepLib ${SOURCES})
   target_link_libraries(MoSerepLib ${LIBRARIES})
 endif()
