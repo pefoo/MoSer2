@@ -49,7 +49,7 @@ void PluginController::RunPlugins(const int interval_ms) {
 
   this->timer_->Start(interval_ms, [&]() {
     std::for_each(std::begin(this->plugins_), std::end(this->plugins_),
-                  [](MonitoringPluginManager::plugin_t *&plug) {
+                  [](MonitoringPluginManager::PluginWrapper *&plug) {
                     imonitorplugin::PluginData data;
                     try {
                       data = plug->Instance()->AcquireData();

@@ -19,10 +19,8 @@
 
 INITIALIZE_EASYLOGGINGPP
 
-using ProcessorLoader =
-    pluginmanager::PluginManager<imonitorplugin::IPluginDataProcessorCollection,
-                                 imonitorplugin::create_processors_t,
-                                 imonitorplugin::destroy_processors_t>;
+using ProcessorLoader = pluginmanager::PluginManager<
+    imonitorplugin::IPluginDataProcessorCollection>;
 
 std::vector<std::string> DiscoverPlugins(const std::string &path,
                                          const std::string &name_filter);
@@ -42,7 +40,7 @@ int main() {
 
   // Load data processors from plugins
   ProcessorLoader loader{};
-  std::vector<ProcessorLoader::plugin_t *> processor_plugins;
+  std::vector<ProcessorLoader::PluginWrapper *> processor_plugins;
   for (const auto &file : DiscoverPlugins(
            settings->GetValue(constants::settings::PluginBasePath()),
            settings->GetValue(constants::settings::PluginFilter()))) {

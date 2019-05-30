@@ -35,21 +35,6 @@ class IPluginDataProcessorCollection {
       const = 0;
 };
 
-///
-/// \brief A typedef for the plugin data processor factory function
-/// (constructor)
-/// \note This type is required when loading the processor
-/// collection as a plugin
-///
-typedef imonitorplugin::IPluginDataProcessorCollection* create_processors_t();
-
-///
-/// \brief A typedef for the plugin data processor factory function (destructor)
-/// \note This type is required when loading the processor collection as a
-/// plugin
-///
-typedef void destroy_processors_t(
-    imonitorplugin::IPluginDataProcessorCollection*);
 }  // namespace imonitorplugin
 
 #endif  // IPLUGINDATAPROCESSORCOLLECTION_H
