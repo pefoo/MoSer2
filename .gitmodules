@@ -1,3 +1,0 @@
-[submodule "extern/pluginmanager"]
-	path = extern/pluginmanager
-	url = git@bitbucket.org:peepesteam/pluginmanager.git
