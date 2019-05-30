@@ -7,17 +7,23 @@ set(SOURCES
   plugin/pluginfacade.cpp
 )
 
-add_executable(${EXEC_NAME} ${SOURCES})
-target_link_libraries(${EXEC_NAME} PluginLoader ${CMAKE_DL_LIBS})
-target_link_libraries(${EXEC_NAME} easyloggingpp)
-target_link_libraries(${EXEC_NAME} IMonitorPlugin)
-target_link_libraries(${EXEC_NAME} Utility)
-target_link_libraries(${EXEC_NAME} PersistenceService)
-target_link_libraries(${EXEC_NAME} SettingsProvider)
-target_link_libraries(${EXEC_NAME} stdc++fs)
-target_link_libraries(${EXEC_NAME} Constants)
-target_link_libraries(${EXEC_NAME} Core)
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(${EXEC_NAME} Threads::Threads)
+
+set(SETTINGS_FILE "${CMAKE_BINARY_DIR}/moser2.conf")
+configure_file("${ETC_DIR}/default_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+
+add_executable(${EXEC_NAME} ${SOURCES} ${SETTINGS_FILE})
+target_link_libraries(${EXEC_NAME}
+  PluginLoader
+  ${CMAKE_DL_LIBS}
+  easyloggingpp
+  IMonitorPlugin
+  Utility
+  PersistenceService
+  SettingsProvider
+  stdc++fs
+  Constants
+  Core
+  Threads::Threads
+)

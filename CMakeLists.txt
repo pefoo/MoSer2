@@ -34,14 +34,12 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # other directories
-set(ETC_DIR "./etc")
+set(ETC_DIR "${PROJECT_SOURCE_DIR}/etc")
 add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
 # Copy logger config to runtime dir
 configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
-# Copy the application config to runtime dir 
-configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.conf" COPYONLY)
 # Copy the default template to runtime dir
 configure_file("${ETC_DIR}/report_template.html" "${CMAKE_BINARY_DIR}/template.html" COPYONLY)
 # Copy the cpu chart script to runtime dir
