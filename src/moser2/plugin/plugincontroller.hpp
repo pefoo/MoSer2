@@ -57,12 +57,10 @@ class PluginController {
   bool plugins_running();
 
  private:
-  typedef pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin,
-                                       imonitorplugin::create_t,
-                                       imonitorplugin::destroy_t>
+  typedef pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin>
       MonitoringPluginManager;
   std::unique_ptr<MonitoringPluginManager> plugin_manager_;
-  std::vector<MonitoringPluginManager::plugin_t*> plugins_;
+  std::vector<MonitoringPluginManager::PluginWrapper*> plugins_;
   std::unique_ptr<utility::threading::CallbackTimer> timer_;
 };
 }  // namespace plugin

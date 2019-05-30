@@ -14,10 +14,5 @@ class IMonitorPlugin {
   virtual PluginData AcquireData() const = 0;
 };
 
-/*
- *  Type definitions for the class factory functions.
- */
-typedef IMonitorPlugin* create_t();
-typedef void destroy_t(IMonitorPlugin*);
 }  // namespace imonitorplugin
 #endif  // IMONITORPLUGIN_H
