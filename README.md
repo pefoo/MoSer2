@@ -14,13 +14,9 @@ A c++17 capable compiler is required.
 MoSer2 is currently developed using gcc-8.
 
 ### Other dependencies
-Integration in the source tree:
+Integrated in ./extern
 - catch2
 - easyloggingpp
-
-Integration as submodules:
-- events
-- pluginmanager
 
 # Overview
 MoSer2 is build on top of a plugin framework. Each metric that is created during runtime is created using a dynamically loaded plugin. A plugin is responsible for data acquisition and data processing. The goal is to store the data in a arbitrary data sink and create html document based reports using the stored data at any given time. The reports may be send via email eventually.
@@ -30,7 +26,7 @@ MoSer2 is build on top of a plugin framework. Each metric that is created during
 - [x] plugin samples (cpu usage, load average)
 - [x] first data sink (sqlite3)
 - [x] basic report creation capabilities
-- [ ] send report (mail)
+- [x] send report (mail)
 - [ ] installation instructions
 - [ ] scripting interface for report creation
 
