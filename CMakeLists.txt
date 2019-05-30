@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Options
 #
 option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
-option(BUILD_REPORTER_TESTS "Build the report generator as a library and its tests" OFF)
+option(BUILD_TESTS "Build the unit tests" OFF)
 
 #
 # includes
@@ -101,9 +101,10 @@ add_subdirectory(./src/constants)
 add_subdirectory(./src/core)
 add_subdirectory(./src/dataprocessorhelper)
 # TODO Use ExternalProject for externals (see https://cmake.org/cmake/help/latest/module/ExternalProject.html)
-add_subdirectory(./extern/pluginmanager)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
+add_subdirectory(./include/pluginmanager)
 add_subdirectory(./include/imonitoringplugin)
+add_subdirectory(./test/pluginmanager)
 add_subdirectory(./test/utility)
 add_subdirectory(./test/settingsprovider)
 add_subdirectory(./test/persistenceservice)

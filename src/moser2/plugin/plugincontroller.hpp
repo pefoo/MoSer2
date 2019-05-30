@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "imonitoringplugin/imonitorplugin.hpp"
-#include "pluginmanager/include/plugin_manager.hpp"
+#include "pluginmanager/pluginmanager.hpp"
 #include "utility/threading/callbacktimer.hpp"
 
 namespace moser2 {

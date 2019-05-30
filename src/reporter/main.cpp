@@ -11,7 +11,7 @@
 #include "imonitoringplugin/iplugindataprocessorcollection.hpp"
 #include "persistenceservice/adapterfactory.hpp"
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
-#include "pluginmanager/include/plugin_manager.hpp"
+#include "pluginmanager/pluginmanager.hpp"
 #include "reporter/email/emailsender.hpp"
 #include "reporter/templateprocessor/templatetokenfactory.hpp"
 #include "reporter/tokens/datalesstokenfactory.hpp"
