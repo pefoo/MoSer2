@@ -1,8 +1,17 @@
 #include "pluginmanager/pluginmanager.hpp"
+#include <sstream>
+#include <string>
 #include "catch2/catch.hpp"
 #include "sample_lib/HelloBase.hpp"
 
-TEST_CASE("Plugin manager") {
+std::string GetManagerLibrary() {
+  std::stringstream ss{};
+  ss << LIBRARY_DIR << "/";
+  ss << "libsample_lib.so";
+  return ss.str();
+}
+
+TEST_CASE("Plugin manager", "[PluginManager]") {
   auto manager = new pluginmanager::PluginManager<
       HelloBase,
       pluginmanager::FunctionTypes<HelloBase>::ParameterizedCreateType<
@@ -10,9 +19,9 @@ TEST_CASE("Plugin manager") {
       pluginmanager::FunctionTypes<HelloBase>::DefaultDestroyType>{};
 
   auto plugin =
-      manager->LoadPlugin("./libsample_lib.so", "create", "destroy", "foobar");
+      manager->LoadPlugin(GetManagerLibrary(), "create", "destroy", "foobar");
   auto plugin2 =
-      manager->LoadPlugin("./libsample_lib.so", "create", "destroy", "2");
+      manager->LoadPlugin(GetManagerLibrary(), "create", "destroy", "2");
 
   REQUIRE(plugin->Instance()->Hi() == "foobar");
   REQUIRE(plugin2->Instance()->Hi() == "2");
@@ -25,8 +34,8 @@ TEST_CASE("Plugin manager") {
   REQUIRE(plugin2 == nullptr);
 
   plugin =
-      manager->LoadPlugin("./libsample_lib.so", "create", "destroy", "foobar");
-  plugin2 = manager->LoadPlugin("./libsample_lib.so", "create", "destroy", "2");
+      manager->LoadPlugin(GetManagerLibrary(), "create", "destroy", "foobar");
+  plugin2 = manager->LoadPlugin(GetManagerLibrary(), "create", "destroy", "2");
 
   manager->DestroyAll();
 

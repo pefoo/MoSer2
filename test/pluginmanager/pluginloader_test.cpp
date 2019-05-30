@@ -1,14 +1,23 @@
 #include "pluginloader.hpp"
+#include <sstream>
+#include <string>
 #include <vector>
 #include "catch2/catch.hpp"
 #include "pluginmanager.hpp"
 #include "sample_lib/HelloBase.hpp"
 
-TEST_CASE("Plugin Loader") {
+std::string GetLibrary() {
+  std::stringstream ss{};
+  ss << LIBRARY_DIR << "/";
+  ss << "libsample_lib.so";
+  return ss.str();
+}
+
+TEST_CASE("Plugin Loader", "[PluginManager]") {
   auto pl = new pluginmanager::PluginLoader<
       HelloBase, pluginmanager::FunctionTypes<
                      HelloBase>::ParameterizedCreateType<const std::string&>>{
-      "./libsample_lib.so"};
+      GetLibrary()};
 
   auto instance = pl->CreateInstance("Hi");
   REQUIRE(instance->Instance()->Hi() == "Hi");

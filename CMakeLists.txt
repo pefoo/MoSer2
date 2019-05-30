@@ -37,6 +37,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 # other directories
 set(ETC_DIR "./etc")
 add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
+add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
 # Copy logger config to runtime dir
 configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)

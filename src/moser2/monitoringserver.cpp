@@ -3,7 +3,7 @@
 #include <utility>
 #include "constants/settings/settingsidentifier.hpp"
 #include "plugin/plugincontroller.hpp"
-#include "pluginmanager/include/plugin_manager.hpp"
+#include "pluginmanager/pluginmanager.hpp"
 
 moser2::MonitoringServer::MonitoringServer(
     std::shared_ptr<settingsprovider::ISettingsProvider> settings)
