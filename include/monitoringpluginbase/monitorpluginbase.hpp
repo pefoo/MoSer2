@@ -79,14 +79,6 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   void RegisterFileToRead(const std::string& file);
 
-  ///
-  /// \brief Sleep 100ms. Plugins that need to calculate their stats using
-  /// consecutive reads should employ this method
-  ///
-  [[deprecated(
-      "Register files for consecutive reads using RegisterFileToRead")]] void
-  Sleep100ms() const;
-
  private:
   std::int64_t MakeTimestamp() const;
   std::string name_;

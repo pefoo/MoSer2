@@ -44,10 +44,6 @@ void monitoringpluginbase::MonitorPluginBase::ThrowPluginException(
   throw imonitorplugin::PluginException(this->name(), msg.c_str());
 }
 
-void monitoringpluginbase::MonitorPluginBase::Sleep100ms() const {
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
-}
-
 std::int64_t monitoringpluginbase::MonitorPluginBase::MakeTimestamp() const {
   return static_cast<std::int64_t>(std::time(nullptr));
 }
