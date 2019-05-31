@@ -17,24 +17,26 @@ PluginController::PluginController()
       timer_(new utility::threading::CallbackTimer{}) {}
 
 void PluginController::LoadPlugin(const std::string &path) {
+  auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
   try {
     this->plugins_.push_back(this->plugin_manager_->LoadPlugin(
-        path, imonitoringplugin::kMonitoringPluginConstructor,
+        abs_path, imonitoringplugin::kMonitoringPluginConstructor,
         imonitoringplugin::kMonitoringPluginDestructor));
     LOG(INFO) << "Loaded plugin " << this->plugins_.back()->Instance()->name()
-              << " from " << path;
+              << " from " << abs_path;
   } catch (const std::exception &e) {
     LOG(ERROR) << "Failed to load the plugin "
                << this->plugins_.back()->Instance()->name() << " located at "
-               << path << ". " << e.what();
+               << abs_path << ". " << e.what();
   }
 }
 void PluginController::LoadPlugins(const std::string &path,
                                    const std::string &name_filter) {
-  LOG(DEBUG) << "Loading plugins from " + path << " using the filter "
-             << name_filter;
+  auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
+  LOG(DEBUG) << "Loading plugins from " + abs_path.string()
+             << " using the filter " << name_filter;
   std::regex rgx{name_filter};
-  for (const auto &file : std::filesystem::directory_iterator(path)) {
+  for (const auto &file : std::filesystem::directory_iterator(abs_path)) {
     if (name_filter.empty() ||
         std::regex_match(file.path().filename().string(), rgx)) {
       this->LoadPlugin(std::filesystem::canonical(file));

@@ -7,17 +7,44 @@ set(SOURCES
   plugin/pluginfacade.cpp
 )
 
-add_executable(${EXEC_NAME} ${SOURCES})
-target_link_libraries(${EXEC_NAME} PluginLoader ${CMAKE_DL_LIBS})
-target_link_libraries(${EXEC_NAME} easyloggingpp)
-target_link_libraries(${EXEC_NAME} IMonitorPlugin)
-target_link_libraries(${EXEC_NAME} Utility)
-target_link_libraries(${EXEC_NAME} PersistenceService)
-target_link_libraries(${EXEC_NAME} SettingsProvider)
-target_link_libraries(${EXEC_NAME} stdc++fs)
-target_link_libraries(${EXEC_NAME} Constants)
-target_link_libraries(${EXEC_NAME} Core)
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(${EXEC_NAME} Threads::Threads)
+
+set(SETTINGS_FILE "${CMAKE_BINARY_DIR}/moser2.conf")
+set(LOGGER_CONFIG_FILE "${CMAKE_BINARY_DIR}/logger.conf")
+
+if (NOT EXISTS "${SETTINGS_FILE}")
+  if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    configure_file("${ETC_DIR}/debug_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+  else()
+    configure_file("${ETC_DIR}/default_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+  endif()
+endif()
+
+if (NOT EXISTS "${LOGGER_CONFIG_FILE}")
+  configure_file("${ETC_DIR}/logger.conf" "${LOGGER_CONFIG_FILE}" COPYONLY)
+endif()
+
+add_executable(${EXEC_NAME} ${SOURCES} ${SETTINGS_FILE} ${LOGGER_CONFIG_FILE})
+target_link_libraries(${EXEC_NAME}
+  PluginLoader
+  ${CMAKE_DL_LIBS}
+  easyloggingpp
+  IMonitorPlugin
+  Utility
+  PersistenceService
+  SettingsProvider
+  stdc++fs
+  Constants
+  Core
+  Threads::Threads
+)
+
+install(TARGETS ${EXEC_NAME}
+  ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}
+  LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}
+  RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME})
+install(FILES
+  ${SETTINGS_FILE}
+  ${LOGGER_CONFIG_FILE}
+  DESTINATION ${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME})

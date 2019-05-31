@@ -10,7 +10,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 #
 # Options
 #
-option(ENABLE_IDE_SUPPORT "Add headers as custom target to the project to display them in IDEs" OFF)
 option(BUILD_TESTS "Build the unit tests" OFF)
 
 #
@@ -34,28 +33,9 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # other directories
-set(ETC_DIR "./etc")
-add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
+set(ETC_DIR "${PROJECT_SOURCE_DIR}/etc")
+add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIRnclua}/test/testdata/")
 add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
-
-# Copy logger config to runtime dir
-configure_file("${ETC_DIR}/logger.conf" "${CMAKE_BINARY_DIR}/logger.conf" COPYONLY)
-# Copy the application config to runtime dir 
-configure_file("${ETC_DIR}/default_settings.conf" "${CMAKE_BINARY_DIR}/moser2.conf" COPYONLY)
-# Copy the default template to runtime dir
-configure_file("${ETC_DIR}/report_template.html" "${CMAKE_BINARY_DIR}/template.html" COPYONLY)
-# Copy the cpu chart script to runtime dir
-configure_file("${ETC_DIR}/cpu_charts.gp" "${CMAKE_BINARY_DIR}/cpu_charts.gp" COPYONLY)
-
-#
-# IDE support
-#
-if (ENABLE_IDE_SUPPORT)
-    FILE(GLOB_RECURSE HEADERS "*.hpp")
-    FILE(GLOB_RECURSE GNUPLOT "*.gnuplot")
-    add_custom_target(header SOURCES ${HEADERS})
-    add_custom_target(scripts SOURCES ${GNUPLOT})
-endif()
 
 #
 # Custom targets
@@ -95,7 +75,6 @@ add_subdirectory(./src/persistenceservice)
 add_subdirectory(./src/constants)
 add_subdirectory(./src/core)
 add_subdirectory(./src/dataprocessorhelper)
-# TODO Use ExternalProject for externals (see https://cmake.org/cmake/help/latest/module/ExternalProject.html)
 add_subdirectory(./extern/easyloggingpp-9.96.5)
 add_subdirectory(./include/pluginmanager)
 add_subdirectory(./include/imonitoringplugin)

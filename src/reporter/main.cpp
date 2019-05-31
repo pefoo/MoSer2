@@ -16,6 +16,7 @@
 #include "reporter/templateprocessor/templatetokenfactory.hpp"
 #include "reporter/tokens/datalesstokenfactory.hpp"
 #include "templateprocessor/templateprocessor.hpp"
+#include "utility/filesystem/fileaccesshelper.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -34,7 +35,8 @@ int main() {
   auto settings = core::settings::GetApplicationSettings();
   auto adapter_factory = std::make_shared<persistenceservice::AdapterFactory>(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
-          settings->GetValue(constants::settings::SqliteDatabaseFile())));
+          utility::filesystem::MakeAbsolutePathFromExecutable(
+              settings->GetValue(constants::settings::SqliteDatabaseFile()))));
   std::shared_ptr<persistenceservice::IDataAdapter> adapter =
       adapter_factory->CreateAdapter();
 
@@ -100,7 +102,8 @@ std::vector<std::string> DiscoverPlugins(const std::string &path,
              << name_filter;
   std::vector<std::string> files;
   std::regex rgx{name_filter};
-  for (const auto &file : std::filesystem::directory_iterator(path)) {
+  auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
+  for (const auto &file : std::filesystem::directory_iterator(abs_path)) {
     if (name_filter.empty() ||
         std::regex_match(file.path().filename().string(), rgx)) {
       files.push_back(std::filesystem::canonical(file.path()));
