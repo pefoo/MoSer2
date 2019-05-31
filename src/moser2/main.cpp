@@ -11,6 +11,7 @@
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 #include "plugin/pluginfacade.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
+#include "utility/filesystem/fileaccesshelper.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -31,7 +32,8 @@ int main() {
   LOG(DEBUG) << "Creating sqlite3 adapter";
   auto adapter_factory = new persistenceservice::AdapterFactory(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
-          settings->GetValue(constants::settings::SqliteDatabaseFile())));
+          utility::filesystem::MakeAbsolutePathFromExecutable(
+              settings->GetValue(constants::settings::SqliteDatabaseFile()))));
   auto adapter = adapter_factory->CreateAdapter();
 
   // Start the persistence runner

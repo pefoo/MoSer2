@@ -35,7 +35,8 @@ int main() {
   auto settings = core::settings::GetApplicationSettings();
   auto adapter_factory = std::make_shared<persistenceservice::AdapterFactory>(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
-          settings->GetValue(constants::settings::SqliteDatabaseFile())));
+          utility::filesystem::MakeAbsolutePathFromExecutable(
+              settings->GetValue(constants::settings::SqliteDatabaseFile()))));
   std::shared_ptr<persistenceservice::IDataAdapter> adapter =
       adapter_factory->CreateAdapter();
 

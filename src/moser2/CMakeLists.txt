@@ -14,7 +14,11 @@ set(SETTINGS_FILE "${CMAKE_BINARY_DIR}/moser2.conf")
 set(LOGGER_CONFIG_FILE "${CMAKE_BINARY_DIR}/logger.conf")
 
 if (NOT EXISTS "${SETTINGS_FILE}")
-  configure_file("${ETC_DIR}/default_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+  if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    configure_file("${ETC_DIR}/debug_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+  else()
+    configure_file("${ETC_DIR}/default_settings.conf" "${SETTINGS_FILE}" COPYONLY)
+  endif()
 endif()
 
 if (NOT EXISTS "${LOGGER_CONFIG_FILE}")
