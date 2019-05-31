@@ -30,3 +30,12 @@ std::filesystem::__cxx11::path utility::filesystem::GetCurrentExecutablePath() {
   auto c = readlink("/proc/self/exe", path, PATH_MAX);
   return std::filesystem::canonical(dirname(path));
 }
+
+std::filesystem::__cxx11::path
+utility::filesystem::MakeAbsolutePathFromExecutable(const std::string& path) {
+  if (path.at(0) != '.') {
+    return path;
+  }
+
+  return PathCombine({GetCurrentExecutablePath().string(), path});
+}
