@@ -8,6 +8,7 @@
 #include <limits>
 #include <memory>
 #include <random>
+#include <string>
 #include <utility>
 
 namespace pluginmanager {

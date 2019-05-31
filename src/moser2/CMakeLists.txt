@@ -5,6 +5,7 @@ set(SOURCES
   monitoringserver.cpp
   plugin/plugincontroller.cpp
   plugin/pluginfacade.cpp
+  plugin/inputfileprovider.cpp
 )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)

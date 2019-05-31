@@ -13,7 +13,8 @@ class LoadPlugin : public monitoringpluginbase::MonitorPluginBase {
   LoadPlugin();
 
  protected:
-  imonitorplugin::PluginData::data_vector AcquireDataInternal() const override;
+  imonitorplugin::PluginData::data_vector AcquireDataInternal(
+      imonitorplugin::InputFileContent&& input_file) const override;
 
  private:
 };

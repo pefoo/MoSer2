@@ -34,7 +34,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # other directories
 set(ETC_DIR "${PROJECT_SOURCE_DIR}/etc")
-add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIRnclua}/test/testdata/")
+add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
 #

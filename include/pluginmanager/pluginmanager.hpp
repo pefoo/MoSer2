@@ -3,8 +3,9 @@
 
 #include <algorithm>
 #include <memory>
-#include "pluginmanager/pluginloader.hpp"
+#include <string>
 #include <vector>
+#include "pluginmanager/pluginloader.hpp"
 
 namespace pluginmanager {
 

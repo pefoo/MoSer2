@@ -7,6 +7,7 @@
 #include <vector>
 #include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/imonitorplugin.hpp"
+#include "imonitoringplugin/inputfilecontent.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 
 namespace monitoringpluginbase {
@@ -39,27 +40,31 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   explicit MonitorPluginBase(std::string name_);
 
   ///
-  /// \brief Get the plugin name
-  /// \return The name of the plugin
+  /// \copydoc imonitorplugin::IMonitorPlugin::name()
   ///
   std::string name() const override;
 
   ///
-  /// \brief Ask the plugin to acquire the data it was written for
-  /// \return A plugin data objection that contains the information the plugin
-  /// acquired
+  /// \copydoc imonitorplugin::IMonitorPlugin::input_file()
   ///
-  imonitorplugin::PluginData AcquireData() const override;
+  std::string input_file() const override;
+
+  ///
+  /// \copydoc imonitorplugin::IMonitorPlugin::AcquireData()
+  ///
+  imonitorplugin::PluginData AcquireData(
+      imonitorplugin::InputFileContent&& input_file =
+          imonitorplugin::InputFileContent{}) const override;
 
  protected:
   ///
   /// \brief Here the actual work happens. Plugins override this method.
-  /// \details Plugins are not responsible for packing the data. Make sure to
-  /// MOVE the data into the array.
+  /// \details Plugins are not responsible for packing the data.
+  /// \param input_file If requested, the content of a file (2 snapshots)
   /// \return A vector of key value pairs
   ///
-  virtual imonitorplugin::PluginData::data_vector AcquireDataInternal()
-      const = 0;
+  virtual imonitorplugin::PluginData::data_vector AcquireDataInternal(
+      imonitorplugin::InputFileContent&& input_file) const = 0;
 
   ///
   /// \brief Raise a plugin exception
@@ -68,15 +73,17 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   void ThrowPluginException[[noreturn]](const std::string msg) const;
 
   ///
-  /// \brief Sleep 100ms. Plugins that need to calculate their stats using
-  /// consecutive reads should employ this method
+  /// \brief Register a file to be read by the plugin framework
+  /// \details The content of the file will be passed to AcquireData
+  /// \param file The file to register
   ///
-  void Sleep100ms() const;
+  void RegisterFileToRead(const std::string& file);
 
  private:
   std::int64_t MakeTimestamp() const;
   std::string name_;
   std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
+  std::string input_file_;
 };
 }  // namespace monitoringpluginbase
 #endif  // MEASUREMENTPLUGINBASE_H

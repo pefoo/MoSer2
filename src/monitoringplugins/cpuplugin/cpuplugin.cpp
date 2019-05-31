@@ -40,12 +40,14 @@ struct CpuPlugin::CpuStat {
 
 CpuPlugin::CpuPlugin()
     : monitoringpluginbase::MonitorPluginBase(constants::kPluginName),
-      core_count_(std::thread::hardware_concurrency()) {}
+      core_count_(std::thread::hardware_concurrency()) {
+  this->RegisterFileToRead("/proc/stat");
+}
 
-imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal() const {
-  auto p0 = this->GetCpuStat();
-  this->Sleep100ms();
-  auto p1 = this->GetCpuStat();
+imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
+    imonitorplugin::InputFileContent&& input_file) const {
+  auto p0 = this->GetCpuStat(input_file.snapshot_1());
+  auto p1 = this->GetCpuStat(input_file.snapshot_2());
   imonitorplugin::PluginData::data_vector usage;
   for (size_t i = 0; i < this->core_count_; ++i) {
     float user_delta = p1.user[i] - p0.user[i];
@@ -68,19 +70,15 @@ imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal() const {
   return usage;
 }
 
-CpuPlugin::CpuStat CpuPlugin::GetCpuStat() const {
-  std::string proc_stat = "/proc/stat";
-  if (access(proc_stat.c_str(), R_OK) == -1) {
-    this->ThrowPluginException("Failed to read from /proc/stat");
-  }
+CpuPlugin::CpuStat CpuPlugin::GetCpuStat(const std::string& snapshot) const {
   CpuStat::v_type user, nice, system, idle;
   std::regex rgx(R"(cpu\d+ (\d+) (\d+) (\d+) (\d+))");
   std::smatch match;
 
-  std::ifstream stream(proc_stat);
+  std::stringstream stream{snapshot};
   std::string line;
 
-  while (std::getline(stream, line)) {
+  while (std::getline(stream, line, '\n')) {
     if (line.find("cpu") == 0) {
       if (std::regex_search(line, match, rgx)) {
         user.push_back(CpuStat::ToDType(match[1]));
