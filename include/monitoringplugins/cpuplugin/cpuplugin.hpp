@@ -14,11 +14,12 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
   CpuPlugin();
 
  protected:
-  imonitorplugin::PluginData::data_vector AcquireDataInternal() const override;
+  imonitorplugin::PluginData::data_vector AcquireDataInternal(
+      imonitorplugin::InputFileContent &&input_file) const override;
 
  private:
   struct CpuStat;
-  CpuStat GetCpuStat() const;
+  CpuStat GetCpuStat(const std::string &snapshot) const;
   u_int core_count_;
 };
 

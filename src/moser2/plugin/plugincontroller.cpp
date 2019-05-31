@@ -14,14 +14,19 @@ namespace moser2 {
 namespace plugin {
 PluginController::PluginController()
     : plugin_manager_(std::make_unique<MonitoringPluginManager>()),
-      timer_(new utility::threading::CallbackTimer{}) {}
+      timer_(new utility::threading::CallbackTimer{}),
+      inputfile_provider_(std::make_unique<InputFileProvider>()) {}
 
 void PluginController::LoadPlugin(const std::string &path) {
   auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
   try {
-    this->plugins_.push_back(this->plugin_manager_->LoadPlugin(
+    auto plug = this->plugin_manager_->LoadPlugin(
         abs_path, imonitoringplugin::kMonitoringPluginConstructor,
-        imonitoringplugin::kMonitoringPluginDestructor));
+        imonitoringplugin::kMonitoringPluginDestructor);
+    this->inputfile_provider_->RegisterPluginFile(
+        plug->Instance()->name(), plug->Instance()->input_file());
+    this->plugins_.push_back(plug);
+
     LOG(INFO) << "Loaded plugin " << this->plugins_.back()->Instance()->name()
               << " from " << abs_path;
   } catch (const std::exception &e) {
@@ -49,17 +54,22 @@ void PluginController::RunPlugins(const int interval_ms) {
     this->StopPlugins();
   }
 
-  this->timer_->Start(interval_ms, [&]() {
-    std::for_each(std::begin(this->plugins_), std::end(this->plugins_),
-                  [](MonitoringPluginManager::PluginWrapper *&plug) {
-                    imonitorplugin::PluginData data;
-                    try {
-                      data = plug->Instance()->AcquireData();
-                    } catch (const imonitorplugin::PluginException &pe) {
-                      LOG(ERROR) << pe.what();
-                    }
-                    plugin::PluginFacade::Instance().Put(data);
-                  });
+  // the input file provider waits a second between consecutive reads
+  auto adjusted_interval = interval_ms - 1000;
+  this->timer_->Start(adjusted_interval, [&]() {
+    this->inputfile_provider_->UpdateFiles();
+    std::for_each(
+        std::begin(this->plugins_), std::end(this->plugins_),
+        [&](MonitoringPluginManager::PluginWrapper *&plug) {
+          imonitorplugin::PluginData data;
+          try {
+            data = plug->Instance()->AcquireData(
+                this->inputfile_provider_->GetFile(plug->Instance()->name()));
+          } catch (const imonitorplugin::PluginException &pe) {
+            LOG(ERROR) << pe.what();
+          }
+          plugin::PluginFacade::Instance().Put(data);
+        });
   });
 }
 

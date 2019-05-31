@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "imonitoringplugin/imonitorplugin.hpp"
+#include "inputfileprovider.hpp"
 #include "pluginmanager/pluginmanager.hpp"
 #include "utility/threading/callbacktimer.hpp"
 
@@ -62,6 +63,7 @@ class PluginController {
   std::unique_ptr<MonitoringPluginManager> plugin_manager_;
   std::vector<MonitoringPluginManager::PluginWrapper*> plugins_;
   std::unique_ptr<utility::threading::CallbackTimer> timer_;
+  std::unique_ptr<InputFileProvider> inputfile_provider_;
 };
 }  // namespace plugin
 }  // namespace moser2

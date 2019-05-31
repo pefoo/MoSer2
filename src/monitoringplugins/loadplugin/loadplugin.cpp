@@ -10,7 +10,8 @@ monitoringplugins::loadplugin::LoadPlugin::LoadPlugin()
     : monitoringpluginbase::MonitorPluginBase("LoadPlugin") {}
 
 imonitorplugin::PluginData::data_vector
-monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal() const {
+monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal(
+    imonitorplugin::InputFileContent&& input_file) const {
   std::string proc_loadavg = "/proc/loadavg";
   if (access(proc_loadavg.c_str(), R_OK) == -1) {
     this->ThrowPluginException("Failed to read from /proc/loadavg");

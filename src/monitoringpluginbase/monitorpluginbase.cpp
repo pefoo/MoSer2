@@ -11,7 +11,7 @@
 #include "utility/filesystem/fileaccesshelper.hpp"
 
 monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
-    : name_(std::move(name)) {
+    : name_(std::move(name)), input_file_{""} {
   if (std::filesystem::exists(this->name() + ".conf")) {
     settingsprovider::SettingsFactory factory{};
     std::vector<std::string> msg;
@@ -23,10 +23,20 @@ std::string monitoringpluginbase::MonitorPluginBase::name() const {
   return this->name_;
 }
 
-imonitorplugin::PluginData
-monitoringpluginbase::MonitorPluginBase::AcquireData() const {
-  return imonitorplugin::PluginData{this->name(), this->MakeTimestamp(),
-                                    this->AcquireDataInternal()};
+std::string monitoringpluginbase::MonitorPluginBase::input_file() const {
+  return this->input_file_;
+}
+
+imonitorplugin::PluginData monitoringpluginbase::MonitorPluginBase::AcquireData(
+    imonitorplugin::InputFileContent&& input_file) const {
+  return imonitorplugin::PluginData{
+      this->name(), this->MakeTimestamp(),
+      this->AcquireDataInternal(std::move(input_file))};
+}
+
+void monitoringpluginbase::MonitorPluginBase::RegisterFileToRead(
+    const std::string& file) {
+  this->input_file_ = file;
 }
 
 void monitoringpluginbase::MonitorPluginBase::ThrowPluginException(
