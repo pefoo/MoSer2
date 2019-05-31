@@ -4,7 +4,7 @@ MoSer2 is a monitoring solution for linux systems.
 It employs a plugin infrastructure, that is capable of loading components during startup.
 Reports are generated and send as email notifications.
 
-# How to build
+# Getting started
 ### Required packages
 - libsqlite3-dev
 - libcurl14-openssl-dev
@@ -18,6 +18,22 @@ Integrated in ./extern
 - catch2
 - easyloggingpp
 
+### Compiling
+To compile and run it local
+```
+mkdir runtime
+cd runtime
+cmake ..
+make
+```
+
+To install it to _/usr/local/_
+```
+sudo make install 
+```
+
+The used configuration file depends on the build type. The debug type settings expect the plugin libraries to be located right next to the executable. The actualy configuration expects them to be installed at _/usr/local/lib/MoSer2_.
+
 # Overview
 MoSer2 is build on top of a plugin framework. Each metric that is created during runtime is created using a dynamically loaded plugin. A plugin is responsible for data acquisition and data processing. The goal is to store the data in a arbitrary data sink and create html document based reports using the stored data at any given time. The reports may be send via email eventually.
 
@@ -27,7 +43,7 @@ MoSer2 is build on top of a plugin framework. Each metric that is created during
 - [x] first data sink (sqlite3)
 - [x] basic report creation capabilities
 - [x] send report (mail)
-- [ ] installation instructions
+- [x] installation
 - [ ] scripting interface for report creation
 
 ## Plugins
