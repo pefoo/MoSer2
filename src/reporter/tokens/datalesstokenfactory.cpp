@@ -4,6 +4,7 @@
 #include <ctime>
 #include <sstream>
 #include <tuple>
+#include <vector>
 
 std::vector<reporter::templateprocessor::TemplateToken>
 reporter::tokens::GetDatalessTokens() {
@@ -16,11 +17,11 @@ reporter::tokens::GetDatalessTokens() {
                      if (sysinfo(&info) != 0) {
                        return "";
                      }
-                     long total_seconds = info.uptime;
-                     long days = total_seconds / 86400;
-                     long hours = (total_seconds % 86400) / 3600;
-                     long minutes = (total_seconds % 3600) / 60;
-                     long seconds = total_seconds % 60;
+                     auto total_seconds = info.uptime;
+                     auto days = total_seconds / 86400;
+                     auto hours = (total_seconds % 86400) / 3600;
+                     auto minutes = (total_seconds % 3600) / 60;
+                     auto seconds = total_seconds % 60;
                      std::stringstream s;
                      if (days > 0) s << days << " days ";
                      if (hours > 0) s << hours << " hours ";
