@@ -14,6 +14,12 @@ namespace filesystem {
 /// \return A new path that contains all provided parts
 ///
 std::filesystem::path PathCombine(const std::vector<std::string>& parts);
+
+///
+/// \brief Get the path to the current executable
+/// \return A c++17 path
+///
+std::filesystem::path GetCurrentExecutablePath();
 }  // namespace filesystem
 }  // namespace utility
 

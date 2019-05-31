@@ -5,8 +5,9 @@
 #include "utility/filesystem/fileaccesshelper.hpp"
 
 std::string core::GetApplicationConfigFile() {
-  auto config_file = utility::filesystem::PathCombine(
-      {std::filesystem::current_path(), constants::kMoser2Conf});
+  auto p = utility::filesystem::GetCurrentExecutablePath();
+  auto config_file =
+      utility::filesystem::PathCombine({p, constants::kMoser2Conf});
   if (std::filesystem::exists(config_file)) {
     return config_file;
   }
@@ -16,13 +17,15 @@ std::string core::GetApplicationConfigFile() {
 }
 
 void core::ConfigureLogger() {
-  if (std::filesystem::exists(constants::kLoggerConf)) {
-    el::Configurations conf(constants::kLoggerConf);
+  auto p = utility::filesystem::GetCurrentExecutablePath();
+  auto config_file =
+      utility::filesystem::PathCombine({p, constants::kLoggerConf});
+  if (std::filesystem::exists(config_file)) {
+    el::Configurations conf(config_file);
     el::Loggers::reconfigureAllLoggers(conf);
     return;
   }
-  LOG(ERROR) << "Failed to find the logger configuration file: "
-             << constants::kLoggerConf;
+  LOG(ERROR) << "Failed to find the logger configuration file: " << config_file;
   throw std::runtime_error("Failed to find the logger configuration file: " +
-                           std::string(constants::kLoggerConf));
+                           std::string(config_file));
 }
