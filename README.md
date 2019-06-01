@@ -133,3 +133,9 @@ Eventually, the result of the replacement is send as an email.
 |Token|Value|
 |---|---|
 |%%MEMORY_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the memory usage.|
+
+**Load average plugin:**
+
+|Token|Value|
+|---|---|
+|%%LOAD_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the load average.|
