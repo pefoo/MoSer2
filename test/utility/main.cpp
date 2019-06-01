@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch2/catch.hpp"
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 INITIALIZE_EASYLOGGINGPP
 
 /*

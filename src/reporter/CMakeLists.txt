@@ -7,11 +7,11 @@ set(SOURCES
   templateprocessor/templatetokenfactory.cpp
   email/emailsender.cpp
   tokens/datalesstokenfactory.cpp
+  ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
 find_package(CURL REQUIRED)
 set(LIBRARIES
-  easyloggingpp
   IMonitorPlugin
   Utility
   PersistenceService

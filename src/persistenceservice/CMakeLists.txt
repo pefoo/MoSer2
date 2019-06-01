@@ -5,13 +5,14 @@ set(SOURCES
   ./sqlite/sqlitesettings.cpp
   ./sqlite/queryhelper.cpp
   ./persistencerunner.cpp
+  ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
 find_package(sqlite3 REQUIRED)
 include_directories(${SQLITE3_INCLUDE_DIRS})
 
 ADD_LIBRARY(PersistenceService STATIC ${SOURCES})
-target_link_libraries(PersistenceService IMonitorPlugin easyloggingpp ${SQLITE3_LIBRARIES} Utility)
+target_link_libraries(PersistenceService IMonitorPlugin ${SQLITE3_LIBRARIES} Utility)
 
 target_include_directories(PersistenceService
 PUBLIC

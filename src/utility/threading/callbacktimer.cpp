@@ -2,7 +2,7 @@
 #include <chrono>
 #include <exception>
 #include <mutex>
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 
 namespace utility {
 namespace threading {

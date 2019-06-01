@@ -6,6 +6,7 @@ set(SOURCES
   plugin/plugincontroller.cpp
   plugin/pluginfacade.cpp
   plugin/inputfileprovider.cpp
+  ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -30,7 +31,6 @@ add_executable(${EXEC_NAME} ${SOURCES} ${SETTINGS_FILE} ${LOGGER_CONFIG_FILE})
 target_link_libraries(${EXEC_NAME}
   PluginLoader
   ${CMAKE_DL_LIBS}
-  easyloggingpp
   IMonitorPlugin
   Utility
   PersistenceService

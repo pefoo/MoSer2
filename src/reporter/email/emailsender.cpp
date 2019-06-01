@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 
 ///
 /// \brief Raii wrapper for curl

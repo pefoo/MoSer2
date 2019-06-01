@@ -6,7 +6,7 @@
 #include "constants/settings/settingsidentifier.hpp"
 #include "core/appsetup.hpp"
 #include "core/settings/settingshelper.hpp"
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 #include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/iplugindataprocessorcollection.hpp"
 #include "persistenceservice/adapterfactory.hpp"

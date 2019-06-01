@@ -3,7 +3,7 @@
 #include <memory>
 #include <regex>
 #include <string>
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 #include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/pluginexception.hpp"
 #include "pluginfacade.hpp"

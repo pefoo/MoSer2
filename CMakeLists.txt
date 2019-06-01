@@ -33,7 +33,8 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 # other directories
-set(ETC_DIR "${PROJECT_SOURCE_DIR}/etc")
+set(ETC_DIR "${PROJECT_SOURCE_DIR}/etc/")
+set(EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/extern/")
 add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
@@ -75,7 +76,6 @@ add_subdirectory(./src/persistenceservice)
 add_subdirectory(./src/constants)
 add_subdirectory(./src/core)
 add_subdirectory(./src/dataprocessorhelper)
-add_subdirectory(./extern/easyloggingpp-9.96.5)
 add_subdirectory(./include/pluginmanager)
 add_subdirectory(./include/imonitoringplugin)
 if (BUILD_TESTS)

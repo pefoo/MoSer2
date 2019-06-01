@@ -5,7 +5,7 @@
 #include "constants/constants.hpp"
 #include "constants/settings/settingsidentifier.hpp"
 #include "core/appsetup.hpp"
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 #include "settingsprovider/settingsfactory.hpp"
 
 namespace core {

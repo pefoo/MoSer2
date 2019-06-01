@@ -2,10 +2,11 @@ set(SOURCES
   ./settingsprovider.cpp
   settingidentifier.cpp
   settingsfactory.cpp
+  ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
 ADD_LIBRARY(SettingsProvider STATIC ${SOURCES})
-target_link_libraries(SettingsProvider easyloggingpp Utility stdc++fs)
+target_link_libraries(SettingsProvider Utility stdc++fs)
 
 target_include_directories(SettingsProvider
 PUBLIC

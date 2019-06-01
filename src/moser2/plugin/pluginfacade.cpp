@@ -1,6 +1,6 @@
 #include "pluginfacade.hpp"
 #include <memory>
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 #include "imonitoringplugin/plugindata.hpp"
 #include "utility/datastructure/circularbuffer.hpp"
 

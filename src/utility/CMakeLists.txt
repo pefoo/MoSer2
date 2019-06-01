@@ -2,6 +2,7 @@ set(SOURCES
   ./threading/callbacktimer.cpp
   ./filesystem/fileaccesshelper.cpp
   ./datastructure/anyhelper.cpp
+  ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
 ADD_LIBRARY(Utility STATIC ${SOURCES})
@@ -9,7 +10,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(Utility
   Threads::Threads
-  easyloggingpp
   stdc++fs
 )
 

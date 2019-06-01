@@ -1,6 +1,6 @@
 #include "reporter/templateprocessor/templatetoken.hpp"
 #include <string>
-#include "easyloggingpp-9.96.5/src/easylogging++.h"
+#include "easyloggingpp-9.96.5/easylogging++.h"
 
 reporter::templateprocessor::TemplateToken::TemplateToken(
     std::string key, std::function<std::string()> value_func, bool cache)
