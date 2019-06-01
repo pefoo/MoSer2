@@ -27,32 +27,32 @@ monitoringplugins::memoryplugin::MemoryPlugin::AcquireDataInternal(
     if (total >= 0 && free >= 0 && swap_total >= 0 && swap_free >= 0 &&
         cached >= 0) {
       break;
-    } else if (strncmp(line.c_str(), "MemTotal:", strlen("MemTotal")) == 0) {
+    } else if (line.find("MemTotal:") == 0) {
       if (std::regex_search(line, match, rgx)) {
         total = std::stoi(match[1]);
       } else {
         ThrowPluginException("Failed to parse a meminfo line: " + line);
       }
       continue;
-    } else if (strncmp(line.c_str(), "MemFree:", strlen("MemFree")) == 0) {
+    } else if (line.find("MemFree:") == 0) {
       if (std::regex_search(line, match, rgx)) {
         free = std::stoi(match[1]);
       } else {
         ThrowPluginException("Failed to parse a meminfo line: " + line);
       }
-    } else if (strncmp(line.c_str(), "SwapTotal:", strlen("SwapTotal:")) == 0) {
+    } else if (line.find("SwapTotal:") == 0) {
       if (std::regex_search(line, match, rgx)) {
         swap_total = std::stoi(match[1]);
       } else {
         ThrowPluginException("Failed to parse a meminfo line: " + line);
       }
-    } else if (strncmp(line.c_str(), "SwapFree:", strlen("SwapFree:")) == 0) {
+    } else if (line.find("SwapFree:") == 0) {
       if (std::regex_search(line, match, rgx)) {
         swap_free = std::stoi(match[1]);
       } else {
         ThrowPluginException("Failed to parse a meminfo line: " + line);
       }
-    } else if (strncmp(line.c_str(), "Cached", strlen("Cached")) == 0) {
+    } else if (line.find("Cached") == 0) {
       if (std::regex_search(line, match, rgx)) {
         cached = std::stoi(match[1]);
       } else {
