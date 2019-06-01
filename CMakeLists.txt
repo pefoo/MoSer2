@@ -39,20 +39,6 @@ add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
 #
-# Custom targets
-#
-# A cpplint wrapper. Calls cpplint and prints the results
-add_custom_target(cpplint ${PROJECT_SOURCE_DIR}/tools/run_cpp_lint.sh ${PROJECT_SOURCE_DIR})
-# Code covare using lcov. Note that you have to run the unit tests before calling this
-# Since lcov gets confused with old data, remove all coverage files when done. Thus, running unit tests before executing this again is required
-add_custom_target(coverage
-  COMMAND lcov -q -d . -c -o lcov_full.info
-  COMMAND lcov -q -e lcov_full.info '${PROJECT_SOURCE_DIR}/include/*' '${PROJECT_SOURCE_DIR}/src/*' -o lcov_reduced.info
-  COMMAND genhtml -q -o lcov-html lcov_reduced.info
-  COMMAND lcov -l lcov_reduced.info
-  COMMAND lcov -d . -z)
-
-#
 # include sub projects
 # TODO This might suck !?!
 include_directories(
