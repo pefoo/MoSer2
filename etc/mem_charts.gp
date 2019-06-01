@@ -20,5 +20,6 @@ set ylabel "Memory usage [%]"
 set grid
 set xtics rotate
 set yrange [0:100]
+set key noenhanced
 
 plot for [i=2:3] file_name using 1:i with lines title columnheader(i)
