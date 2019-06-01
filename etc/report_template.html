@@ -8,13 +8,21 @@ Mime-version: 1.0
 </head>
 <body bgcolor="#636363">
 
-Host name: %%HOSTNAME%%<br>
-Kernel: %%KERNEL_VERSION%%<br>
+<div style="height:9em">
+<div style="float:left; width:60%">
+<h2> Server Report:</h2>
+<h1> %%HOSTNAME%%</h1>
+</div>
+<div style="float:right; width:40%; text-align:right">
+%%DATETIME%% <br>
+%%KERNEL_VERSION%% <br>
+Uptime: %%UPTIME%% <br>
 System name: %%SYSTEM_NAME%%<br>
 Machine arch: %%MACHINE_ARCH%%<br>
 Domain name: %%DOMAIN_NAME%%<br>
-Uptime: %%UPTIME%%<br>
-Datetime: %%DATETIME%%<br>
+</div>
+</div>
+
 
 <br>
 <hr style="border-color:#000000; background-color:#000000">
