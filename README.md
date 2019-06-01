@@ -1,5 +1,8 @@
 # MoSer2
 
+The goal of this project is getting into c++ development. 
+Besideis that,...:
+
 MoSer2 is a monitoring solution for linux systems.
 It employs a plugin infrastructure, that is capable of loading components during startup.
 Reports are generated and send as email notifications.
@@ -12,11 +15,6 @@ Reports are generated and send as email notifications.
 ### Compiler
 A c++17 capable compiler is required.
 MoSer2 is currently developed using gcc-8.
-
-### Other dependencies
-Integrated in ./extern
-- catch2
-- easyloggingpp
 
 ### Compiling
 To compile and run it local
@@ -58,18 +56,12 @@ To load a plugin, dlopen is used to load a dynamic shared object (aka shared lib
 To create a plugin, dlsym is used to locate the memory address of a factory function, defined in the shared libary.
 Using this address the factory function may be called. 
 Along with the factory function, a function to delete the plugin must be defined. 
-To actually call the function the signature of the factory functions must be known.
-Factory functions are required, since loading classes using this approach is not possible. 
-To load a class using polymorphism is employed. 
-The interface library `IMonitorPlugin` defines interfaces for the plugin types. 
-The factory functions create instances of the actual plugin and return a pointer of the interface type. 
-Therefore the actual plugin implementation must not be known during compile time.
-To ensure the compiler does not mangle to function name, the factory functions must be marked as extern "C".
 
 A plugin consist of two main components. 
 Actually, both of them are loaded as separate plugins. 
 To keep things simple, the unions of both parts is considered a plugin.
 
+**TODO** Move this rather lengthy description somewhere else....
 The first one is responsible to create the actual data. 
 Therefore the plugin framework calls each registered plugin periodically. 
 The plugin class has to inherit from `monitoringpluginbase::MonitorPluginBase` and overwrite the virtual function `virtual imonitorplugin::PluginData::data_vector AcquireDataInternal()const = 0;`. 
