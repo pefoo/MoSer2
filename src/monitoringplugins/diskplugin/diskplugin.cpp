@@ -60,9 +60,9 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
     int64_t bytes_written = int64_t(stats_2.at(device_name).sectors_written -
                                     stats_1.at(device_name).sectors_written) *
                             sector_size;
-    data.push_back({device_name + "_utilization", utilization});
     data.push_back({device_name + "_bytes_read", bytes_read});
     data.push_back({device_name + "_bytes_written", bytes_written});
+    data.push_back({device_name + "_utilization", utilization});
   }
 
   return data;

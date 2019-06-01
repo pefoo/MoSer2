@@ -18,7 +18,9 @@ void DeleteFile(std::string *);
 std::unique_ptr<std::string, decltype(&DeleteFile)> WriteIntermediateFile(
     std::vector<imonitorplugin::PluginData> records,
     std::vector<std::string> column_names, const std::string &data_separator,
-    const std::string time_format);
+    const std::string time_format,
+    std::function<bool(const std::string &)> record_filter =
+        [](const std::string &) { return true; });
 
 std::string MakeTmpFileName();
 
@@ -73,16 +75,19 @@ std::string dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
     const std::string &script, std::vector<imonitorplugin::PluginData> records,
     const std::string &data_file_var_name,
     dataprocessorhelper::gnuplot::GnuPlotParameterDict parameter,
-    const std::string &data_separator, std::vector<std::string> column_names,
-    const std::string &time_format) {
+    const std::string &data_separator,
+    std::function<bool(const std::string &)> record_filter,
+    std::vector<std::string> column_names, const std::string &time_format) {
   if (column_names.size() == 0) {
     column_names.push_back("Timestamp");
     for (auto const &data : records.front().data()) {
-      column_names.push_back(data.first);
+      if (record_filter(data.first)) {
+        column_names.push_back(data.first);
+      }
     }
   }
-  auto tmp_file =
-      WriteIntermediateFile(records, column_names, data_separator, time_format);
+  auto tmp_file = WriteIntermediateFile(records, column_names, data_separator,
+                                        time_format, record_filter);
   parameter.AddParameter(data_file_var_name, *tmp_file, true, true);
   return EncodeScriptOutputToBase64(script, parameter);
 }
@@ -96,12 +101,13 @@ void DeleteFile(std::string *file) {
 std::unique_ptr<std::string, decltype(&DeleteFile)> WriteIntermediateFile(
     std::vector<imonitorplugin::PluginData> records,
     std::vector<std::string> column_names, const std::string &data_separator,
-    const std::string time_format) {
-  if (column_names.size() != records.front().data().size() + 1) {
-    throw std::runtime_error(
-        "The number of provided column names does not match the number of "
-        "records for the intermediate data file.");
-  }
+    const std::string time_format,
+    std::function<bool(const std::string &)> record_filter) {
+  //  if (column_names.size() != records.front().data().size() + 1) {
+  //    throw std::runtime_error(
+  //        "The number of provided column names does not match the number of "
+  //        "records for the intermediate data file.");
+  //  }
 
   std::unique_ptr<std::string, decltype(&DeleteFile)> tmp_file(
       new std::string(MakeTmpFileName()), DeleteFile);
@@ -120,8 +126,11 @@ std::unique_ptr<std::string, decltype(&DeleteFile)> WriteIntermediateFile(
     data_stream << std::put_time(tm, time_format.c_str());
 
     for (const auto &data : records.at(i).data()) {
-      data_stream << data_separator
-                  << utility::datastructure::PrimitiveAnyToString(data.second);
+      if (record_filter(data.first)) {
+        data_stream << data_separator
+                    << utility::datastructure::PrimitiveAnyToString(
+                           data.second);
+      }
     }
     data_stream << std::endl;
   }
