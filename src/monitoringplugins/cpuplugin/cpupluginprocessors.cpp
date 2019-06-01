@@ -45,6 +45,6 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                  total += std::any_cast<double>(v.second);
                }
              }
-             return std::to_string(total / core_count);
+             return std::to_string(total / core_count / records.size());
            })}};
 }
