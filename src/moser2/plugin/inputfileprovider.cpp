@@ -23,6 +23,7 @@ void moser2::plugin::InputFileProvider::UpdateFiles() {
     std::stringstream buffer;
     buffer << content.rdbuf();
     this->file_contents_[plugin].setSnapshot_2(buffer.str());
+    this->file_contents_[plugin].setTimestamp_2(std::time(nullptr));
   }
 }
 
