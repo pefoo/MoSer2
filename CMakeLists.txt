@@ -38,13 +38,12 @@ set(EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/extern/")
 add_definitions(-DTESTDATA_DIR="${PROJECT_SOURCE_DIR}/test/testdata/")
 add_definitions(-DLIBRARY_DIR="${CMAKE_BINARY_DIR}")
 
-#
-# include sub projects
-# TODO This might suck !?!
 include_directories(
   SYSTEM
   ./extern
 )
+# Dont like it but declaring these include dirs Iam able to specify included headers including their
+# module name
 include_directories(
   ./include
   ./src
