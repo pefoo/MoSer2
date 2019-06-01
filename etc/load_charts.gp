@@ -1,8 +1,8 @@
-# The gnuplot script for the memory data processors.
+# The gnuplot script for the load data processors.
 #
 # Data format:
 # The data is expteced to be found in a file.
-# X axis data is the first column (index 0), followed by two data columns
+# X axis data is the first column (index 0), followed by there data columns
 # The column separator is a semicolon (;).
 #
 # Arguments:
@@ -16,10 +16,9 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S"
 set format x "%H:%M"
 set xlabel "Date"
-set ylabel "Memory usage [%]"
+set ylabel "Load average"
 set grid
 set xtics rotate
-set yrange [0:100]
 set key noenhanced
 
-plot for [i=2:3] file_name using 1:i with lines title columnheader(i)
+plot for [i=2:4] file_name using 1:i with lines title columnheader(i)
