@@ -8,5 +8,18 @@
 
 monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringplugins::memoryplugin::CreateProcessors() {
-  return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{};
+  return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{
+      {std::make_shared<monitoringpluginbase::PluginDataProcessor>(
+          "%%MEMORY_TIME_SERIES_DATA%%",
+          [](std::vector<imonitorplugin::PluginData> records) -> std::string {
+            if (records.size() == 0) {
+              return "";
+            }
+            dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
+            return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
+                monitoringplugins::memoryplugin::constants::kGpScriptName,
+                records,
+                monitoringplugins::memoryplugin::constants::kGpArgFileName,
+                params);
+          })}};
 };

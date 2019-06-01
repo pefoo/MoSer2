@@ -6,6 +6,8 @@ namespace memoryplugin {
 namespace constants {
 
 static constexpr char kPluginName[] = "MemoryPlugin";
+static constexpr char kGpScriptName[] = "mem_charts.gp";
+static constexpr char kGpArgFileName[] = "file_name";
 
 }  // namespace constants
 }  // namespace memoryplugin

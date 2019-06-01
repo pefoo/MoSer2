@@ -131,7 +131,7 @@ std::unique_ptr<std::string, decltype(&DeleteFile)> WriteIntermediateFile(
 
 std::string MakeTmpFileName() {
   static std::mt19937 gen{std::random_device()()};
-  static std::uniform_int_distribution<> dist{std::numeric_limits<int>::min(),
+  static std::uniform_int_distribution<> dist{0,
                                               std::numeric_limits<int>::max()};
   auto file_name = std::to_string(dist(gen));
   return std::filesystem::temp_directory_path().string() + "/" + file_name;
