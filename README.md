@@ -34,6 +34,8 @@ The used configuration file depends on the build type.
 The debug type settings expect the plugin libraries to be located right next to the executable. 
 The actualy configuration expects them to be installed at _/usr/local/lib/MoSer2_.
 
+**Dont forget to setup your configuration.**
+
 # Overview
 MoSer2 is build on top of a plugin framework. 
 Each metric that is created during runtime is created using a dynamically loaded plugin. 
