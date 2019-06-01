@@ -79,10 +79,11 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   void RegisterFileToRead(const std::string& file);
 
+  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
+
  private:
   std::int64_t MakeTimestamp() const;
   std::string name_;
-  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
   std::string input_file_;
 };
 }  // namespace monitoringpluginbase
