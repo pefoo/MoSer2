@@ -5,7 +5,7 @@
 monitoringpluginbase::PluginDataProcessorCollection::
     PluginDataProcessorCollection(std::string plugin,
                                   ProcessorVector processors)
-    : plugin_(std::move(plugin)), processors_(processors) {}
+    : plugin_(std::move(plugin)), processors_(std::move(processors)) {}
 
 std::string monitoringpluginbase::PluginDataProcessorCollection::plugin()
     const {

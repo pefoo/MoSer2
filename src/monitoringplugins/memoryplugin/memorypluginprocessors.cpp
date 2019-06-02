@@ -12,7 +12,7 @@ monitoringplugins::memoryplugin::CreateProcessors() {
       {std::make_shared<monitoringpluginbase::PluginDataProcessor>(
           "%%MEMORY_TIME_SERIES_DATA%%",
           [](std::vector<imonitorplugin::PluginData> records) -> std::string {
-            if (records.size() == 0) {
+            if (records.empty()) {
               return "";
             }
             dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
@@ -22,4 +22,4 @@ monitoringplugins::memoryplugin::CreateProcessors() {
                 monitoringplugins::memoryplugin::constants::kGpArgFileName,
                 params);
           })}};
-};
+}

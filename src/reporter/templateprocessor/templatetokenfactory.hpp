@@ -19,7 +19,7 @@ class TemplateTokenFactory {
   /// \brief Create a new instance
   /// \param data_adapter The data adapter to use.
   ///
-  TemplateTokenFactory(
+  explicit TemplateTokenFactory(
       std::shared_ptr<persistenceservice::IDataAdapter> data_adapter);
 
   ///

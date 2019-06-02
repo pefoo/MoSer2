@@ -2,15 +2,16 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <utility>
 #include <vector>
 #include "utility/filesystem/fileaccesshelper.hpp"
 
 reporter::templateprocessor::TemplateProcessor::TemplateProcessor(
     std::vector<reporter::templateprocessor::TemplateToken> tokens)
-    : tokens_(tokens) {}
+    : tokens_(std::move(tokens)) {}
 
 std::string reporter::templateprocessor::TemplateProcessor::ProcessTemplate(
-    std::string template_file, bool in_place) {
+    const std::string& template_file, bool in_place) {
   auto result_file = in_place
                          ? template_file
                          : utility::filesystem::PathCombine(

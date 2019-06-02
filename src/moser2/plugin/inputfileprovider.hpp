@@ -29,7 +29,7 @@ class InputFileProvider {
   /// \param plugin The plugin to read the file for
   /// \param file The file to read
   ///
-  void RegisterPluginFile(const std::string& plugin, const std::string file);
+  void RegisterPluginFile(const std::string& plugin, const std::string& file);
 
   ///
   /// \brief Get the file content for a plugin

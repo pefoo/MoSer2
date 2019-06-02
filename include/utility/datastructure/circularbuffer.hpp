@@ -1,7 +1,7 @@
 #ifndef CIRCULARBUFFER_H
 #define CIRCULARBUFFER_H
 
-#include <stddef.h>
+#include <cstddef>
 #include <mutex>
 #include <vector>
 // TODO using vector as base might not be that smart since the whole buffer is

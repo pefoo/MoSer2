@@ -1,10 +1,11 @@
 #include "reporter/templateprocessor/templatetokenfactory.hpp"
 #include <memory>
+#include <utility>
 #include <vector>
 
 reporter::templateprocessor::TemplateTokenFactory::TemplateTokenFactory(
     std::shared_ptr<persistenceservice::IDataAdapter> data_adapter)
-    : data_adapter_(data_adapter) {}
+    : data_adapter_(std::move(data_adapter)) {}
 
 std::vector<reporter::templateprocessor::TemplateToken>
 reporter::templateprocessor::TemplateTokenFactory::BuildTokens(
@@ -16,9 +17,9 @@ reporter::templateprocessor::TemplateTokenFactory::BuildTokens(
   std::vector<reporter::templateprocessor::TemplateToken> tokens;
 
   for (const auto& processor : processor_collection->processors()) {
-    tokens.push_back(reporter::templateprocessor::TemplateToken{
+    tokens.emplace_back(
         processor->key(),
-        [processor, data]() { return processor->processor()(data); }});
+        [processor, data]() { return processor->processor()(data); });
   }
 
   return tokens;

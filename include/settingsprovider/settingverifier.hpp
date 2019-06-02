@@ -35,7 +35,7 @@ struct TypeVerifier<int> {
 template <>
 struct TypeVerifier<double> {
   static bool VerifierFunc(const std::string& v) {
-    std::regex rgx("\\d+\\.\\d+");
+    std::regex rgx(R"(\d+\.\d+)");
     return std::regex_match(v, rgx);
   }
 };

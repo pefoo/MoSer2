@@ -68,6 +68,7 @@ std::string EncodeScriptOutputToBase64(const std::string& script,
 /// \param records The data to plot
 /// \param column_names The names of the columns (x must be first)
 /// (count must match y_records count +1)
+/// \param record_filter A function to filter record data based on its key
 /// \param data_separator The separator to use for the intermediate data file
 /// \param data_file_var_name The name of the data file variable used in
 /// the script.
@@ -77,10 +78,11 @@ std::string EncodeScriptOutputToBase64(const std::string& script,
 /// \return The base64 encoded output
 ///
 std::string EncodeScriptOutputToBase64(
-    const std::string& script,
-    std::vector<imonitorplugin::PluginData> records,
+    const std::string& script, std::vector<imonitorplugin::PluginData> records,
     const std::string& data_file_var_name, GnuPlotParameterDict parameter,
     const std::string& data_separator = ";",
+    const std::function<bool(const std::string&)>& record_filter =
+        [](const std::string&) { return true; },
     std::vector<std::string> column_names = {},
     const std::string& time_format = "%Y-%m-%d %H:%M:%S");
 

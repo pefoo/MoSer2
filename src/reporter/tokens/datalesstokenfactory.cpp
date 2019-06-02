@@ -8,7 +8,7 @@
 
 std::vector<reporter::templateprocessor::TemplateToken>
 reporter::tokens::GetDatalessTokens() {
-  struct utsname info;
+  struct utsname info{};
   uname(&info);
   return std::vector<reporter::templateprocessor::TemplateToken>{
       CREATE_TOKEN("%%UPTIME%%",

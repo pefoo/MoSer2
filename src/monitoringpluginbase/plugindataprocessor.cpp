@@ -5,7 +5,7 @@
 monitoringpluginbase::PluginDataProcessor::PluginDataProcessor(
     std::string token,
     imonitorplugin::IPluginDataProcessor::DataProcessor processor)
-    : token_(std::move(token)), processor_(processor) {}
+    : token_(std::move(token)), processor_(std::move(processor)) {}
 
 imonitorplugin::IPluginDataProcessor::DataProcessor
 monitoringpluginbase::PluginDataProcessor::processor() const {

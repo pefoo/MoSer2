@@ -2,6 +2,7 @@
 #define INPUTFILECONTENT_HPP
 
 #include <string>
+#include <utility>
 
 namespace imonitorplugin {
 
@@ -18,11 +19,14 @@ class InputFileContent {
   /// \param timestamp The timestamp of the first read
   /// \param delay The delay between the consecutive reads in seconds
   ///
-  InputFileContent(int64_t timestamp = 0, std::string snapshot_1 = "",
-                   std::string snapshot_2 = "", int delay = 1)
-      : timestamp_(timestamp),
-        snapshot_1_(snapshot_1),
-        snapshot_2_(snapshot_2),
+  explicit InputFileContent(int64_t timestamp_1 = 0,
+                            std::string snapshot_1 = "",
+                            std::string snapshot_2 = "",
+                            int64_t timestamp_2 = 0, int delay = 1)
+      : timestamp_1_(timestamp_1),
+        timestamp_2_(timestamp_2),
+        snapshot_1_(std::move(snapshot_1)),
+        snapshot_2_(std::move(snapshot_2)),
         delay_(delay) {}
 
   ///
@@ -54,10 +58,30 @@ class InputFileContent {
   }
 
   ///
-  /// \brief Get the timestamp of this record pair
+  /// \brief Get the timestamp of the first snapshot
   /// \return The timestamp of the first read
   ///
-  int64_t timestamp() const { return this->timestamp_; }
+  int64_t timestamp_1() const { return this->timestamp_1_; }
+
+  ///
+  /// \brief Get the timestamp of the second snapshot
+  /// \return The timestamp of the second read
+  ///
+  int64_t timestamp_2() const { return this->timestamp_2_; }
+
+  ///
+  /// \brief Set timestamp of the first snapshot
+  /// \param timestamp_2 The first timestamp
+  ///
+  void setTimestamp_1(const int64_t &timestamp_1);
+
+  ///
+  /// \brief Set timestamp of the second snapshot
+  /// \param timestamp_2 The second timestamp
+  ///
+  void setTimestamp_2(const int64_t &timestamp_2) {
+    this->timestamp_2_ = timestamp_2;
+  }
 
   ///
   /// \brief Get the delay between the consecutive reads
@@ -66,7 +90,8 @@ class InputFileContent {
   int delay() const { return this->delay_; }
 
  private:
-  int64_t timestamp_;
+  int64_t timestamp_1_;
+  int64_t timestamp_2_;
   std::string snapshot_1_;
   std::string snapshot_2_;
   int delay_;
