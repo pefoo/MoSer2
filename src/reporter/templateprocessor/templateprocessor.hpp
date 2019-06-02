@@ -28,7 +28,7 @@ class TemplateProcessor {
   /// \details If in_place is set to false, a new file is generated. The new
   /// file will be located in some temp path
   ///
-  std::string ProcessTemplate(std::string template_file, bool in_place = false);
+  std::string ProcessTemplate(const std::string& template_file, bool in_place = false);
 
  private:
   std::vector<TemplateToken> tokens_;

@@ -24,7 +24,7 @@ monitoringplugins::diskplugin::CreateProcessors() {
               "%%DISK_" + device + "_TIME_SERIES_DATA%%",
               [device](std::vector<imonitorplugin::PluginData> records)
                   -> std::string {
-                if (records.size() == 0) {
+                if (records.empty()) {
                   return "";
                 }
                 auto record_filter = [device](const std::string& key) {

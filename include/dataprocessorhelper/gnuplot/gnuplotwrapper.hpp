@@ -81,7 +81,7 @@ std::string EncodeScriptOutputToBase64(
     const std::string& script, std::vector<imonitorplugin::PluginData> records,
     const std::string& data_file_var_name, GnuPlotParameterDict parameter,
     const std::string& data_separator = ";",
-    std::function<bool(const std::string&)> record_filter =
+    const std::function<bool(const std::string&)>& record_filter =
         [](const std::string&) { return true; },
     std::vector<std::string> column_names = {},
     const std::string& time_format = "%Y-%m-%d %H:%M:%S");

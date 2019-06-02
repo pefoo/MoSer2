@@ -28,7 +28,7 @@ void moser2::plugin::InputFileProvider::UpdateFiles() {
 }
 
 void moser2::plugin::InputFileProvider::RegisterPluginFile(
-    const std::string &plugin, const std::string file) {
+    const std::string &plugin, const std::string& file) {
   this->files_[plugin] = file;
 }
 

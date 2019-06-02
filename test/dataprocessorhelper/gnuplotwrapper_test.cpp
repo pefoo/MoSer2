@@ -72,9 +72,9 @@ TEST_CASE("Execute script, pipe to file", "[DataProcessorHelper]") {
 TEST_CASE("Execute script with automatic intermediate file creation",
           "[DataProcessorHelper]") {
   std::vector<imonitorplugin::PluginData> d{
-      {"sample data", 1558784370, {{"c_int", 17}}},
-      {"sample data", 1558784375, {{"c_int", 42}}},
-      {"sample data", 1558784380, {{"c_int", 17}}}};
+      imonitorplugin::PluginData{"sample data", 1558784370, {{"c_int", 17}}},
+      imonitorplugin::PluginData{"sample data", 1558784375, {{"c_int", 42}}},
+      imonitorplugin::PluginData{"sample data", 1558784380, {{"c_int", 17}}}};
   dataprocessorhelper::gnuplot::GnuPlotParameterDict dict{};
   dict.AddParameter("y_series_count", "1", false);
 
@@ -99,9 +99,9 @@ TEST_CASE(
     "base64",
     "[DataProcessorHelper]") {
   std::vector<imonitorplugin::PluginData> d{
-      {"sample data", 1558784370, {{"c_int", 17}}},
-      {"sample data", 1558784375, {{"c_int", 42}}},
-      {"sample data", 1558784380, {{"c_int", 17}}}};
+      imonitorplugin::PluginData{"sample data", 1558784370, {{"c_int", 17}}},
+      imonitorplugin::PluginData{"sample data", 1558784375, {{"c_int", 42}}},
+      imonitorplugin::PluginData{"sample data", 1558784380, {{"c_int", 17}}}};
   dataprocessorhelper::gnuplot::GnuPlotParameterDict dict{};
   dict.AddParameter("y_series_count", "1", false);
 

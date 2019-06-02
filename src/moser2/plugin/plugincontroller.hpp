@@ -44,7 +44,7 @@ class PluginController {
   /// Running the plugins starts 2 new threads. One for the timer, another one
   /// is used for the actual plugin execution.
   ///
-  void RunPlugins(const int interval_ms = 10000);
+  void RunPlugins(int interval_ms = 10000);
 
   ///
   /// \brief Stop the plugin execution
@@ -58,8 +58,7 @@ class PluginController {
   bool plugins_running();
 
  private:
-  typedef pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin>
-      MonitoringPluginManager;
+  using MonitoringPluginManager = pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin>;
   std::unique_ptr<MonitoringPluginManager> plugin_manager_;
   std::vector<MonitoringPluginManager::PluginWrapper*> plugins_;
   std::unique_ptr<utility::threading::CallbackTimer> timer_;

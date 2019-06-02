@@ -49,7 +49,7 @@ class PluginDataProcessorCollection
   using ProcessorVector =
       std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>;
 
-  PluginDataProcessorCollection(std::string plugin,
+  explicit PluginDataProcessorCollection(std::string plugin,
                                 ProcessorVector processors = {});
 
   ///

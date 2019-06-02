@@ -64,7 +64,7 @@ imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
                     (user_delta + nice_delta + system_delta + idle_delta)) *
                    100;
     }
-    usage.push_back({"core" + std::to_string(i), std::move(core_usage)});
+    usage.push_back({"core" + std::to_string(i), core_usage});
   }
 
   return usage;

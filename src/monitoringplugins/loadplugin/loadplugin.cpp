@@ -30,7 +30,7 @@ monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal(
     float m5 = std::stof(match[2]);
     float m15 = std::stof(match[3]);
     return {
-        {"m1", std::move(m1)}, {"m5", std::move(m5)}, {"m15", std::move(m15)}};
+        {"m1", m1}, {"m5", m5}, {"m15", m15}};
   } else {
     this->ThrowPluginException(
         "Failed to parse content of /proc/loadavg. Content: " + content);

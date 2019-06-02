@@ -16,7 +16,7 @@ monitoringplugins::memoryplugin::MemoryPlugin::AcquireDataInternal(
     ThrowPluginException("Failed to access /proc/meminfo");
   }
 
-  std::regex rgx("\\w+:\\s*(\\d+)");
+  std::regex rgx(R"(\w+:\s*(\d+))");
   std::smatch match;
 
   int total = -1, free = -1, swap_total = -1, swap_free = -1, cached = -1;
@@ -27,7 +27,7 @@ monitoringplugins::memoryplugin::MemoryPlugin::AcquireDataInternal(
     if (total >= 0 && free >= 0 && swap_total >= 0 && swap_free >= 0 &&
         cached >= 0) {
       break;
-    } else if (line.find("MemTotal:") == 0) {
+    } if (line.find("MemTotal:") == 0) {
       if (std::regex_search(line, match, rgx)) {
         total = std::stoi(match[1]);
       } else {

@@ -5,7 +5,7 @@ std::string utility::datastructure::PrimitiveAnyToString(const std::any& data) {
   auto& type = data.type();
   if (type == typeid(int)) {
     return std::to_string(std::any_cast<int>(data));
-  } else if (type == typeid(int64_t)) {
+  } if (type == typeid(int64_t)) {
     return std::to_string(std::any_cast<int64_t>(data));
   } else if (type == typeid(float)) {
     return std::to_string(std::any_cast<float>(data));

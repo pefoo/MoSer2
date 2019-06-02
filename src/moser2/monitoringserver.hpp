@@ -17,7 +17,7 @@ class MonitoringServer {
   ///
   /// \brief MonitoringServer
   ///
-  MonitoringServer(
+  explicit MonitoringServer(
       std::shared_ptr<settingsprovider::ISettingsProvider> settings);
 
   ///

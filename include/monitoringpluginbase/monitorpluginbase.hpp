@@ -70,7 +70,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \brief Raise a plugin exception
   /// \param msg The message to raise
   ///
-  void ThrowPluginException[[noreturn]](const std::string msg) const;
+  void ThrowPluginException[[noreturn]](const std::string& msg) const;
 
   ///
   /// \brief Register a file to be read by the plugin framework

@@ -15,7 +15,7 @@
 /// https://www.kernel.org/doc/Documentation/ABI/testing/procfs-diskstats
 ///
 struct monitoringplugins::diskplugin::DiskPlugin::DiskStat {
-  DiskStat() {}
+  DiskStat() = default;
   DiskStat(std::string device, uint64_t sectors_read, uint64_t sectors_written,
            uint64_t t_io)
       : device(std::move(device)),
@@ -24,9 +24,9 @@ struct monitoringplugins::diskplugin::DiskPlugin::DiskStat {
         t_io(t_io) {}
 
   std::string device;
-  uint64_t sectors_read;
-  uint64_t sectors_written;
-  uint64_t t_io;
+  uint64_t sectors_read{};
+  uint64_t sectors_written{};
+  uint64_t t_io{};
 };
 
 monitoringplugins::diskplugin::DiskPlugin::DiskPlugin()

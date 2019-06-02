@@ -40,7 +40,7 @@ void monitoringpluginbase::MonitorPluginBase::RegisterFileToRead(
 }
 
 void monitoringpluginbase::MonitorPluginBase::ThrowPluginException(
-    const std::string msg) const {
+    const std::string& msg) const {
   throw imonitorplugin::PluginException(this->name(), msg.c_str());
 }
 

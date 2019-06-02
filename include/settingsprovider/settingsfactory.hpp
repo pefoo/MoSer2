@@ -54,11 +54,11 @@ class SettingsFactory {
     Setting() {}
     Setting(std::string key, std::string section,
             std::string default_value = "",
-            const Verifier& verifier = DefaultVerifier)
+            Verifier  verifier = DefaultVerifier)
         : key_(std::move(key)),
           section_(std::move(section)),
           value_(std::move(default_value)),
-          verifier_(verifier) {}
+          verifier_(std::move(verifier)) {}
     std::string key_ = "";
     std::string section_ = "";
     std::string value_ = "";
