@@ -13,7 +13,7 @@ CreateProcessors();
 
 CREATE_PROCESSOR_CONSTRUCTOR_FACTORY(constants::kPluginName, CreateProcessors())
 CREATE_PROCESSOR_DESTRUCTOR_FACTORY()
-}  // namespace cpuplugin
+}  // namespace diskplugin
 }  // namespace monitoringplugins
 
 #endif  // CPUPLUGINPROCESSORS_HPP

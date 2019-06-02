@@ -51,7 +51,7 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
   for (const auto &device_name : device_list) {
     auto t_io_total =
         stats_2.at(device_name).t_io - stats_1.at(device_name).t_io;
-    auto utilization = (double(t_io_total) /
+    auto utilization = (static_cast<double>(t_io_total) /
                         (input_file.timestamp_2() - input_file.timestamp_1())) *
                        0.1;
     int64_t bytes_read = int64_t(stats_2.at(device_name).sectors_read -

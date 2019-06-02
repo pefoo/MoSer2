@@ -19,9 +19,10 @@ class InputFileContent {
   /// \param timestamp The timestamp of the first read
   /// \param delay The delay between the consecutive reads in seconds
   ///
-  explicit InputFileContent(int64_t timestamp_1 = 0, std::string snapshot_1 = "",
-                   std::string snapshot_2 = "", int64_t timestamp_2 = 0,
-                   int delay = 1)
+  explicit InputFileContent(int64_t timestamp_1 = 0,
+                            std::string snapshot_1 = "",
+                            std::string snapshot_2 = "",
+                            int64_t timestamp_2 = 0, int delay = 1)
       : timestamp_1_(timestamp_1),
         timestamp_2_(timestamp_2),
         snapshot_1_(std::move(snapshot_1)),

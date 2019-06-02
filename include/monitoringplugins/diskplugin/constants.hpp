@@ -10,7 +10,7 @@ static constexpr char kGpScriptName[] = "disk_charts.gp";
 static constexpr char kPluginName[] = "DiskPlugin";
 
 }  // namespace constants
-}  // namespace cpuplugin
+}  // namespace diskplugin
 }  // namespace monitoringplugins
 
 #endif  // CONSTANTS_HPP

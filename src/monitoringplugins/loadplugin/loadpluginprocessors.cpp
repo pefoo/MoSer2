@@ -18,4 +18,4 @@ monitoringplugins::loadplugin::CreateProcessors() {
             return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
                 "load_charts.gp", records, "file_name", params);
           })}};
-};
+}

@@ -58,7 +58,8 @@ class PluginController {
   bool plugins_running();
 
  private:
-  using MonitoringPluginManager = pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin>;
+  using MonitoringPluginManager =
+      pluginmanager::PluginManager<imonitorplugin::IMonitorPlugin>;
   std::unique_ptr<MonitoringPluginManager> plugin_manager_;
   std::vector<MonitoringPluginManager::PluginWrapper*> plugins_;
   std::unique_ptr<utility::threading::CallbackTimer> timer_;

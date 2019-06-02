@@ -27,7 +27,8 @@ monitoringplugins::memoryplugin::MemoryPlugin::AcquireDataInternal(
     if (total >= 0 && free >= 0 && swap_total >= 0 && swap_free >= 0 &&
         cached >= 0) {
       break;
-    } if (line.find("MemTotal:") == 0) {
+    }
+    if (line.find("MemTotal:") == 0) {
       if (std::regex_search(line, match, rgx)) {
         total = std::stoi(match[1]);
       } else {
@@ -61,8 +62,10 @@ monitoringplugins::memoryplugin::MemoryPlugin::AcquireDataInternal(
     }
   }
 
-  int usage_p = int(100 - float(cached + free) / total * 100 + 0.5f);
-  int swap_p = int(100 - float(swap_free) / swap_total * 100 + 0.5f);
+  int usage_p = static_cast<int>(
+      100 - static_cast<float>(cached + free) / total * 100 + 0.5f);
+  int swap_p = static_cast<int>(
+      100 - static_cast<float>(swap_free) / swap_total * 100 + 0.5f);
 
   imonitorplugin::PluginData::data_vector data;
   data.push_back({"mem_usage", usage_p});

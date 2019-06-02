@@ -22,4 +22,4 @@ monitoringplugins::memoryplugin::CreateProcessors() {
                 monitoringplugins::memoryplugin::constants::kGpArgFileName,
                 params);
           })}};
-};
+}

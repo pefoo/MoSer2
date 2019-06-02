@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
+#include <vector>
 
 namespace monitoringplugins {
 namespace diskplugin {
