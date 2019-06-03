@@ -163,3 +163,4 @@ CREATE_PROCESSOR_DESTRUCTOR_FACTORY()
 #endif  // ${plugin_processor_include_guard}
 EOF
 
+echo "Done creating the plugin. CMakeLists.txt file is located at ${cmake_file}"
