@@ -16,8 +16,8 @@ plugin_src_file="${plugin_src_dir}/${plugin_name_lower}.cpp"
 plugin_processor_src_file="${plugin_src_dir}/${plugin_name_lower}processors.cpp"
 
 plugin_header_file="${plugin_header_dir}/${plugin_name_lower}.hpp"
-plugin_processor_header_file="${plugin_src_dir}/${plugin_name_lower}processors.hpp"
-plugin_constants_header_file="${plugin_src_dir}/constants.hpp"
+plugin_processor_header_file="${plugin_header_dir}/${plugin_name_lower}processors.hpp"
+plugin_constants_header_file="${plugin_header_dir}/constants.hpp"
 
 plugin_include_gaurd="$(echo $plugin_name | tr '[:lower:]' '[:upper:]')_H"
 plugin_processor_include_guard="$(echo $plugin_name | tr '[:lower:]' '[:upper:]')PROCESSORS_H"
