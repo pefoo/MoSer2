@@ -38,7 +38,7 @@ configure_file("\${ETC_DIR}/$plugin_gp_scirpt_name" "\${CMAKE_BINARY_DIR}/$plugi
 add_library($plugin_name SHARED $(basename $plugin_src_file) $(basename $plugin_processor_src_file) "\${CMAKE_BINARY_DIR}/$plugin_gp_scirpt_name")
 target_link_libraries($plugin_name MeasurementPluginBase DataProcessorHelper)
 
-install(TARGETS cpuplugin
+install(TARGETS $plugin_name
   ARCHIVE  DESTINATION \${CMAKE_INSTALL_LIBDIR}/\${PROJECT_NAME}
   LIBRARY  DESTINATION \${CMAKE_INSTALL_LIBDIR}/\${PROJECT_NAME}
   RUNTIME  DESTINATION \${CMAKE_INSTALL_BINDIR}/\${PROJECT_NAME})
@@ -162,5 +162,7 @@ CREATE_PROCESSOR_DESTRUCTOR_FACTORY()
 
 #endif  // ${plugin_processor_include_guard}
 EOF
+
+touch "$plugin_gp_script"
 
 echo "Done creating the plugin. CMakeLists.txt file is located at ${cmake_file}"
