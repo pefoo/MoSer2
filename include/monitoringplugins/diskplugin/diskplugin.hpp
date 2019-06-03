@@ -17,7 +17,8 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
-      imonitorplugin::InputFileContent&& input_file) const override;
+      std::unordered_map<std::string,
+      imonitorplugin::InputFileContent>&& input_file) const override;
 
  private:
   struct DiskStat;

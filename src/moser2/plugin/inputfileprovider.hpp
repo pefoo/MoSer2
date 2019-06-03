@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "imonitoringplugin/inputfilecontent.hpp"
 
 namespace moser2 {
@@ -25,22 +26,28 @@ class InputFileProvider {
   void UpdateFiles();
 
   ///
-  /// \brief Register a new file to read
-  /// \param plugin The plugin to read the file for
-  /// \param file The file to read
+  /// \brief Register plugin input files
+  /// \param plugin The plugin to read the file(s) for
+  /// \param files The file(s) to register
   ///
-  void RegisterPluginFile(const std::string& plugin, const std::string& file);
+  void RegisterPluginFiles(const std::string& plugin,
+                           std::vector<std::string> files);
 
   ///
   /// \brief Get the file content for a plugin
   /// \param plugin The name of the plugin
-  /// \return Two snapshots of the same file
+  /// \return All registered files, with 2 snapshots each
   ///
-  imonitorplugin::InputFileContent GetFile(const std::string& plugin);
+  std::unordered_map<std::string, imonitorplugin::InputFileContent> GetFiles(
+      const std::string& plugin);
 
  private:
-  std::unordered_map<std::string, std::string> files_;
-  std::unordered_map<std::string, imonitorplugin::InputFileContent>
+  // Key: plugin name. value: vector of registeres files
+  std::unordered_map<std::string, std::vector<std::string>> files_;
+  // Key: plugin name. value: map with file name and content
+  std::unordered_map<
+      std::string,
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>>
       file_contents_;
 };
 

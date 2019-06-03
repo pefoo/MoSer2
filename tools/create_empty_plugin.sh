@@ -61,7 +61,8 @@ ${plugin_name}::${plugin_name}()
   : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
 
 imonitorplugin::PluginData::data_vector ${plugin_name}::AcquireDataInternal(
-    imonitorplugin::InputFileContent&& input_file) const {}
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>
+      &&input_file) const {}
 
 }  // namespace ${plugin_name_lower}
 }  // namespace monitoringplugins
@@ -111,6 +112,7 @@ cat << EOF >> "${plugin_header_file}"
 #define ${plugin_include_guard}
 
 #include <string>
+#include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
@@ -125,7 +127,8 @@ class ${plugin_name} : public monitoringpluginbase::MonitorPluginBase {
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
-    imonitorplugin::InputFileContent &&input_file) const override;
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>
+      &&input_file) const override;
 };
 
 CREATE_DETAULT_CONSTRUCTOR_FACTORY(${plugin_name});

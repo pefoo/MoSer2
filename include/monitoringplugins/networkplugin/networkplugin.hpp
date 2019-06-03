@@ -2,6 +2,7 @@
 #define NETWORKPLUGIN_H
 
 #include <string>
+#include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
@@ -16,7 +17,8 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
-    imonitorplugin::InputFileContent &&input_file) const override;
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>
+          &&input_file) const override;
 };
 
 CREATE_DETAULT_CONSTRUCTOR_FACTORY(NetworkPlugin);
@@ -25,4 +27,4 @@ CREATE_DEFAULT_DESTRUCTOR_FACTORY(NetworkPlugin);
 }  // namespace networkplugin
 }  // namespace monitoringplugins
 
-#endif  // 
+#endif  //

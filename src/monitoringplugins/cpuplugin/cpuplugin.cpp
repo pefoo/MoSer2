@@ -45,9 +45,10 @@ CpuPlugin::CpuPlugin()
 }
 
 imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
-    imonitorplugin::InputFileContent&& input_file) const {
-  auto p0 = this->GetCpuStat(input_file.snapshot_1());
-  auto p1 = this->GetCpuStat(input_file.snapshot_2());
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+        input_file) const {
+  auto p0 = this->GetCpuStat(input_file["/proc/stat"].snapshot_1());
+  auto p1 = this->GetCpuStat(input_file["/proc/stat"].snapshot_2());
   imonitorplugin::PluginData::data_vector usage;
   for (size_t i = 0; i < this->core_count_; ++i) {
     float user_delta = p1.user[i] - p0.user[i];

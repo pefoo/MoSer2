@@ -10,7 +10,8 @@ monitoringplugins::memoryplugin::MemoryPlugin::MemoryPlugin()
 
 imonitorplugin::PluginData::data_vector
 monitoringplugins::memoryplugin::MemoryPlugin::AcquireDataInternal(
-    imonitorplugin::InputFileContent&& input_file) const {
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+        input_file) const {
   const char* meminfo = "/proc/meminfo";
   if (access(meminfo, R_OK) == -1) {
     ThrowPluginException("Failed to access /proc/meminfo");

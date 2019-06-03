@@ -5,11 +5,11 @@ namespace monitoringplugins {
 namespace networkplugin {
 
 NetworkPlugin::NetworkPlugin()
-  : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
+    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
 
 imonitorplugin::PluginData::data_vector NetworkPlugin::AcquireDataInternal(
-    imonitorplugin::InputFileContent&& input_file) const {}
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>
+        &&input_file) const {}
 
 }  // namespace networkplugin
 }  // namespace monitoringplugins
-
