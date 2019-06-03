@@ -19,7 +19,7 @@ plugin_header_file="${plugin_header_dir}/${plugin_name_lower}.hpp"
 plugin_processor_header_file="${plugin_header_dir}/${plugin_name_lower}processors.hpp"
 plugin_constants_header_file="${plugin_header_dir}/constants.hpp"
 
-plugin_include_gaurd="$(echo $plugin_name | tr '[:lower:]' '[:upper:]')_H"
+plugin_include_guard="$(echo $plugin_name | tr '[:lower:]' '[:upper:]')_H"
 plugin_processor_include_guard="$(echo $plugin_name | tr '[:lower:]' '[:upper:]')PROCESSORS_H"
 plugin_constants_include_guard="$(echo $plugin_name | tr '[:lower:]' '[:upper:]')CONSTANTS_H"
 
@@ -107,7 +107,7 @@ EOF
 # The plugin header
 #
 cat << EOF >> "${plugin_header_file}"
-#ifndef ${plugin_include_gaurd}
+#ifndef ${plugin_include_guard}
 #define ${plugin_include_guard}
 
 #include <string>
