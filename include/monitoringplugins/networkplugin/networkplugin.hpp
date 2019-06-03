@@ -19,6 +19,10 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
           &&input_file) const override;
+
+ private:
+  std::string rx_bytes_file;
+  std::string tx_bytes_file;
 };
 
 CREATE_DETAULT_CONSTRUCTOR_FACTORY(NetworkPlugin);
