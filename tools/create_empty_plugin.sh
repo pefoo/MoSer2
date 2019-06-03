@@ -140,7 +140,7 @@ EOF
 #
 # The plugin processor header
 #
-cat << EOF >> ${plugin_processor_header_file}"
+cat << EOF >> "${plugin_processor_header_file}"
 #ifndef ${plugin_processor_include_guard}
 #define ${plugin_processor_include_guard}
 
