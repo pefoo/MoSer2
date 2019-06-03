@@ -10,7 +10,6 @@ plugin_name="$2"
 plugin_name_lower="$(echo $plugin_name | tr '[:upper:]' '[:lower:]')"
 plugin_header_dir="${project_root}/include/monitoringplugins/$plugin_name_lower"
 plugin_src_dir="${project_root}/src/monitoringplugins/$plugin_name_lower"
-
 cmake_file="${plugin_src_dir}/CMakeLists.txt"
 plugin_src_file="${plugin_src_dir}/${plugin_name_lower}.cpp"
 plugin_processor_src_file="${plugin_src_dir}/${plugin_name_lower}processors.cpp"
@@ -96,6 +95,8 @@ namespace ${plugin_name_lower} {
 namespace constants {
 
 static constexpr char kPluginName[] = "${plugin_name}";
+static constexpr char kGpScriptName[] = "${plugin_gp_scirpt_name}";
+static constexpr char kGpArgFileName[] = "file_name";
 
 }  // namespace constants
 }  // namespace ${plugin_name_lower}
