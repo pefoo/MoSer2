@@ -2,6 +2,7 @@
 #define MEMORYPLUGIN_H
 
 #include <string>
+#include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
@@ -15,7 +16,8 @@ class MemoryPlugin : public monitoringpluginbase::MonitorPluginBase {
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
-      imonitorplugin::InputFileContent &&input_file) const override;
+      std::unordered_map<std::string,
+      imonitorplugin::InputFileContent> &&input_file) const override;
 
  private:
 };

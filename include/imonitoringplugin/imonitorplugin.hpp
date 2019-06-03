@@ -2,6 +2,8 @@
 #define IMONITORPLUGIN_H
 
 #include <string>
+#include <unordered_map>
+#include <vector>
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "imonitoringplugin/plugindata.hpp"
 
@@ -25,10 +27,10 @@ class IMonitorPlugin {
   virtual std::string name() const = 0;
 
   ///
-  /// \brief Get the requested input file name
-  /// \return The file name
+  /// \brief Get the requested input files
+  /// \return The file names
   ///
-  virtual std::string input_file() const = 0;
+  virtual std::vector<std::string> input_files() const = 0;
 
   ///
   /// \brief Acquire the data.
@@ -36,7 +38,8 @@ class IMonitorPlugin {
   /// \return The acquired data.
   ///
   virtual PluginData AcquireData(
-      imonitorplugin::InputFileContent&& input_file) const = 0;
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+          input_file) const = 0;
 };
 
 }  // namespace imonitorplugin

@@ -36,15 +36,18 @@ monitoringplugins::diskplugin::DiskPlugin::DiskPlugin()
 
 imonitorplugin::PluginData::data_vector
 monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
-    imonitorplugin::InputFileContent &&input_file) const {
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>
+        &&input_file) const {
   auto devices = std::stringstream{this->settings_->GetValue("Devices", "")};
   std::string tmp;
   std::vector<std::string> device_list;
   while (std::getline(devices, tmp, ';')) {
     device_list.push_back(tmp);
   }
-  auto stats_1 = this->ParseDiskstat(device_list, input_file.snapshot_1());
-  auto stats_2 = this->ParseDiskstat(device_list, input_file.snapshot_2());
+  auto stats_1 = this->ParseDiskstat(
+      device_list, input_file["/proc/diskstats"].snapshot_1());
+  auto stats_2 = this->ParseDiskstat(
+      device_list, input_file["/proc/diskstats"].snapshot_2());
   int64_t sector_size = std::stol(this->settings_->GetValue("SectorSize", ""));
   imonitorplugin::PluginData::data_vector data;
 
@@ -52,7 +55,8 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
     auto t_io_total =
         stats_2.at(device_name).t_io - stats_1.at(device_name).t_io;
     auto utilization = (static_cast<double>(t_io_total) /
-                        (input_file.timestamp_2() - input_file.timestamp_1())) *
+                        (input_file["/proc/diskstats"].timestamp_2() -
+                         input_file["/proc/diskstats"].timestamp_1())) *
                        0.1;
     int64_t bytes_read = int64_t(stats_2.at(device_name).sectors_read -
                                  stats_1.at(device_name).sectors_read) *

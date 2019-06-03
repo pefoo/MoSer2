@@ -11,7 +11,8 @@ monitoringplugins::loadplugin::LoadPlugin::LoadPlugin()
 
 imonitorplugin::PluginData::data_vector
 monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal(
-    imonitorplugin::InputFileContent&& input_file) const {
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>
+        &&input_file) const {
   std::string proc_loadavg = "/proc/loadavg";
   if (access(proc_loadavg.c_str(), R_OK) == -1) {
     this->ThrowPluginException("Failed to read from /proc/loadavg");
@@ -29,8 +30,7 @@ monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal(
     float m1 = std::stof(match[1]);
     float m5 = std::stof(match[2]);
     float m15 = std::stof(match[3]);
-    return {
-        {"m1", m1}, {"m5", m5}, {"m15", m15}};
+    return {{"m1", m1}, {"m5", m5}, {"m15", m15}};
   } else {
     this->ThrowPluginException(
         "Failed to parse content of /proc/loadavg. Content: " + content);
