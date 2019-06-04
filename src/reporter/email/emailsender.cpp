@@ -62,6 +62,7 @@ bool reporter::email::SendReport(const std::string &report_file,
   }
 
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpragmas"
 #pragma GCC diagnostic ignored "-Wdisabled-macro-expansion"
   // basic server setup
   curl_easy_setopt(curl.Instance(), CURLOPT_URL, smtp_server.c_str());
