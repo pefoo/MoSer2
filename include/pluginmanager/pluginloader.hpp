@@ -225,18 +225,11 @@ class PluginLoader {
     ///
     /// \copydoc pluginmanager::IPlugin::Instance()
     ///
-    const PluginInterface* const Instance() const override {
+    PluginInterface* Instance() override {
       if (!this->instance_) {
         throw std::runtime_error("This plugin was destroyed!");
       }
       return this->instance_;
-    }
-
-    ///
-    /// \copydoc pluginmanager::IPlugin::Instance()
-    ///
-    PluginInterface* const Instance() override {
-      return const_cast<PluginInterface*>(std::as_const(*this).Instance());
     }
 
     ///

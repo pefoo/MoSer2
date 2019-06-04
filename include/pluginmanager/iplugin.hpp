@@ -23,13 +23,7 @@ class IPlugin {
   /// \brief Get the underlying plugin
   /// \return The instance of the actual plugin
   ///
-  virtual const PluginInterface* const Instance() const = 0;
-
-  ///
-  /// \brief Get the underlying plugin
-  /// \return The instance of the actual plugin
-  ///
-  virtual PluginInterface* const Instance() = 0;
+  virtual PluginInterface* Instance() = 0;
 
   ///
   /// \brief Get the library path
