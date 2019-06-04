@@ -2,10 +2,11 @@ set(SOURCES
   base64.cpp
   gnuplot/gnuplotparameterdict.cpp
   gnuplot/gnuplotwrapper.cpp
+  settingshelper.cpp
 )
 
 ADD_LIBRARY(DataProcessorHelper STATIC ${SOURCES})
-target_link_libraries(DataProcessorHelper stdc++fs IMonitorPlugin Utility)
+target_link_libraries(DataProcessorHelper stdc++fs IMonitorPlugin Utility SettingsProvider)
 
 target_include_directories(DataProcessorHelper
 PUBLIC

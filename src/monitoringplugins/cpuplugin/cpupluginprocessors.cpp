@@ -13,7 +13,7 @@ monitoringplugins::cpuplugin::CreateProcessors() {
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
            "%%CPU_TIME_SERIES_DATA%%",
            [](std::vector<imonitorplugin::PluginData> records) -> std::string {
-             if (records.size() == 0) {
+             if (records.empty()) {
                return "";
              }
              dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
@@ -34,7 +34,7 @@ monitoringplugins::cpuplugin::CreateProcessors() {
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
            "%%CPU_USAGE_AVERAGE%%",
            [](std::vector<imonitorplugin::PluginData> records) -> std::string {
-             if (records.size() == 0) {
+             if (records.empty()) {
                return "";
              }
              double core_count = records.front().data().size();
@@ -45,6 +45,6 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                  total += std::any_cast<double>(v.second);
                }
              }
-             return std::to_string(total / core_count);
+             return std::to_string(total / core_count / records.size());
            })}};
 }

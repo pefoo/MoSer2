@@ -1,6 +1,7 @@
 #ifndef LOADPLUGIN_H
 #define LOADPLUGIN_H
 
+#include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
@@ -14,7 +15,8 @@ class LoadPlugin : public monitoringpluginbase::MonitorPluginBase {
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
-      imonitorplugin::InputFileContent&& input_file) const override;
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+          input_file) const override;
 
  private:
 };

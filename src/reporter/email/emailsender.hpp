@@ -20,7 +20,7 @@ namespace email {
 bool SendReport(const std::string& report_file,
                 std::vector<std::string> recipients,
                 const std::string& smtp_server, const std::string& user,
-                const std::string password);
+                const std::string& password);
 
 ///
 /// \brief Send the report via email
@@ -34,7 +34,7 @@ bool SendReport(const std::string& report_file,
 ///
 bool SendReport(const std::string& report_file, const std::string& recipient,
                 const std::string& smtp_server, const std::string& user,
-                const std::string password);
+                const std::string& password);
 
 }  // namespace email
 }  // namespace reporter

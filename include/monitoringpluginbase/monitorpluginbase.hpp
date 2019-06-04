@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 #include "imonitoringplugin/constants.hpp"
@@ -45,16 +46,16 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   std::string name() const override;
 
   ///
-  /// \copydoc imonitorplugin::IMonitorPlugin::input_file()
+  /// \copydoc imonitorplugin::IMonitorPlugin::input_files()
   ///
-  std::string input_file() const override;
+  std::vector<std::string> input_files() const override;
 
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::AcquireData()
   ///
   imonitorplugin::PluginData AcquireData(
-      imonitorplugin::InputFileContent&& input_file =
-          imonitorplugin::InputFileContent{}) const override;
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+          input_file) const override;
 
  protected:
   ///
@@ -64,13 +65,14 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \return A vector of key value pairs
   ///
   virtual imonitorplugin::PluginData::data_vector AcquireDataInternal(
-      imonitorplugin::InputFileContent&& input_file) const = 0;
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+          input_file) const = 0;
 
   ///
   /// \brief Raise a plugin exception
   /// \param msg The message to raise
   ///
-  void ThrowPluginException[[noreturn]](const std::string msg) const;
+  void ThrowPluginException[[noreturn]](const std::string& msg) const;
 
   ///
   /// \brief Register a file to be read by the plugin framework
@@ -79,11 +81,12 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   void RegisterFileToRead(const std::string& file);
 
+  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
+
  private:
   std::int64_t MakeTimestamp() const;
   std::string name_;
-  std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
-  std::string input_file_;
+  std::vector<std::string> input_files_;
 };
 }  // namespace monitoringpluginbase
 #endif  // MEASUREMENTPLUGINBASE_H

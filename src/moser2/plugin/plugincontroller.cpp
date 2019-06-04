@@ -23,10 +23,10 @@ void PluginController::LoadPlugin(const std::string &path) {
     auto plug = this->plugin_manager_->LoadPlugin(
         abs_path, imonitoringplugin::kMonitoringPluginConstructor,
         imonitoringplugin::kMonitoringPluginDestructor);
-    auto input_file = plug->Instance()->input_file();
-    if (!input_file.empty()) {
-      this->inputfile_provider_->RegisterPluginFile(plug->Instance()->name(),
-                                                    input_file);
+    auto input_files = plug->Instance()->input_files();
+    if (!input_files.empty()) {
+      this->inputfile_provider_->RegisterPluginFiles(plug->Instance()->name(),
+                                                     input_files);
     }
     this->plugins_.push_back(plug);
 
@@ -67,7 +67,7 @@ void PluginController::RunPlugins(const int interval_ms) {
           imonitorplugin::PluginData data;
           try {
             data = plug->Instance()->AcquireData(
-                this->inputfile_provider_->GetFile(plug->Instance()->name()));
+                this->inputfile_provider_->GetFiles(plug->Instance()->name()));
           } catch (const imonitorplugin::PluginException &pe) {
             LOG(ERROR) << pe.what();
           }

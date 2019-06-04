@@ -39,7 +39,7 @@ class QueryHelper {
   static const std::string kSpecialColTimestamp;
 
  private:
-  QueryHelper() {}
+  QueryHelper() = default;
   static std::string GetSqliteType(const std::type_info& type);
   static std::string GetEscapedValueAsString(std::any&);
 };

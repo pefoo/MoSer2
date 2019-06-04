@@ -19,9 +19,11 @@ class PluginData {
   ///
   /// \brief PluginData
   ///
-  PluginData(std::string name = "", std::int64_t timestamp = 0,
-             data_vector data = {})
-      : plugin_name_(name), timestamp_(timestamp), data_(data) {}
+  explicit PluginData(std::string name = "", std::int64_t timestamp = 0,
+                      data_vector data = {})
+      : plugin_name_(std::move(name)),
+        timestamp_(timestamp),
+        data_(std::move(data)) {}
 
   ///
   /// \brief plugin_name
@@ -64,7 +66,8 @@ class PluginData {
       return [](std::any& data) -> std::string {
         return std::to_string(std::any_cast<int>(data));
       };
-    } else if (type == typeid(int64_t)) {
+    }
+    if (type == typeid(int64_t)) {
       return [](std::any& data) -> std::string {
         return std::to_string(std::any_cast<int64_t>(data));
       };

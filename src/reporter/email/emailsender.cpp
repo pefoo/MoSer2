@@ -25,22 +25,22 @@ class CurlRaiiWrapper {
 ///
 class CurlRecipientsRaiiWrapper {
  public:
-  CurlRecipientsRaiiWrapper() : recipients_(nullptr) {}
+  CurlRecipientsRaiiWrapper() {}
   ~CurlRecipientsRaiiWrapper() { curl_slist_free_all(this->recipients_); }
-  void AddRecipient(const std::string recipient) {
+  void AddRecipient(const std::string &recipient) {
     this->recipients_ = curl_slist_append(this->recipients_, recipient.c_str());
   }
   curl_slist *Instante() { return this->recipients_; }
 
  private:
-  curl_slist *recipients_;
+  curl_slist *recipients_{nullptr};
 };
 
 bool reporter::email::SendReport(const std::string &report_file,
                                  const std::string &recipient,
                                  const std::string &smtp_server,
                                  const std::string &user,
-                                 const std::string password) {
+                                 const std::string &password) {
   return SendReport(report_file, std::vector<std::string>{recipient},
                     smtp_server, user, password);
 }
@@ -49,7 +49,7 @@ bool reporter::email::SendReport(const std::string &report_file,
                                  std::vector<std::string> recipients,
                                  const std::string &smtp_server,
                                  const std::string &user,
-                                 const std::string password) {
+                                 const std::string &password) {
   if (!std::filesystem::exists(report_file)) {
     LOG(ERROR) << "The report file " << report_file << " does not exist.";
     return false;

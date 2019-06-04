@@ -34,6 +34,8 @@ The used configuration file depends on the build type.
 The debug type settings expect the plugin libraries to be located right next to the executable. 
 The actualy configuration expects them to be installed at _/usr/local/lib/MoSer2_.
 
+**Dont forget to setup your configuration.**
+
 # Overview
 MoSer2 is build on top of a plugin framework. 
 Each metric that is created during runtime is created using a dynamically loaded plugin. 
@@ -109,10 +111,11 @@ The template is written mainly in html.
 Eventually, the result of the replacement is send as an email.
 
 ###  Built-in Tokens
-**Data less:**
+
 
 |Token|Value|
 |---|---|
+|**Data less:**||
 |%%HOSTNAME%%|The host name of the machine.|
 |%%KERNEL_VERSION%%|The kernel version.|
 |%%SYSTEM_NAME%%|The system name (most likely linx...).|
@@ -120,11 +123,14 @@ Eventually, the result of the replacement is send as an email.
 |%%DOMAIN_NAME%%|The current domain name.|
 |%%DATETIME%%|The current date and time in the format Www Mmm dd hh:mm:ss yyyy.|
 |%%UPTIME%%|The update in the format X days X hours x minutes x seconds. Zero values are omitted|
-
-**Cpu  plugin:**
-
-|Token|Value|
-|---|---|
+|**Cpu plugin:**||
 |%%CPU_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the cpu usage.|
 |%%CPU_USAGE_AVERAGE%%|The average cpu usage. A single value.|
-
+|**Memory plugin:**||
+|%%MEMORY_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the memory usage.|
+|**Load average plugin:**||
+|%%LOAD_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the load average.|
+|**Disk plugin:**||
+|%%DISK_{device}_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the disk usage. The device name must be specified|
+|**Network plugin:**||
+|%%NETWORK_TIMES_SERIES_DATA%%|A base 64 encoded time series chart of the network usage.|

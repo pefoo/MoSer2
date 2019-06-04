@@ -7,7 +7,7 @@ namespace gnuplot {
 GnuPlotParameterDict::GnuPlotParameterDict() {}
 
 void GnuPlotParameterDict::AddParameter(const std::string &key,
-                                        const std::string value, bool quote,
+                                        const std::string& value, bool quote,
                                         bool replace_existing) {
   if (!replace_existing && this->parameter_.count(key)) {
     return;
@@ -23,7 +23,7 @@ void GnuPlotParameterDict::AddParameter(const GnuPlotParameterDict &dict,
 }
 
 std::string GnuPlotParameterDict::ToString() const {
-  if (this->parameter_.size() == 0) {
+  if (this->parameter_.empty()) {
     return "";
   }
   std::string arg = "\"";
