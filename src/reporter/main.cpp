@@ -88,6 +88,7 @@ int main() {
             settings->GetValue(constants::settings::MailPassword()))) {
       LOG(ERROR) << "Failed to send the report";
     }
+    std::filesystem::remove(result_file);
   }
 
   // Destroy loaded plugins
