@@ -17,7 +17,7 @@ constexpr bool DefaultVerifier([[gnu::unused]] const std::string& v) {
   return true;
 }
 
-static bool FileExistVerifier(const std::string& v) {
+[[maybe_unused]] static bool FileExistVerifier(const std::string& v) {
   return std::filesystem::exists(v);
 }
 
