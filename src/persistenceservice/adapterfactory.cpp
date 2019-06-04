@@ -15,4 +15,5 @@ persistenceservice::AdapterFactory::CreateAdapter() const {
       return std::make_unique<sqlite::SqliteAdapter>(
           this->adapter_settings_.get());
   }
+  throw std::runtime_error("Adapter type not supported");
 }
