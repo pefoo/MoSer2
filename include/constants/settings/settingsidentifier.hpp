@@ -19,17 +19,17 @@ namespace settings {
   }
 
 MAKESETTING(MeasurementDelay, "MeasurementDelay", "Core")
-MAKESETTING(PluginBasePath, "PluginBasePath", "Core");
-MAKESETTING(PluginFilter, "PluginFilter", "Core");
+MAKESETTING(PluginBasePath, "PluginBasePath", "Core")
+MAKESETTING(PluginFilter, "PluginFilter", "Core")
 
-MAKESETTING(SqliteDatabaseFile, "DatabaseFile", "SqliteAdapter");
+MAKESETTING(SqliteDatabaseFile, "DatabaseFile", "SqliteAdapter")
 
-MAKESETTING(DataAge, "DataAge", "Reporter");
-MAKESETTING(ReporTemplate, "ReportTemplate", "Reporter");
-MAKESETTING(MailRecipient, "MailRecipient", "Reporter");
-MAKESETTING(SmtpServer, "SmtpServer", "Reporter");
-MAKESETTING(MailUser, "MailUser", "Reporter");
-MAKESETTING(MailPassword, "MailPassword", "Reporter");
+MAKESETTING(DataAge, "DataAge", "Reporter")
+MAKESETTING(ReporTemplate, "ReportTemplate", "Reporter")
+MAKESETTING(MailRecipient, "MailRecipient", "Reporter")
+MAKESETTING(SmtpServer, "SmtpServer", "Reporter")
+MAKESETTING(MailUser, "MailUser", "Reporter")
+MAKESETTING(MailPassword, "MailPassword", "Reporter")
 }  // namespace settings
 }  // namespace constants
 
