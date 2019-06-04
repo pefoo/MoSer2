@@ -25,8 +25,8 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
   std::string tx_bytes_file;
 };
 
-CREATE_DETAULT_CONSTRUCTOR_FACTORY(NetworkPlugin);
-CREATE_DEFAULT_DESTRUCTOR_FACTORY(NetworkPlugin);
+CREATE_DETAULT_CONSTRUCTOR_FACTORY(NetworkPlugin)
+CREATE_DEFAULT_DESTRUCTOR_FACTORY(NetworkPlugin)
 
 }  // namespace networkplugin
 }  // namespace monitoringplugins

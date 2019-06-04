@@ -26,8 +26,8 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
       std::vector<std::string> devices, const std::string& diskstat) const;
 };
 
-CREATE_DETAULT_CONSTRUCTOR_FACTORY(DiskPlugin);
-CREATE_DEFAULT_DESTRUCTOR_FACTORY(DiskPlugin);
+CREATE_DETAULT_CONSTRUCTOR_FACTORY(DiskPlugin)
+CREATE_DEFAULT_DESTRUCTOR_FACTORY(DiskPlugin)
 
 }  // namespace diskplugin
 }  // namespace monitoringplugins

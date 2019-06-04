@@ -25,8 +25,8 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
   u_int core_count_;
 };
 
-CREATE_DETAULT_CONSTRUCTOR_FACTORY(CpuPlugin);
-CREATE_DEFAULT_DESTRUCTOR_FACTORY(CpuPlugin);
+CREATE_DETAULT_CONSTRUCTOR_FACTORY(CpuPlugin)
+CREATE_DEFAULT_DESTRUCTOR_FACTORY(CpuPlugin)
 
 }  // namespace cpuplugin
 }  // namespace monitoringplugins
