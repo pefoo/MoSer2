@@ -8,7 +8,11 @@
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
 
 // TODO is this dummy callback actually required?
-static int QueryCallback(void *data, int argc, char **argv, char **col_name) {}
+static int QueryCallback([[maybe_unused]] void *data, [[maybe_unused]] int argc,
+                         [[maybe_unused]] char **argv,
+                         [[maybe_unused]] char **col_name) {
+  return 0;
+}
 
 persistenceservice::sqlite::SqliteAdapter::SqliteAdapter(
     AdapterSettings *adapter_settings)

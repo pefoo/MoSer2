@@ -22,8 +22,8 @@ class MemoryPlugin : public monitoringpluginbase::MonitorPluginBase {
  private:
 };
 
-CREATE_DETAULT_CONSTRUCTOR_FACTORY(MemoryPlugin);
-CREATE_DEFAULT_DESTRUCTOR_FACTORY(MemoryPlugin);
+CREATE_DETAULT_CONSTRUCTOR_FACTORY(MemoryPlugin)
+CREATE_DEFAULT_DESTRUCTOR_FACTORY(MemoryPlugin)
 
 }  // namespace memoryplugin
 }  // namespace monitoringplugins

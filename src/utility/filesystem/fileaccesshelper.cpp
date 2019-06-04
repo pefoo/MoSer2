@@ -27,7 +27,7 @@ std::filesystem::path utility::filesystem::PathCombine(
 
 std::filesystem::__cxx11::path utility::filesystem::GetCurrentExecutablePath() {
   char path[PATH_MAX];
-  auto c = readlink("/proc/self/exe", path, PATH_MAX);
+  readlink("/proc/self/exe", path, PATH_MAX);
   return std::filesystem::canonical(dirname(path));
 }
 

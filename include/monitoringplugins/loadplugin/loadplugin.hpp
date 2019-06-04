@@ -21,8 +21,8 @@ class LoadPlugin : public monitoringpluginbase::MonitorPluginBase {
  private:
 };
 
-CREATE_DETAULT_CONSTRUCTOR_FACTORY(LoadPlugin);
-CREATE_DEFAULT_DESTRUCTOR_FACTORY(LoadPlugin);
+CREATE_DETAULT_CONSTRUCTOR_FACTORY(LoadPlugin)
+CREATE_DEFAULT_DESTRUCTOR_FACTORY(LoadPlugin)
 
 }  // namespace loadplugin
 }  // namespace monitoringplugins

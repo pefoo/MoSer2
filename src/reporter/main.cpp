@@ -52,7 +52,7 @@ int main() {
                             imonitoringplugin::kDataProcessorDestructor));
       LOG(DEBUG) << "Loaded data processors from " << file << " (plugin: "
                  << processor_plugins.back()->Instance()->plugin() << ")";
-    } catch (std::exception) {
+    } catch (std::exception &) {
       LOG(WARNING) << "The plugin library " << file
                    << " does not define any template processors.";
     }
