@@ -36,6 +36,22 @@ The actualy configuration expects them to be installed at _/usr/local/lib/MoSer2
 
 **Dont forget to setup your configuration.**
 
+### Coverage
+To execute the code coverage the following tools are required:
+- gcov (make sure to use a version that matches your compiler)
+- lcov  (version >= 1.14 required with gcc-8)
+- genhtml
+
+Run
+```
+mkdir runtime
+cd runtime
+cmake -DCMAKE_BUILD_TYPE=Coverage ..
+make coverage
+```
+To execute the code coverage (unit tests will be executed).
+The results are found in runtime/lcov-html/index.html.
+
 # Overview
 MoSer2 is build on top of a plugin framework. 
 Each metric that is created during runtime is created using a dynamically loaded plugin. 
