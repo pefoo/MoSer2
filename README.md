@@ -8,6 +8,7 @@ It employs a plugin infrastructure, that is capable of loading components during
 Reports are generated and send as email notifications.
 
 # Getting started
+## Build
 ### Required packages
 - libsqlite3-dev
 - libcurl14-openssl-dev
@@ -51,6 +52,27 @@ make coverage
 ```
 To execute the code coverage (unit tests will be executed).
 The results are found in runtime/lcov-html/index.html.
+
+## Run MoSer2
+### Configuraiton 
+Currently MoSer2 is using several configuraiton files.
+Application settings are located in _moser2.conf_. 
+This file is either located in your build folder or at _/usr/local/bin/MoSer2/_ if you installed it. 
+Make sure to tune the app settings according to your setup. 
+
+Some plugins come with configuration files. 
+These files are located either in your build folder or at _/usr/local/bin/MoSer2/_ and named like the plugin. 
+Make sure to tune these configs according to your needs. 
+
+The template (used for report generation) is located either in your build directory or at _/usr/local/bin/MoSer2/_.
+
+### Execute 
+_MoSer2_ is the data acquisition part.
+Once started, in loads the plugins and keeps running untill you press any key. 
+
+_MoSerep_ is the reporter part.
+Once executed, it creates and sends the reports and exits. 
+A working **gnuplot** installation is required. 
 
 # Overview
 MoSer2 is build on top of a plugin framework. 
