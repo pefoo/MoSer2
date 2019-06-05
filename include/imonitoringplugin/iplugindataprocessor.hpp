@@ -1,5 +1,6 @@
 #ifndef IPLUGINDATAPROCESSOR_H
 #define IPLUGINDATAPROCESSOR_H
+// LCOV_EXCL_START
 
 #include <functional>
 #include <string>
@@ -43,5 +44,5 @@ class IPluginDataProcessor {
 };
 
 }  // namespace imonitorplugin
-
+// LCOV_EXCL_STOP
 #endif  // IPLUGINDATAPROCESSOR_H

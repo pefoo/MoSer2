@@ -1,5 +1,6 @@
 #ifndef IPLUGIN_H
 #define IPLUGIN_H
+// LCOV_EXCL_START
 
 #include <string>
 namespace pluginmanager {
@@ -32,4 +33,5 @@ class IPlugin {
   virtual std::string GetLibraryPath() const = 0;
 };
 }  // namespace pluginmanager
+// LCOV_EXCL_STOP
 #endif  // IPLUGIN_H
