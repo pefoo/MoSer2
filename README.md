@@ -48,6 +48,7 @@ Run
 mkdir runtime
 cd runtime
 cmake -DCMAKE_BUILD_TYPE=Coverage ..
+make
 make coverage
 ```
 To execute the code coverage (unit tests will be executed).
