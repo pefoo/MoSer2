@@ -22,5 +22,6 @@ set xlabel "Date"
 set ylabel y_label
 set grid
 set xtics rotate
+set yrange [0:100]
 
 plot for [i=2:y_series_count+1] file_name using 1:i with lines title columnheader(i)

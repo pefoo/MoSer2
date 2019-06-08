@@ -1,5 +1,7 @@
 #include "monitoringplugins/cpuplugin/cpupluginprocessors.hpp"
+#include <cmath>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
@@ -45,6 +47,10 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                  total += std::any_cast<double>(v.second);
                }
              }
-             return std::to_string(total / core_count / records.size());
+             auto rounded =
+                 (std::round((total / core_count / records.size()) * 10)) / 10;
+             std::stringstream f{};
+             f << rounded;
+             return f.str();
            })}};
 }
