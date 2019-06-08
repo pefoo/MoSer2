@@ -19,5 +19,6 @@ set xlabel "Date"
 set ylabel "Network usage [byte/s]"
 set grid
 set xtics rotate
+set key noenhanced
 
 plot for [i=2:3] file_name using 1:i with lines title columnheader(i)
