@@ -37,6 +37,23 @@ The actualy configuration expects them to be installed at _/usr/local/lib/MoSer2
 
 **Dont forget to setup your configuration.**
 
+### Coverage
+To execute the code coverage the following tools are required:
+- gcov (make sure to use a version that matches your compiler)
+- lcov  (version >= 1.14 required with gcc-8)
+- genhtml
+
+Run
+```
+mkdir runtime
+cd runtime
+cmake -DCMAKE_BUILD_TYPE=Coverage ..
+make
+make coverage
+```
+To execute the code coverage (unit tests will be executed).
+The results are found in runtime/lcov-html/index.html.
+
 ## Run MoSer2
 ### Configuraiton 
 Currently MoSer2 is using several configuraiton files.

@@ -16,15 +16,23 @@ namespace monitoringpluginbase {
  * Macros to define the default function factories.
  * Pass the plugin type as argument.
  * Note that these macros may not be placed inside a class!
+ *
+ * If you link the plugins instead of load them dynamically, add the
+ * LINKED_PLUGIN definition to skip the factory function creation
  */
+
+#ifndef LINKED_PLUGIN
 #define CREATE_DETAULT_CONSTRUCTOR_FACTORY(type) \
   extern "C" ::imonitorplugin::IMonitorPlugin*   \
   MONITORING_PLUGIN_CONSTRUCTOR() {              \
     return new type{};                           \
   }
-
 #define CREATE_DEFAULT_DESTRUCTOR_FACTORY(type) \
   extern "C" void MONITORING_PLUGIN_DESTRUCTOR(type* p) { delete p; }
+#else
+#define CREATE_DETAULT_CONSTRUCTOR_FACTORY(type)
+#define CREATE_DEFAULT_DESTRUCTOR_FACTORY(type)
+#endif
 
 ///
 /// \brief The base class of each monitoring plugin.

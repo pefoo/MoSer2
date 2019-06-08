@@ -1,6 +1,6 @@
 #ifndef PLUGINDATAPROCESSORCOLLECTION_H
 #define PLUGINDATAPROCESSORCOLLECTION_H
-
+// LCOV_EXCL_START
 #include <memory>
 #include <string>
 #include <vector>
@@ -19,13 +19,16 @@ namespace monitoringpluginbase {
 /// \param processors A vector with processors (see constructor of
 /// monitoringpluginbase::PluginDataProcessorCollection
 ///
+#ifndef LINKED_PLUGIN
 #define CREATE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors) \
   extern "C" ::imonitorplugin::IPluginDataProcessorCollection*        \
   DATA_PROCESSOR_CONSTRUCTOR() {                                      \
     return new ::monitoringpluginbase::PluginDataProcessorCollection{ \
         plugin_name, processors};                                     \
   }
-
+#else
+#define CREATE_PROCESSOR_CONSTRUCTOR_FACTORY(plugin_name, processors)
+#endif
 ///
 /// \brief A macro to create the factory function for the processor collection
 /// destructor
@@ -34,12 +37,15 @@ namespace monitoringpluginbase {
 /// \note Required, when processors are exposed. Do not place this macro inside
 /// a class or function.
 ///
+#ifndef LINKED_PLUGIN
 #define CREATE_PROCESSOR_DESTRUCTOR_FACTORY()                \
   extern "C" void DATA_PROCESSOR_DESTRUCTOR(                 \
       ::imonitorplugin::IPluginDataProcessorCollection* p) { \
     delete p;                                                \
   }
-
+#else
+#define CREATE_PROCESSOR_DESTRUCTOR_FACTORY()
+#endif
 ///
 /// The imonitorplugin::IPluginDataProcessorCollection implementation
 ///
@@ -50,7 +56,7 @@ class PluginDataProcessorCollection
       std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>;
 
   explicit PluginDataProcessorCollection(std::string plugin,
-                                ProcessorVector processors = {});
+                                         ProcessorVector processors = {});
 
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessorCollection::plugin()
@@ -66,7 +72,7 @@ class PluginDataProcessorCollection
   const std::string plugin_;
   ProcessorVector processors_;
 };
-
+// LCOV_EXCL_STOP
 }  // namespace monitoringpluginbase
 
 #endif  // PLUGINDATAPROCESSORCOLLECTION_H

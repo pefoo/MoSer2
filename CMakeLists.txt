@@ -24,6 +24,21 @@ include(GNUInstallDirs)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wextra -Wpedantic")
 
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Coverage")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+endif()
+
+#
+# Custom targets
+#
+add_custom_target(coverage
+  COMMAND lcov -q -d . -z
+  COMMAND ctest -Q
+  COMMAND lcov -q -d . -c -o coverage.info
+  COMMAND lcov -Q -e coverage.info -o filtered_coverage.info '${PROJECT_SOURCE_DIR}/include/*' '${PROJECT_SOURCE_DIR}/src/*'
+  COMMAND lcov -l filtered_coverage.info
+  COMMAND genhtml -q -o lcov-html filtered_coverage.info)
+
 #
 # set output dirs
 #
@@ -74,4 +89,5 @@ if (BUILD_TESTS)
   add_subdirectory(./test/persistenceservice)
   add_subdirectory(./test/reporter)
   add_subdirectory(./test/dataprocessorhelper)
+  add_subdirectory(./test/monitoringplugins)
 endif()

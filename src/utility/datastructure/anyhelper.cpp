@@ -1,6 +1,7 @@
 #include "utility/datastructure/anyhelper.hpp"
 #include <string>
 
+// LCOV_EXCL_START
 std::string utility::datastructure::PrimitiveAnyToString(const std::any& data) {
   auto& type = data.type();
   if (type == typeid(int)) {
@@ -27,3 +28,4 @@ std::string utility::datastructure::PrimitiveAnyToString(const std::any& data) {
   throw std::runtime_error("Not supported data type: " +
                            std::string(type.name()));
 }
+// LCOV_EXCL_STOP

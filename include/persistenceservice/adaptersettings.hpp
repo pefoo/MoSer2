@@ -1,5 +1,6 @@
 #ifndef ADAPTERSETTINGS_H
 #define ADAPTERSETTINGS_H
+// LCOV_EXCL_START
 
 #include "AdapterTypes.hpp"
 
@@ -32,4 +33,5 @@ class AdapterSettings {
 };
 }  // namespace persistenceservice
 
+// LCOV_EXCL_STOP
 #endif  // ADAPTERSETTINGS_H

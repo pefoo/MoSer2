@@ -1,5 +1,6 @@
 #ifndef CPUPLUGINPROCESSORS_HPP
 #define CPUPLUGINPROCESSORS_HPP
+// LCOV_EXCL_START
 
 #include "monitoringpluginbase/plugindataprocessor.hpp"
 #include "monitoringpluginbase/plugindataprocessorcollection.hpp"
@@ -16,4 +17,5 @@ CREATE_PROCESSOR_DESTRUCTOR_FACTORY()
 }  // namespace cpuplugin
 }  // namespace monitoringplugins
 
+// LCOV_EXCL_STOP
 #endif  // CPUPLUGINPROCESSORS_HPP

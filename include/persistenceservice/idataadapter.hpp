@@ -1,5 +1,6 @@
 #ifndef IDATAADAPTER_H
 #define IDATAADAPTER_H
+// LCOV_EXCL_START
 
 #include <string>
 #include <vector>
@@ -36,4 +37,5 @@ class IDataAdapter {
 
 }  // namespace persistenceservice
 
+// LCOV_EXCL_STOP
 #endif  // IDATAADAPTER_H

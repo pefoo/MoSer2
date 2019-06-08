@@ -1,5 +1,6 @@
 #ifndef IMONITORPLUGIN_H
 #define IMONITORPLUGIN_H
+// LCOV_EXCL_START
 
 #include <string>
 #include <unordered_map>
@@ -43,4 +44,5 @@ class IMonitorPlugin {
 };
 
 }  // namespace imonitorplugin
+// LCOV_EXCL_STOP
 #endif  // IMONITORPLUGIN_H

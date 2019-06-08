@@ -1,6 +1,7 @@
 set(SOURCES
   main.cpp
   templateprocessor_test.cpp
+  templatetoken_test.cpp
 )
 
 add_executable(reporter_unit_test ${SOURCES})

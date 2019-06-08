@@ -1,5 +1,6 @@
 #ifndef IPLUGINDATAPROCESSORCOLLECTION_H
 #define IPLUGINDATAPROCESSORCOLLECTION_H
+// LCOV_EXCL_START
 
 #include <imonitoringplugin/iplugindataprocessor.hpp>
 #include <memory>
@@ -36,5 +37,5 @@ class IPluginDataProcessorCollection {
 };
 
 }  // namespace imonitorplugin
-
+// LCOV_EXCL_STOP
 #endif  // IPLUGINDATAPROCESSORCOLLECTION_H

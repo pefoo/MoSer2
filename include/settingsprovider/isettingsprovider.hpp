@@ -1,14 +1,12 @@
 #ifndef ISETTINGSPROVIDER_H
 #define ISETTINGSPROVIDER_H
+// LCOV_EXCL_START
 
 #include <functional>
 #include <string>
 #include "settingidentifier.hpp"
 
 namespace settingsprovider {
-// Ignore interfaces when calculating code coverage
-// LCOV_EXCL_START
-
 class ISettingsProvider {
  public:
   ///
@@ -38,8 +36,6 @@ class ISettingsProvider {
   virtual std::string GetValue(const SettingIdentifier& identifier) const = 0;
 };
 
-// LCOV_EXCL_STOP
-
 }  // namespace settingsprovider
-
+// LCOV_EXCL_STOP
 #endif  // ISETTINGSPROVIDER_H

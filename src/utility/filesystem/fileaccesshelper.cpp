@@ -33,7 +33,7 @@ std::filesystem::__cxx11::path utility::filesystem::GetCurrentExecutablePath() {
 
 std::filesystem::__cxx11::path
 utility::filesystem::MakeAbsolutePathFromExecutable(const std::string& path) {
-  if (path.at(0) != '.') {
+  if (path.at(0) == '/') {
     return path;
   }
 
