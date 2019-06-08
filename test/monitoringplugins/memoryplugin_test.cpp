@@ -1,12 +1,42 @@
 #include "monitoringplugins/memoryplugin/memoryplugin.hpp"
+#include <fstream>
 #include <string>
 #include "catch2/catch.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
+#include "monitoringplugins/memoryplugin/memorypluginprocessors.hpp"
+
+static const std::vector<imonitorplugin::PluginData> sample_data{
+    imonitorplugin::PluginData{
+        "MemoryPlugin", 1558784370, {{"mem_usage", 5}, {"swap_usage", 50}}},
+    imonitorplugin::PluginData{
+        "MemoryPlugin", 1558784375, {{"mem_usage", 5}, {"swap_usage", 50}}},
+    imonitorplugin::PluginData{
+        "MemoryPlugin", 1558784380, {{"mem_usage", 5}, {"swap_usage", 50}}}};
 
 TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
-  FAIL_CHECK("Implement the data acquisition tests for MemoryPlugin.");
+  monitoringplugins::memoryplugin::MemoryPlugin plug{};
+  auto data = plug.AcquireData({});
+
+  REQUIRE(data.data().size() == 2);
+  REQUIRE(data.data().at(0).first == "mem_usage");
+  REQUIRE(data.data().at(1).first == "swap_usage");
+
+  REQUIRE(std::any_cast<int>(data.data().at(0).second) > 0);
+  REQUIRE(std::any_cast<int>(data.data().at(0).second) < 100);
+  REQUIRE(std::any_cast<int>(data.data().at(1).second) > 0);
+  REQUIRE(std::any_cast<int>(data.data().at(1).second) < 100);
 }
 
 TEST_CASE("MemoryPlugin Data processor", "[MemoryPlugin]") {
-  FAIL_CHECK("Implement the data processor tests for MemoryPlugin.");
+  auto processors = monitoringplugins::memoryplugin::CreateProcessors();
+  auto time_series_processor = processors.front();
+
+  auto time_series_response = time_series_processor->processor()(sample_data);
+
+  std::ifstream ref_stream{std::string{TESTDATA_DIR} +
+                           "/memoryplugin_time_series_response_ref"};
+  std::string ref;
+  std::getline(ref_stream, ref);
+
+  REQUIRE(time_series_response == ref);
 }
