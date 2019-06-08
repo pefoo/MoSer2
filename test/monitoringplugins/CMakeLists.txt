@@ -1,5 +1,6 @@
 set(SOURCES
   main.cpp
+  configurationinjector.cpp
   cpuplugin_test.cpp
   diskplugin_test.cpp
   loadplugin_test.cpp
