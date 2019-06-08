@@ -1,6 +1,6 @@
 #ifndef NETWORKPLUGINPROCESSORS_H
 #define NETWORKPLUGINPROCESSORS_H
-
+// LCOV_EXCL_START
 #include "monitoringpluginbase/plugindataprocessor.hpp"
 #include "monitoringpluginbase/plugindataprocessorcollection.hpp"
 #include "monitoringplugins/networkplugin/constants.hpp"
@@ -16,5 +16,5 @@ CREATE_PROCESSOR_DESTRUCTOR_FACTORY()
 
 }  // namespace networkplugin
 }  // namespace monitoringplugins
-
+// LCOV_EXCL_STOP
 #endif  // NETWORKPLUGINPROCESSORS_H

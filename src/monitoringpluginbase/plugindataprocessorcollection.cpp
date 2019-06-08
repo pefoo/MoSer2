@@ -1,3 +1,4 @@
+// LCOV_EXCL_START
 #include "monitoringpluginbase/plugindataprocessorcollection.hpp"
 #include <string>
 #include <utility>
@@ -16,3 +17,4 @@ monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringpluginbase::PluginDataProcessorCollection::processors() const {
   return this->processors_;
 }
+// LCOV_EXCL_STOP

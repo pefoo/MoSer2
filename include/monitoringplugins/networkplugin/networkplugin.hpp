@@ -1,6 +1,6 @@
 #ifndef NETWORKPLUGIN_H
 #define NETWORKPLUGIN_H
-
+// LCOV_EXCL_START
 #include <string>
 #include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
@@ -30,5 +30,5 @@ CREATE_DEFAULT_DESTRUCTOR_FACTORY(NetworkPlugin)
 
 }  // namespace networkplugin
 }  // namespace monitoringplugins
-
+// LCOV_EXCL_STOP
 #endif  //

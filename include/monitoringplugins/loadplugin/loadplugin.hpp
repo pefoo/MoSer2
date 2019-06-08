@@ -1,6 +1,6 @@
 #ifndef LOADPLUGIN_H
 #define LOADPLUGIN_H
-
+// LCOV_EXCL_START
 #include <unordered_map>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
@@ -26,5 +26,5 @@ CREATE_DEFAULT_DESTRUCTOR_FACTORY(LoadPlugin)
 
 }  // namespace loadplugin
 }  // namespace monitoringplugins
-
+// LCOV_EXCL_STOP
 #endif  // LOADPLUGIN_H

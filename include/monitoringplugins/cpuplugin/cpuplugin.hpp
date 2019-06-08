@@ -1,5 +1,6 @@
 #ifndef CPUPLUGIN_H
 #define CPUPLUGIN_H
+// LCOV_EXCL_START
 
 #include <string>
 #include <unordered_map>
@@ -30,4 +31,6 @@ CREATE_DEFAULT_DESTRUCTOR_FACTORY(CpuPlugin)
 
 }  // namespace cpuplugin
 }  // namespace monitoringplugins
+
+// LCOV_EXCL_STOP
 #endif  // CPUPLUGIN_H

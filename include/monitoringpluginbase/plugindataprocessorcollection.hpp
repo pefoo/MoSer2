@@ -1,6 +1,6 @@
 #ifndef PLUGINDATAPROCESSORCOLLECTION_H
 #define PLUGINDATAPROCESSORCOLLECTION_H
-
+// LCOV_EXCL_START
 #include <memory>
 #include <string>
 #include <vector>
@@ -72,7 +72,7 @@ class PluginDataProcessorCollection
   const std::string plugin_;
   ProcessorVector processors_;
 };
-
+// LCOV_EXCL_STOP
 }  // namespace monitoringpluginbase
 
 #endif  // PLUGINDATAPROCESSORCOLLECTION_H
