@@ -9,7 +9,7 @@ moser2::plugin::PluginFacade::PluginFacade()
                   imonitorplugin::PluginData>>(1000)) {}
 
 void moser2::plugin::PluginFacade::Put(const imonitorplugin::PluginData &data) {
-  LOG(DEBUG) << data.ToString();
+  LOG(TRACE) << data.ToString();
   this->buffer_->Put(data);
 }
 
