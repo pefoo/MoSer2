@@ -38,6 +38,7 @@ void PluginController::LoadPlugin(const std::string &path) {
         log << m << std::endl;
       }
       LOG(WARNING) << log.str();
+      this->plugin_manager_->DestroyPlugin(plug);
     } else {
       this->plugins_.push_back(plug);
 
