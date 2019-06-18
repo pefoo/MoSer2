@@ -65,6 +65,11 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) const override;
 
+  ///
+  /// \copydoc imonitorplugin::IMonitorPlugin::DoSanityCheck()
+  ///
+  virtual std::vector<std::string> DoSanityCheck() const override;
+
  protected:
   ///
   /// \brief Here the actual work happens. Plugins override this method.

@@ -36,6 +36,11 @@ imonitorplugin::PluginData monitoringpluginbase::MonitorPluginBase::AcquireData(
       this->AcquireDataInternal(std::move(input_file))};
 }
 
+std::vector<std::string>
+monitoringpluginbase::MonitorPluginBase::DoSanityCheck() const {
+  return {};
+}
+
 void monitoringpluginbase::MonitorPluginBase::RegisterFileToRead(
     const std::string& file) {
   this->input_files_.push_back(file);
