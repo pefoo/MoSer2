@@ -32,26 +32,65 @@ struct monitoringplugins::diskplugin::DiskPlugin::DiskStat {
 monitoringplugins::diskplugin::DiskPlugin::DiskPlugin()
     : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {
   this->RegisterFileToRead("/proc/diskstats");
+  auto devices = std::stringstream{this->settings_->GetValue("Devices", "")};
+  int sector_size = std::stoi(this->settings_->GetValue("SectorSize", ""));
+  std::string tmp;
+  std::vector<std::string> device_list;
+  while (std::getline(devices, tmp, ';')) {
+    this->device_list_[tmp] = sector_size;
+  }
+}
+
+std::vector<std::string>
+monitoringplugins::diskplugin::DiskPlugin::DoSanityCheck() const {
+  if (this->device_list_.empty()) {
+    return {"Device list is empty. No drive to monitor."};
+  }
+
+  std::ifstream mounts{"/proc/mounts"};
+  if (mounts.fail()) {
+    return {
+        "Failed to get the list of mounted devices. Failed to read "
+        "/proc/mounts."};
+  }
+  std::vector<std::string> available_mounts;
+  std::vector<std::string> messages;
+  while (!mounts.eof()) {
+    std::string tmp;
+    mounts >> tmp;
+    available_mounts.push_back(tmp);
+    mounts.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  }
+
+  for (const auto &[device_name, sector_size] : this->device_list_) {
+    // check if the configured device is actually available
+    if (std::find(available_mounts.begin(), available_mounts.end(),
+                  device_name) == available_mounts.end()) {
+      messages.push_back("Failed to find device " + device_name);
+    }
+
+    // check if sector size is either 512 or 4096
+    if (!(sector_size == 512 || sector_size == 4096)) {
+      messages.push_back("The sector size for device " + device_name +
+                         " is incorrect (" + std::to_string(sector_size) + ")");
+    }
+  }
+
+  return messages;
 }
 
 imonitorplugin::PluginData::data_vector
 monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>
         &&input_file) const {
-  auto devices = std::stringstream{this->settings_->GetValue("Devices", "")};
-  std::string tmp;
-  std::vector<std::string> device_list;
-  while (std::getline(devices, tmp, ';')) {
-    device_list.push_back(tmp);
-  }
-  auto stats_1 = this->ParseDiskstat(
-      device_list, input_file["/proc/diskstats"].snapshot_1());
-  auto stats_2 = this->ParseDiskstat(
-      device_list, input_file["/proc/diskstats"].snapshot_2());
-  int64_t sector_size = std::stol(this->settings_->GetValue("SectorSize", ""));
+  auto stats_1 =
+      this->ParseDiskstat(input_file["/proc/diskstats"].snapshot_1());
+  auto stats_2 =
+      this->ParseDiskstat(input_file["/proc/diskstats"].snapshot_2());
+
   imonitorplugin::PluginData::data_vector data;
 
-  for (const auto &device_name : device_list) {
+  for (const auto &[device_name, sector_size] : this->device_list_) {
     auto t_io_total =
         stats_2.at(device_name).t_io - stats_1.at(device_name).t_io;
     auto utilization = (static_cast<double>(t_io_total) /
@@ -75,7 +114,7 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
 std::unordered_map<std::string,
                    monitoringplugins::diskplugin::DiskPlugin::DiskStat>
 monitoringplugins::diskplugin::DiskPlugin::ParseDiskstat(
-    std::vector<std::string> devices, const std::string &diskstat) const {
+    const std::string &diskstat) const {
   std::stringstream s{diskstat};
   std::regex rgx(
       R"((\d+)\s+(\d+)\s+([\d\w]+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+))");
@@ -88,7 +127,7 @@ monitoringplugins::diskplugin::DiskPlugin::ParseDiskstat(
       continue;
     }
     std::string d = std::string(match[3]);
-    if (std::find(devices.begin(), devices.end(), d) != devices.end()) {
+    if (this->device_list_.count(d)) {
       stats[d] = DiskStat(d, std::stoul(match[6]), std::stoul(match[10]),
                           std::stoul(match[13]));
     }

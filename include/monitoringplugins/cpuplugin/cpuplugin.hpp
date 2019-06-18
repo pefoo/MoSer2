@@ -4,6 +4,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
@@ -14,6 +15,8 @@ namespace cpuplugin {
 class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   CpuPlugin();
+
+  std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
