@@ -1,4 +1,5 @@
 #include "monitoringplugins/diskplugin/diskplugin.hpp"
+#include <string.h>
 #include <unistd.h>
 #include <algorithm>
 #include <fstream>
@@ -58,7 +59,7 @@ monitoringplugins::diskplugin::DiskPlugin::DoSanityCheck() const {
   while (!mounts.eof()) {
     std::string tmp;
     mounts >> tmp;
-    available_mounts.push_back(tmp);
+    available_mounts.push_back(basename(tmp.c_str()));
     mounts.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
 
