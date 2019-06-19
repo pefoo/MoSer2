@@ -3,6 +3,7 @@
 // LCOV_EXCL_START
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 
 namespace monitoringplugins {
@@ -14,6 +15,8 @@ namespace networkplugin {
 class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   NetworkPlugin();
+
+  std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
