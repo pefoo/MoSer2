@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <memory>
 #include <regex>
+#include <sstream>
 #include <string>
 #include "easyloggingpp-9.96.5/easylogging++.h"
 #include "imonitoringplugin/constants.hpp"
@@ -28,10 +29,22 @@ void PluginController::LoadPlugin(const std::string &path) {
       this->inputfile_provider_->RegisterPluginFiles(plug->Instance()->name(),
                                                      input_files);
     }
-    this->plugins_.push_back(plug);
+    auto msg = plug->Instance()->DoSanityCheck();
+    if (!msg.empty()) {
+      std::stringstream log;
+      log << "Plugin " << plug->Instance()->name()
+          << " reporting errors: " << std::endl;
+      for (const auto &m : msg) {
+        log << m << std::endl;
+      }
+      LOG(WARNING) << log.str();
+      this->plugin_manager_->DestroyPlugin(plug);
+    } else {
+      this->plugins_.push_back(plug);
 
-    LOG(INFO) << "Loaded plugin " << this->plugins_.back()->Instance()->name()
-              << " from " << abs_path;
+      LOG(INFO) << "Loaded plugin " << this->plugins_.back()->Instance()->name()
+                << " from " << abs_path;
+    }
   } catch (const std::exception &e) {
     LOG(ERROR) << "Failed to load the plugin "
                << this->plugins_.back()->Instance()->name() << " located at "

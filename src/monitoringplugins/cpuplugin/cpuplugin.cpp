@@ -55,6 +55,14 @@ CpuPlugin::CpuPlugin()
   this->RegisterFileToRead("/proc/stat");
 }
 
+std::vector<std::string> CpuPlugin::DoSanityCheck() const {
+  std::vector<std::string> msg;
+  if (this->core_count_ <= 0) {
+    msg.push_back("Failed to get the cpu core count.");
+  }
+  return msg;
+}
+
 imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
         input_file) const {

@@ -41,6 +41,12 @@ class IMonitorPlugin {
   virtual PluginData AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) const = 0;
+
+  ///
+  /// \brief Check the plugin configuration and basic functionality
+  /// \return A vector of messages, empty if everything is ok
+  ///
+  virtual std::vector<std::string> DoSanityCheck() const = 0;
 };
 
 }  // namespace imonitorplugin
