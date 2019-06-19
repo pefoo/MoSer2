@@ -34,11 +34,19 @@ monitoringplugins::diskplugin::DiskPlugin::DiskPlugin()
     : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {
   this->RegisterFileToRead("/proc/diskstats");
   auto devices = std::stringstream{this->settings_->GetValue("Devices", "")};
-  int sector_size = std::stoi(this->settings_->GetValue("SectorSize", ""));
+  auto sectors =
+      std::stringstream{this->settings_->GetValue("SectorSizes", "")};
+  std::vector<int> sector_sizes;
   std::string tmp;
+  while (std::getline(sectors, tmp, ';')) {
+    sector_sizes.push_back(std::stoi(tmp));
+  }
+  tmp = "";
   std::vector<std::string> device_list;
+  size_t i = 0;
   while (std::getline(devices, tmp, ';')) {
-    this->device_list_[tmp] = sector_size;
+    this->device_list_[tmp] = sector_sizes.at(i);
+    ++i;
   }
 }
 

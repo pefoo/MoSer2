@@ -46,9 +46,8 @@ void PluginController::LoadPlugin(const std::string &path) {
                 << " from " << abs_path;
     }
   } catch (const std::exception &e) {
-    LOG(ERROR) << "Failed to load the plugin "
-               << this->plugins_.back()->Instance()->name() << " located at "
-               << abs_path << ". " << e.what();
+    LOG(ERROR) << "Failed to load the plugin from " << abs_path << ". "
+               << e.what();
   }
 }
 void PluginController::LoadPlugins(const std::string &path,

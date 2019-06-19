@@ -31,6 +31,11 @@ int main() {
   // setup logging
   core::ConfigureLogger();
 
+  if (system("which gnuplot > /dev/null") != 0) {
+    LOG(ERROR) << "No gnuplot installation found. Exiting.";
+    return 1;
+  }
+
   // Get settings and data adapter
   auto settings = core::settings::GetApplicationSettings();
   auto adapter_factory = std::make_shared<persistenceservice::AdapterFactory>(
