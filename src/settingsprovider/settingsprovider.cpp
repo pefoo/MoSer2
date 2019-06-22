@@ -11,7 +11,14 @@ namespace settingsprovider {
 
 std::string SettingsProvider::GetValue(const std::string &key,
                                        const std::string &section) const {
-  return this->settings_.at(this->BuildKey(key, section)).value_;
+  auto map_key = this->BuildKey(key, section);
+  if (this->settings_.count(map_key)) {
+    return this->settings_.at(this->BuildKey(key, section)).value_;
+  } else {
+    throw std::runtime_error(
+        "The key " + map_key +
+        " is not present in the current configuration file");
+  }
 }
 
 std::string SettingsProvider::GetValue(
