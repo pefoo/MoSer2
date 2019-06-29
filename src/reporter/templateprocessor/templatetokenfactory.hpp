@@ -2,6 +2,7 @@
 #define TEMPLATETOKENFACTORY_H
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 #include "imonitoringplugin/iplugindataprocessorcollection.hpp"
 #include "persistenceservice/idataadapter.hpp"
@@ -37,6 +38,8 @@ class TemplateTokenFactory {
 
  private:
   std::shared_ptr<persistenceservice::IDataAdapter> data_adapter_;
+  std::unordered_map<std::string, std::vector<imonitorplugin::PluginData>>
+      data_;
 };
 
 }  // namespace templateprocessor
