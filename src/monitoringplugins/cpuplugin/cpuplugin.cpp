@@ -75,7 +75,7 @@ imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
     float system_delta = p1.system[i] - p0.system[i];
     float idle_delta = p1.idle[i] - p0.idle[i];
     float iowait_delta = p1.iowait[i] - p0.iowait[i];
-    float irq_delta = p1.irq[i] - p0.irq[1];
+    float irq_delta = p1.irq[i] - p0.irq[i];
     float softirq_elta = p1.softirq[i] - p0.softirq[i];
     float steal_delta = p1.steal[i] - p0.steal[i];
     float delta_total = user_delta + nice_delta + system_delta + idle_delta +
