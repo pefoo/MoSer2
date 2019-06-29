@@ -171,5 +171,6 @@ Eventually, the result of the replacement is send as an email.
 |%%LOAD_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the load average.|
 |**Disk plugin:**||
 |%%DISK_{device}_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the disk usage. The device name must be specified|
+|%%DISK_USAGE%%|A table that shows the disk usage of all configured devices.|
 |**Network plugin:**||
 |%%NETWORK_TIMES_SERIES_DATA%%|A base 64 encoded time series chart of the network usage.|
