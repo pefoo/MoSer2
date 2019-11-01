@@ -63,7 +63,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   imonitorplugin::PluginData AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-          input_file) const override;
+          input_file) override;
 
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::DoSanityCheck()
@@ -79,7 +79,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   virtual imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-          input_file) const = 0;
+          input_file) = 0;
 
   ///
   /// \brief Raise a plugin exception

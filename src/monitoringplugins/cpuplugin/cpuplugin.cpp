@@ -65,7 +65,7 @@ std::vector<std::string> CpuPlugin::DoSanityCheck() const {
 
 imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-        input_file) const {
+        input_file) {
   auto p0 = this->GetCpuStat(input_file["/proc/stat"].snapshot_1());
   auto p1 = this->GetCpuStat(input_file["/proc/stat"].snapshot_2());
   imonitorplugin::PluginData::data_vector usage;

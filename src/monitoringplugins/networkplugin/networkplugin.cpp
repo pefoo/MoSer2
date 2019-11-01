@@ -41,7 +41,7 @@ std::vector<std::string> NetworkPlugin::DoSanityCheck() const {
 
 imonitorplugin::PluginData::data_vector NetworkPlugin::AcquireDataInternal(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-        input_file) const {
+        input_file) {
   int64_t rx1 = std::stol(input_file[this->rx_bytes_file].snapshot_1());
   int64_t rx2 = std::stol(input_file[this->rx_bytes_file].snapshot_2());
   int64_t tx1 = std::stol(input_file[this->tx_bytes_file].snapshot_1());

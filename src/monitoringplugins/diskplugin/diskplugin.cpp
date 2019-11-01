@@ -91,7 +91,7 @@ monitoringplugins::diskplugin::DiskPlugin::DoSanityCheck() const {
 imonitorplugin::PluginData::data_vector
 monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>
-        &&input_file) const {
+        &&input_file) {
   auto stats_1 =
       this->ParseDiskstat(input_file["/proc/diskstats"].snapshot_1());
   auto stats_2 =

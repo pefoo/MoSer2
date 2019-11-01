@@ -16,7 +16,7 @@ class LoadPlugin : public monitoringpluginbase::MonitorPluginBase {
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-          input_file) const override;
+          input_file) override;
 
  private:
 };

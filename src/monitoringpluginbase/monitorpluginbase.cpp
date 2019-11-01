@@ -30,7 +30,7 @@ std::vector<std::string> monitoringpluginbase::MonitorPluginBase::input_files()
 
 imonitorplugin::PluginData monitoringpluginbase::MonitorPluginBase::AcquireData(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-        input_file) const {
+        input_file) {
   return imonitorplugin::PluginData{
       this->name(), this->MakeTimestamp(),
       this->AcquireDataInternal(std::move(input_file))};

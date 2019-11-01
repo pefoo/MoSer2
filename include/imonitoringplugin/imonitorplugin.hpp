@@ -40,7 +40,7 @@ class IMonitorPlugin {
   ///
   virtual PluginData AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
-          input_file) const = 0;
+          input_file) = 0;
 
   ///
   /// \brief Check the plugin configuration and basic functionality
