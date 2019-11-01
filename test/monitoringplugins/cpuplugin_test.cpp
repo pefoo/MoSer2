@@ -48,9 +48,9 @@ static const std::vector<imonitorplugin::PluginData> sample_data{
 TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
   monitoringplugins::cpuplugin::CpuPlugin plug{};
 
-  auto data =
-      plug.AcquireData({{"/proc/stat", imonitorplugin::InputFileContent{
-                                           0, snapshot_1, snapshot_2, 1, 1}}});
+  auto data = plug.AcquireData(
+      {{"/proc/stat",
+        imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}})[0];
 
   REQUIRE(data.plugin_name() == "CpuPlugin");
   REQUIRE(data.data().size() == 4);

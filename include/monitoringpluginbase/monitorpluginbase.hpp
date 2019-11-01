@@ -60,8 +60,10 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
 
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::AcquireData()
+  /// \details Plugin may override this method in order to implement own logik.
+  /// Plugins that provide more than one line of data should use this method.
   ///
-  imonitorplugin::PluginData AcquireData(
+  virtual std::vector<imonitorplugin::PluginData> AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) override;
 
@@ -72,10 +74,12 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
 
  protected:
   ///
-  /// \brief Here the actual work happens. Plugins override this method.
-  /// \details Plugins are not responsible for packing the data.
-  /// \param input_file If requested, the content of a file (2 snapshots)
-  /// \return A vector of key value pairs
+  /// \brief This is the easy version of AcquireData and just suffice most
+  /// plugins.
+  /// \details Plugins will still have to provide an (empty) implementation of
+  /// this method, even if AcquireData is used
+  /// \param input_file If requested,
+  /// the content of a file (2 snapshots) \return A vector of key value pairs
   ///
   virtual imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
@@ -94,10 +98,15 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   void RegisterFileToRead(const std::string& file);
 
+  ///
+  /// \brief Create a unix time stamp
+  /// \return The current time in unix time
+  ///
+  std::int64_t MakeTimestamp() const;
+
   std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
 
  private:
-  std::int64_t MakeTimestamp() const;
   std::string name_;
   std::vector<std::string> input_files_;
 };

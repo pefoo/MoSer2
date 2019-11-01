@@ -28,12 +28,13 @@ std::vector<std::string> monitoringpluginbase::MonitorPluginBase::input_files()
   return this->input_files_;
 }
 
-imonitorplugin::PluginData monitoringpluginbase::MonitorPluginBase::AcquireData(
+std::vector<imonitorplugin::PluginData>
+monitoringpluginbase::MonitorPluginBase::AcquireData(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
         input_file) {
-  return imonitorplugin::PluginData{
+  return {imonitorplugin::PluginData{
       this->name(), this->MakeTimestamp(),
-      this->AcquireDataInternal(std::move(input_file))};
+      this->AcquireDataInternal(std::move(input_file))}};
 }
 
 std::vector<std::string>

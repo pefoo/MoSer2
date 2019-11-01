@@ -15,7 +15,7 @@ static const std::vector<imonitorplugin::PluginData> sample_data{
 
 TEST_CASE("LoadPlugin Data acquisition", "[LoadPlugin]") {
   monitoringplugins::loadplugin::LoadPlugin plug{};
-  auto data = plug.AcquireData({});
+  auto data = plug.AcquireData({})[0];
 
   REQUIRE(data.data().size() == 3);
 

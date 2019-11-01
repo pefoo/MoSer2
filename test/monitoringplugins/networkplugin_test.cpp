@@ -23,7 +23,7 @@ TEST_CASE("NetworkPlugin Data acquisition", "[NetworkPlugin]") {
       {{"/sys/class/net/enp0s31f6/statistics/rx_bytes",
         imonitorplugin::InputFileContent{0, "50", "100", 1, 1}},
        {"/sys/class/net/enp0s31f6/statistics/tx_bytes",
-        imonitorplugin::InputFileContent{0, "60", "130", 1, 1}}});
+        imonitorplugin::InputFileContent{0, "60", "130", 1, 1}}})[0];
 
   REQUIRE(data.data().size() == 2);
   REQUIRE(data.data().at(0).first == "rx");

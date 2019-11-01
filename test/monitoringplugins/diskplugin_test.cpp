@@ -59,7 +59,7 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
   monitoringplugins::diskplugin::DiskPlugin plug{};
   auto data = plug.AcquireData(
       {{"/proc/diskstats",
-        imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}});
+        imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}})[0];
 
   REQUIRE(data.data().size() == 6);
 

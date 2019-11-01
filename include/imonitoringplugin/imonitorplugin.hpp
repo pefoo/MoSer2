@@ -38,7 +38,7 @@ class IMonitorPlugin {
   /// \param input_file If requested, the content of a file (2 snapshots)
   /// \return The acquired data.
   ///
-  virtual PluginData AcquireData(
+  virtual std::vector<PluginData> AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) = 0;
 

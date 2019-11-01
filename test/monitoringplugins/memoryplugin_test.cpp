@@ -15,7 +15,7 @@ static const std::vector<imonitorplugin::PluginData> sample_data{
 
 TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
   monitoringplugins::memoryplugin::MemoryPlugin plug{};
-  auto data = plug.AcquireData({});
+  auto data = plug.AcquireData({})[0];
 
   REQUIRE(data.data().size() == 2);
   REQUIRE(data.data().at(0).first == "mem_usage");

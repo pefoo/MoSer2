@@ -76,14 +76,16 @@ void PluginController::RunPlugins(const int interval_ms) {
     std::for_each(
         std::begin(this->plugins_), std::end(this->plugins_),
         [&](MonitoringPluginManager::PluginWrapper *&plug) {
-          imonitorplugin::PluginData data;
+          std::vector<imonitorplugin::PluginData> data;
           try {
             data = plug->Instance()->AcquireData(
                 this->inputfile_provider_->GetFiles(plug->Instance()->name()));
           } catch (const imonitorplugin::PluginException &pe) {
             LOG(ERROR) << pe.what();
           }
-          plugin::PluginFacade::Instance().Put(data);
+          for (auto &d : data) {
+            plugin::PluginFacade::Instance().Put(d);
+          }
         });
   });
 }
