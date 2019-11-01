@@ -80,7 +80,7 @@ imonitorplugin::PluginData::data_vector CpuPlugin::AcquireDataInternal(
     float steal_delta = p1.steal[i] - p0.steal[i];
     float delta_total = user_delta + nice_delta + system_delta + idle_delta +
                         iowait_delta + irq_delta + softirq_elta + steal_delta;
-    float delta_wo_idle = delta_total - idle_delta;
+    float delta_wo_idle = delta_total - (idle_delta + iowait_delta);
     float core_usage;
     if (delta_total == 0.0f || delta_wo_idle == 0.0f) {
       core_usage = 0;
