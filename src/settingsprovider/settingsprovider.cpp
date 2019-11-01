@@ -1,4 +1,5 @@
 #include "settingsprovider/settingsprovider.hpp"
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -31,6 +32,7 @@ std::vector<std::string> SettingsProvider::Sections() const {
   for (auto const &[key, setting] : this->settings_) {
     sections.push_back(setting.section_);
   }
+  std::sort(sections.begin(), sections.end());
   auto ip = std::unique(sections.begin(), sections.end());
   sections.erase(ip, sections.end());
   return sections;
@@ -73,7 +75,7 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
   bool result = true;
   std::string current_section;
   std::regex section_rgx(R"(^\[(.*)\]\s*$)");
-  std::regex kv_rgx(R"(^([\w\d\S]+)\s*=\s*([\w\d\S]+)\s*$)");
+  std::regex kv_rgx(R"(^([\w\d\S]+)\s*=\s*([\w\d\S\s]+)\s*$)");
   int line_c = 0;
 
   while (std::getline(stream, line)) {
