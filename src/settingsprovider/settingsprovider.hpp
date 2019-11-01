@@ -31,6 +31,11 @@ class SettingsProvider : public ISettingsProvider {
   std::string GetValue(const SettingIdentifier& identifier) const override;
 
   ///
+  /// \copydoc ISettingsProvider::Sections
+  ///
+  std::vector<std::string> Sections() const override;
+
+  ///
   /// \brief Set a setting value
   /// \param key The key of the setting to set
   /// \param section The section of the setting to set
@@ -63,8 +68,7 @@ class SettingsProvider : public ISettingsProvider {
   struct Setting {
     Setting() {}
     Setting(std::string key, std::string section,
-            std::string default_value = "",
-            Verifier  verifier = DefaultVerifier)
+            std::string default_value = "", Verifier verifier = DefaultVerifier)
         : key_(std::move(key)),
           section_(std::move(section)),
           value_(std::move(default_value)),
@@ -78,5 +82,6 @@ class SettingsProvider : public ISettingsProvider {
                        const std::string& section) const;
   std::unordered_map<std::string, Setting> settings_;
 };
+
 }  // namespace settingsprovider
 #endif  // SETTINGSPROVIDER_H

@@ -26,6 +26,16 @@ std::string SettingsProvider::GetValue(
   return this->GetValue(identifier.key(), identifier.section());
 }
 
+std::vector<std::string> SettingsProvider::Sections() const {
+  std::vector<std::string> sections;
+  for (auto const &[key, setting] : this->settings_) {
+    sections.push_back(setting.section_);
+  }
+  auto ip = std::unique(sections.begin(), sections.end());
+  sections.erase(ip, sections.end());
+  return sections;
+}
+
 bool SettingsProvider::SetValue(const std::string &key,
                                 const std::string &section,
                                 const std::string &value) {

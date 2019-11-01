@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <string>
+#include <vector>
 #include "settingidentifier.hpp"
 
 namespace settingsprovider {
@@ -34,6 +35,12 @@ class ISettingsProvider {
   /// \return The requested setting
   ///
   virtual std::string GetValue(const SettingIdentifier& identifier) const = 0;
+
+  ///
+  /// \brief Get a list of all available sections
+  /// \return A vector with all section of the configuration file
+  ///
+  virtual std::vector<std::string> Sections() const = 0;
 };
 
 }  // namespace settingsprovider

@@ -31,6 +31,10 @@ TEST_CASE("Settings provider with registered settings", "[SettingsProvider]") {
   REQUIRE(settings->GetValue(s1) == "bar");
   REQUIRE(settings->GetValue(s2) == "b");
   REQUIRE(settings->GetValue(s3) == "10");
+
+  std::vector<std::string> exptected_sections = {"s1", "s2"};
+  REQUIRE_THAT(exptected_sections,
+               Catch::UnorderedEquals(settings->Sections()));
 }
 
 TEST_CASE("Settings provider registered settings wrong type",
