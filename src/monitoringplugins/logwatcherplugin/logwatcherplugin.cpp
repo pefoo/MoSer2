@@ -8,10 +8,7 @@
 namespace monitoringplugins {
 namespace logwatcherplugin {
 
-constexpr char kDisplayName[] = "DisplayName";
-constexpr char kPattern[] = "Pattern";
-constexpr char kFileName[] = "File";
-constexpr char kTags[] = "Tags";
+using namespace logwatcherplugin::constants;
 
 struct LogWatcherPlugin::LogFile {
   LogFile(std::string name, std::string file, std::string pattern,
@@ -35,7 +32,7 @@ LogWatcherPlugin::LogWatcherPlugin()
         "The log watcher plugin requires a configuration.");
   }
   for (auto const& section : this->settings_->Sections()) {
-    if (section == "Reporter") continue;
+    if (section == kSettingsSectionReporter) continue;
     this->files_.push_back(LogWatcherPlugin::LogFile(
         this->settings_->GetValue(kDisplayName, section),
         this->settings_->GetValue(kFileName, section),
@@ -86,7 +83,7 @@ std::vector<imonitorplugin::PluginData> LogWatcherPlugin::AcquireData(
       data.push_back(imonitorplugin::PluginData{
           this->name(),
           this->MakeTimestamp(),
-          {{"entry", line}, {"tags", log_file.tags_}}});
+          {{kDbFieldEntry, line}, {kDbFieldTags, log_file.tags_}}});
     }
     log_file.position_ = s.tellg();
   }
