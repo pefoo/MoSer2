@@ -14,6 +14,7 @@ namespace imonitorplugin {
 ///
 class PluginData {
  public:
+  // TODO this data vector is shit
   using data_vector = std::vector<std::pair<std::string, std::any>>;
 
   ///
