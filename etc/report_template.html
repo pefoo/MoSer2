@@ -5,10 +5,97 @@ Mime-version: 1.0
 
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
-<style>
-body {
-  background-color: #636363
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style type="text/css"> 
+#outlook a {padding:0;}
+body{
+  width:100% !important; 
+  -webkit-text-size-adjust:100%; 
+  -ms-text-size-adjust:100%; 
+  margin:0; 
+  padding:0;
 }
+.ExternalClass {width:100%;}
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+#backgroundTable {
+  background-color: #636363;
+  margin:0;
+  padding:0;
+  width:100% !important; 
+  line-height: 100% !important;
+}
+img {
+  outline:none; 
+  text-decoration:none; 
+  -ms-interpolation-mode: bicubic;
+}
+a img {border:none;}
+.image_fix {display:block;}
+p {
+  margin: 1em 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: black !important;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: blue !important;
+}
+h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {
+  color: red !important;
+ }
+h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+  color: purple !important;
+}
+table td {
+  border-collapse: collapse;
+}
+table { 
+  border-collapse:collapse; 
+  mso-table-lspace:0pt; 
+  mso-table-rspace:0pt;
+}
+a {color: orange;}
+@media only screen and (max-device-width: 480px) {
+  a[href^="tel"], a[href^="sms"] {
+    text-decoration: none;
+    color: black; /* or whatever your want */
+    pointer-events: none;
+    cursor: default;
+  }
+  .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+    text-decoration: default;
+    color: orange !important; /* or whatever your want */
+    pointer-events: auto;
+    cursor: default;
+  }
+}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  a[href^="tel"], a[href^="sms"] {
+    text-decoration: none;
+    color: blue;
+    pointer-events: none;
+    cursor: default;
+  }
+  .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+    text-decoration: default;
+    color: orange !important;
+    pointer-events: auto;
+    cursor: default;
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+  /* Put your iPhone 4g styles in here */
+}
+@media only screen and (-webkit-device-pixel-ratio:.75){
+  /* Put CSS for low density (ldpi) Android layouts in here */
+}
+@media only screen and (-webkit-device-pixel-ratio:1){
+  /* Put CSS for medium density (mdpi) Android layouts in here */
+}
+@media only screen and (-webkit-device-pixel-ratio:1.5){
+  /* Put CSS for high density (hdpi) Android layouts in here */
+}
+
 tr.default:nth-child(even) {
   background-color: #8a8a8a
 }
@@ -21,75 +108,100 @@ table.default {
   border-collapse: collapse;
   width: 100%;
 }
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+hr.seperator {
+  border-color: #000000;
+  background-color: #000000;
+}
 </style>
 </head>
 <body >
-
-<div style="height:9em">
-<div style="float:left; width:60%">
-<h2> Server Report:</h2>
-<h1> %%HOSTNAME%%</h1>
-</div>
-<div style="float:right; width:40%; text-align:right">
-%%DATETIME%% <br>
-%%KERNEL_VERSION%% <br>
-Uptime: %%UPTIME%% <br>
-System name: %%SYSTEM_NAME%%<br>
-Machine arch: %%MACHINE_ARCH%%<br>
-Domain name: %%DOMAIN_NAME%%<br>
-</div>
-</div>
-
-<hr style="border-color:#000000; background-color:#000000">
-<h3 id="toc"> Table of contents </h3>
-<ol type="1">
-  <li><a style="color:#000000" href="#DiskUsage">Disk Usage</a></li>
-  <li><a style="color:#000000" href="#CpuUsage">Cpu Usage</a></li>
-  <li><a style="color:#000000" href="#MemUsage">Memory Usage</a></li>
-  <li><a style="color:#000000" href="#Load">Load Average</a></li>
-  <li><a style="color:#000000" href="#DiskUsage">Disk Usage</a></li>
-  <li><a style="color:#000000" href="#NetUsage">Network Usage</a></li>
-  <li><a style="color:#000000" href="#Log">Log</a></li>
-</ol>
-
-<br>
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="DiskUsage"><u> Disk Usage </u></h3>
-%%DISK_USAGE%%
-
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="CpuUsage"><u> Cpu Usage </u></h3>
-<img width="1000" height="400" src="data:image/png;base64,%%CPU_TIME_SERIES_DATA%%"/><br>
-<b>Details:</b><br>
-Average usage: %%CPU_USAGE_AVERAGE%%
-
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="MemUsage"><u> Memory Usage </u></h3>
-<img width="1000" height="400" src="data:image/png;base64,%%MEMORY_TIME_SERIES_DATA%%"/><br>
-
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="Load"><u> Load Average </u></h3>
-<img width="1000" height="400" src="data:image/png;base64,%%LOAD_TIME_SERIES_DATA%%"/><br>
-
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="DiskUsage"><u> Disk Usage </u></h3>
-<img width="1000" height="400" src="data:image/png;base64,%%DISK_sda3_TIME_SERIES_DATA%%"/><br>
-<img width="1000" height="400" src="data:image/png;base64,%%DISK_sda4_TIME_SERIES_DATA%%"/><br>
-
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="NetUsage"><u> Network Usage </u></h3>
-<img width="1000" height="400" src="data:image/png;base64,%%NETWORK_TIME_SERIES_DATA%%"/><br>
-
-<hr style="border-color:#000000; background-color:#000000">
-<span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
-<h3 id="Log"><u> Log </u></h3>
-%%LOG_TABLE_invalid_ssh_user%%
-
-
+<!-- content wrapper table -->
+<table cellpadding="0" cellspacing="0" border="0" id="backgroundTable">
+  <tr><td>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td rowspan="3"><h3>Server report:</h3></td>
+        <td align="right">%%DATETIME%%</td>
+      </tr>
+      <tr>
+        <td align="right">%%KERNEL_VERSION%%</td>
+      </tr>
+      <tr>
+        <td align="right">Update: %%UPTIME%%</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><h2>%%HOSTNAME%%</h3></td>
+        <td align="right">%%SYSTEM_NAME%%</td>
+      </tr>
+      <tr>
+        <td align="right">%%MACHINE_ARCH%%</td>
+      </tr>
+      <tr>
+        <td align="right">%%DOMAIN_NAME%%</td>
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <h3 id="toc"> Table of contents </h3>
+    <ol type="1">
+      <li><a style="color:#000000" href="#DiskUsage">Disk Usage</a></li>
+      <li><a style="color:#000000" href="#CpuUsage">Cpu Usage</a></li>
+      <li><a style="color:#000000" href="#MemUsage">Memory Usage</a></li>
+      <li><a style="color:#000000" href="#Load">Load Average</a></li>
+      <li><a style="color:#000000" href="#DiskUsage">Disk Usage</a></li>
+      <li><a style="color:#000000" href="#NetUsage">Network Usage</a></li>
+      <li><a style="color:#000000" href="#Log">Log</a></li>
+    </ol>
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="DiskUsage"><u> Disk Usage </u></h3>
+    %%DISK_USAGE%%
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="CpuUsage"><u> Cpu Usage </u></h3>
+    <img src="data:image/png;base64,%%CPU_TIME_SERIES_DATA%%"/><br>
+    <b>Details:</b><br>
+    Average usage: %%CPU_USAGE_AVERAGE%%
+  </td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="MemUsage"><u> Memory Usage </u></h3>
+    <img src="data:image/png;base64,%%MEMORY_TIME_SERIES_DATA%%"/><br>
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="Load"><u> Load Average </u></h3>
+    <img src="data:image/png;base64,%%LOAD_TIME_SERIES_DATA%%"/><br>
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="DiskUsage"><u> Disk Usage </u></h3>
+    <img src="data:image/png;base64,%%DISK_sda3_TIME_SERIES_DATA%%"/><br>
+    <img src="data:image/png;base64,%%DISK_sda4_TIME_SERIES_DATA%%"/><br>
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="NetUsage"><u> Network Usage </u></h3>
+    <img src="data:image/png;base64,%%NETWORK_TIME_SERIES_DATA%%"/><br>
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+  <tr><td>
+    <span style="float:right"><a style="color:#000000" href="#toc">Top</a></span>
+    <h3 id="Log"><u> Log </u></h3>
+    %%LOG_TABLE_invalid_ssh_user%%
+  </td></tr>
+  <tr><td><hr class="seperator"></td></tr>
+</table>
 </body>
