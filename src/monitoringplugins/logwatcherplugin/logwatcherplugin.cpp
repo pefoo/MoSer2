@@ -35,6 +35,7 @@ LogWatcherPlugin::LogWatcherPlugin()
         "The log watcher plugin requires a configuration.");
   }
   for (auto const& section : this->settings_->Sections()) {
+    if (section == "Reporter") continue;
     this->files_.push_back(LogWatcherPlugin::LogFile(
         this->settings_->GetValue(kDisplayName, section),
         this->settings_->GetValue(kFileName, section),
