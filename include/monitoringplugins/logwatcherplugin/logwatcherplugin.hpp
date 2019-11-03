@@ -15,17 +15,31 @@ class LogWatcherPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   LogWatcherPlugin();
   std::vector<std::string> DoSanityCheck() const override;
-
- protected:
   std::vector<imonitorplugin::PluginData> AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
           &&input_file) override;
+
+ protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
           &&input_file) override;
 
  private:
-  struct LogFile;
+  struct LogFile {
+    LogFile(std::string name, std::string file, std::string pattern,
+            std::string tags)
+        : name_(std::move(name)),
+          file_(std::move(file)),
+          pattern_(std::move(pattern)),
+          tags_(std::move(tags)),
+          position_(-1) {}
+    std::string name_;
+    std::string file_;
+    std::string pattern_;
+    std::string tags_;
+    long position_;
+  };
+
   std::vector<LogFile> files_;
 };
 
