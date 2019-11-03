@@ -67,10 +67,7 @@ monitoringplugins::diskplugin::CreateProcessors() {
                 -> std::string {
               auto mount_points = GetMountPoints();
               std::stringstream out{};
-              out << "<table style=\"width:100%\"><tr><th "
-                     "style=\"width:15%\">Device</th><th "
-                     "style=\"width:35%\">Mount</th><th "
-                     "style=\"width:50%\">Used</th></tr>";
+              out << "<table style=\"width:100%\">";
               std::string device;
               for (const auto& device : device_list) {
                 if (mount_points.count("/dev/" + device) != 0) {
@@ -83,10 +80,10 @@ monitoringplugins::diskplugin::CreateProcessors() {
 
                   out << "<tr><td>" << device << "</td><td>"
                       << mount_points["/dev/" + device]
-                      << "</td><td><div style=\"border:1px solid black; "
+                      << "</td></tr><tr><td colspan='2'><div "
+                         "style=\"border:1px solid black; "
                          "height:1.3em\"><div style=\"position:absolute; "
-                         "display:table; "
-                         "left:70%\">"
+                         "display:table; width:100%; text-align:center \">"
                       << round(total - available) << "/" << round(total)
                       << " [Gb]</div> <div style=\"background-color:"
                       << (usage > 70 ? (usage > 90 ? "red" : "yellow")
