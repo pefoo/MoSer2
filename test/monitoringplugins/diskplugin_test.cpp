@@ -63,20 +63,20 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
 
   REQUIRE(data.data().size() == 6);
 
-  REQUIRE(data.data().at(0).first == "sda3_bytes_read");
-  REQUIRE(data.data().at(1).first == "sda3_bytes_written");
-  REQUIRE(data.data().at(2).first == "sda3_utilization");
-  REQUIRE(data.data().at(3).first == "sda4_bytes_read");
-  REQUIRE(data.data().at(4).first == "sda4_bytes_written");
-  REQUIRE(data.data().at(5).first == "sda4_utilization");
+  REQUIRE(data.data().at(3).first == "sda3_bytes_read");
+  REQUIRE(data.data().at(4).first == "sda3_bytes_written");
+  REQUIRE(data.data().at(5).first == "sda3_utilization");
+  REQUIRE(data.data().at(0).first == "sda4_bytes_read");
+  REQUIRE(data.data().at(1).first == "sda4_bytes_written");
+  REQUIRE(data.data().at(2).first == "sda4_utilization");
 
   using namespace Catch::literals;
-  REQUIRE(std::any_cast<int64_t>(data.data().at(0).second) == 512);
-  REQUIRE(std::any_cast<int64_t>(data.data().at(1).second) == 1024);
-  REQUIRE(std::any_cast<double>(data.data().at(2).second) == 100.0_a);
-  REQUIRE(std::any_cast<int64_t>(data.data().at(3).second) == 2375680);
-  REQUIRE(std::any_cast<int64_t>(data.data().at(4).second) == 13914112);
-  REQUIRE(std::any_cast<double>(data.data().at(5).second) == 13.2_a);
+  REQUIRE(std::any_cast<int64_t>(data.data().at(3).second) == 512);
+  REQUIRE(std::any_cast<int64_t>(data.data().at(4).second) == 1024);
+  REQUIRE(std::any_cast<double>(data.data().at(5).second) == 100.0_a);
+  REQUIRE(std::any_cast<int64_t>(data.data().at(0).second) == 2375680);
+  REQUIRE(std::any_cast<int64_t>(data.data().at(1).second) == 13914112);
+  REQUIRE(std::any_cast<double>(data.data().at(2).second) == 13.2_a);
 }
 
 TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
