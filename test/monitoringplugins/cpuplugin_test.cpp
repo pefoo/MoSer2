@@ -61,10 +61,10 @@ TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
   REQUIRE(data.data().at(3).first == "core3");
 
   using namespace Catch::literals;
-  REQUIRE(std::any_cast<float>(data.data().at(0).second) == 6.65393_a);
-  REQUIRE(std::any_cast<float>(data.data().at(1).second) == 6.99755_a);
-  REQUIRE(std::any_cast<float>(data.data().at(2).second) == 7.48569_a);
-  REQUIRE(std::any_cast<float>(data.data().at(3).second) == 7.45299_a);
+  REQUIRE(std::any_cast<float>(data.data().at(0).second) == 6.6463_a);
+  REQUIRE(std::any_cast<float>(data.data().at(1).second) == 6.98991_a);
+  REQUIRE(std::any_cast<float>(data.data().at(2).second) == 7.42465_a);
+  REQUIRE(std::any_cast<float>(data.data().at(3).second) == 7.44534_a);
 }
 
 TEST_CASE("CpuPlugin Data processor", "[CpuPlugin]") {
