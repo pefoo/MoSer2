@@ -70,6 +70,8 @@ TEST_CASE("LogWatcherPlugin data acquisition", "[LogWatcherPlugin]") {
 }
 
 TEST_CASE("LogWatcherPlugin data processor", "[LogWatcherPlugin]") {
+  ConfigurationInjector c{
+      monitoringplugins::logwatcherplugin::constants::kPluginName};
   auto processors = monitoringplugins::logwatcherplugin::CreateProcessors();
 
   // One tag is configred -> one processor provided
