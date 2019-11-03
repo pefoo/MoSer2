@@ -83,7 +83,7 @@ monitoringplugins::diskplugin::CreateProcessors() {
                       << "</td></tr><tr><td colspan='2'><div "
                          "style=\"border:1px solid black; "
                          "height:1.3em\"><div style=\"position:absolute; "
-                         "display:table; width:100%; text-align:center \">"
+                         "display:table; width:99%; text-align:center \">"
                       << round(total - available) << "/" << round(total)
                       << " [Gb]</div> <div style=\"background-color:"
                       << (usage > 70 ? (usage > 90 ? "red" : "yellow")
