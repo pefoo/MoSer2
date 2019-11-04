@@ -19,7 +19,7 @@ void persistenceservice::PersistenceRunner::Run(int delay) {
     while (this->source_func_(&d)) {
       data.push_back(imonitorplugin::PluginData{d});
     }
-    this->data_adapter_->Store(data.begin(), data.end());
+    if (!data.empty()) this->data_adapter_->Store(data.begin(), data.end());
   });
 }
 

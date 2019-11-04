@@ -8,7 +8,7 @@
 namespace moser2 {
 namespace plugin {
 ///
-/// \brief TODO implement the static facade using a circular buffer
+/// \brief The plugin facade. Provides access to stores plugin data
 ///
 class PluginFacade {
  public:

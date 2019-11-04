@@ -4,13 +4,22 @@
 #include "imonitoringplugin/plugindata.hpp"
 #include "utility/datastructure/circularbuffer.hpp"
 
+static constexpr int kBufferSize = 1000;
+static constexpr int kBufferWarnSize = 950;
+
 moser2::plugin::PluginFacade::PluginFacade()
     : buffer_(std::make_unique<utility::datastructure::CircularBuffer<
-                  imonitorplugin::PluginData>>(1000)) {}
+                  imonitorplugin::PluginData>>(kBufferSize)) {}
 
 void moser2::plugin::PluginFacade::Put(const imonitorplugin::PluginData &data) {
   LOG(TRACE) << data.ToString();
   this->buffer_->Put(data);
+  if (this->buffer_->is_full()) {
+    LOG(ERROR) << "The plugin data buffer is full!";
+  } else if (this->buffer_->size() >= kBufferWarnSize) {
+    LOG(WARNING) << "The plugin data buffer is almost full ["
+                 << this->buffer_->size() << "/" << kBufferSize << "]";
+  }
 }
 
 moser2::plugin::PluginFacade &moser2::plugin::PluginFacade::Instance() {
