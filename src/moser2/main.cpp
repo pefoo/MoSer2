@@ -42,7 +42,11 @@ int main() {
       std::move(adapter), std::bind(&moser2::plugin::PluginFacade::GetNext,
                                     &moser2::plugin::PluginFacade::Instance(),
                                     std::placeholders::_1)};
+#ifndef NDEBUG
   p_runner.Run(10000);
+#else
+  p_runner.Run(60000);
+#endif
 
   getchar();
 
