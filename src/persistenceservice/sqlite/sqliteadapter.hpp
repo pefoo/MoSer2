@@ -32,6 +32,13 @@ class SqliteAdapter : public IDataAdapter {
   void Store(const imonitorplugin::PluginData &) override;
 
   ///
+  /// \copydoc IDataAdapter::Store()
+  ///
+  void Store(
+      const std::vector<imonitorplugin::PluginData>::iterator &begin,
+      const std::vector<imonitorplugin::PluginData>::iterator &end) override;
+
+  ///
   /// \copydoc IDataAdapter::Load()
   ///
   std::vector<imonitorplugin::PluginData> Load(const std::string &plugin_name,
@@ -47,8 +54,10 @@ class SqliteAdapter : public IDataAdapter {
   void ThrowIfBadCall(int rc, const std::string &action,
                       const char *execution_info,
                       int expected_result = SQLITE_OK) const;
-};
 
+  void PrepareTable(const imonitorplugin::PluginData &data);
+  void DoStore(const imonitorplugin::PluginData &data);
+};
 }  // namespace sqlite
 }  // namespace persistenceservice
 

@@ -34,22 +34,23 @@ persistenceservice::sqlite::SqliteAdapter::~SqliteAdapter() {
 
 void persistenceservice::sqlite::SqliteAdapter::Store(
     const imonitorplugin::PluginData &data) {
-  char *err_msg;
-  // Check if a table creation is required on first plugin contact
-  if (std::find(this->known_plugins_.begin(), this->known_plugins_.end(),
-                data.plugin_name()) == this->known_plugins_.end()) {
-    auto query =
-        persistenceservice::sqlite::QueryHelper::BuildCreateTableQuery(data);
-    int rc = sqlite3_exec(this->db_, query.c_str(), QueryCallback, nullptr,
-                          &err_msg);
-    this->ThrowIfBadCall(rc, "Create table " + data.plugin_name(), err_msg);
-    this->known_plugins_.push_back(data.plugin_name());
-  }
+  this->PrepareTable(data);
+  this->DoStore(data);
+}
 
-  auto query = persistenceservice::sqlite::QueryHelper::BuildInsertQuery(data);
+void persistenceservice::sqlite::SqliteAdapter::Store(
+    const std::vector<imonitorplugin::PluginData>::iterator &begin,
+    const std::vector<imonitorplugin::PluginData>::iterator &end) {
+  char *err_msg;
   int rc =
-      sqlite3_exec(this->db_, query.c_str(), QueryCallback, nullptr, &err_msg);
-  this->ThrowIfBadCall(rc, "Insert into table " + data.plugin_name(), err_msg);
+      sqlite3_exec(this->db_, "BEGIN TRANSACTION;", nullptr, nullptr, &err_msg);
+  this->PrepareTable(*begin);
+  this->ThrowIfBadCall(rc, "Begin transaction", err_msg);
+  for (auto item = begin; item != end; ++item) {
+    this->DoStore(*item);
+  }
+  rc = sqlite3_exec(this->db_, "END TRANSACTION;", nullptr, nullptr, &err_msg);
+  this->ThrowIfBadCall(rc, "Begin transaction", err_msg);
 }
 
 std::vector<imonitorplugin::PluginData>
@@ -126,4 +127,28 @@ void persistenceservice::sqlite::SqliteAdapter::ThrowIfBadCall(
   } else {
     this->ThrowIfBadCall(rc, action, "", expected_result);
   }
+}
+
+void persistenceservice::sqlite::SqliteAdapter::PrepareTable(
+    const imonitorplugin::PluginData &data) {
+  char *err_msg;
+  // Check if a table creation is required on first plugin contact
+  if (std::find(this->known_plugins_.begin(), this->known_plugins_.end(),
+                data.plugin_name()) == this->known_plugins_.end()) {
+    auto query =
+        persistenceservice::sqlite::QueryHelper::BuildCreateTableQuery(data);
+    int rc = sqlite3_exec(this->db_, query.c_str(), QueryCallback, nullptr,
+                          &err_msg);
+    this->ThrowIfBadCall(rc, "Create table " + data.plugin_name(), err_msg);
+    this->known_plugins_.push_back(data.plugin_name());
+  }
+}
+
+void persistenceservice::sqlite::SqliteAdapter::DoStore(
+    const imonitorplugin::PluginData &data) {
+  char *err_msg;
+  auto query = persistenceservice::sqlite::QueryHelper::BuildInsertQuery(data);
+  int rc =
+      sqlite3_exec(this->db_, query.c_str(), QueryCallback, nullptr, &err_msg);
+  this->ThrowIfBadCall(rc, "Insert into table " + data.plugin_name(), err_msg);
 }

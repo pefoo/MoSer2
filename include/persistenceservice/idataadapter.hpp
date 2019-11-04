@@ -21,9 +21,17 @@ class IDataAdapter {
   ///
   /// \brief Store some data
   /// \param data The data to store
-  /// \return True, if storing succeeded
   ///
   virtual void Store(const imonitorplugin::PluginData& data) = 0;
+
+  ///
+  /// \brief Store some data
+  /// \param begin The data beginning
+  /// \param end The data end
+  ///
+  virtual void Store(
+      const std::vector<imonitorplugin::PluginData>::iterator& begin,
+      const std::vector<imonitorplugin::PluginData>::iterator& end) = 0;
 
   ///
   /// \brief Load data from the adapter
