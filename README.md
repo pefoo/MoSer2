@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/pefoo/MoSer2.svg?branch=master)](https://travis-ci.com/pefoo/MoSer2)
+
 # MoSer2
 
 The goal of this project is getting into c++ development. 
