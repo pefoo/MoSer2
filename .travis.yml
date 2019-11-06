@@ -5,6 +5,18 @@ env:
     - LINUX_DIST=bionic
     - CXX_FLAGSS="-Wall -pedantic"
 
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
 script:
   - mkdir -p runtime
   - cd runtime 
