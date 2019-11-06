@@ -1,15 +1,13 @@
 set(SOURCES
 )
 # Maybe this could become a interface library. who knows...
-ADD_LIBRARY(Constants STATIC ${SOURCES})
-target_link_libraries(Constants SettingsProvider)
+ADD_LIBRARY(Constants INTERFACE) # STATIC ${SOURCES})
+target_link_libraries(Constants INTERFACE SettingsProvider)
 
 target_include_directories(Constants
-PUBLIC
+INTERFACE
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/constants>
-PRIVATE
-  ${PROJECT_SOURCE_DIR}/src/constants
 )
 
 install(TARGETS Constants
