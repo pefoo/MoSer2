@@ -44,9 +44,9 @@ void persistenceservice::sqlite::SqliteAdapter::Store(
   char *err_msg;
   int rc =
       sqlite3_exec(this->db_, "BEGIN TRANSACTION;", nullptr, nullptr, &err_msg);
-  this->PrepareTable(*begin);
   this->ThrowIfBadCall(rc, "Begin transaction", err_msg);
   for (auto item = begin; item != end; ++item) {
+    this->PrepareTable(*item);
     this->DoStore(*item);
   }
   rc = sqlite3_exec(this->db_, "END TRANSACTION;", nullptr, nullptr, &err_msg);
