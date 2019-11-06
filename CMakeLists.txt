@@ -11,6 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Options
 #
 option(BUILD_TESTS "Build the unit tests" OFF)
+option(INCLUDE_GNUPLOT_DEPENDENT_TESTS "Include tests that call gnuplot" OFF)
 
 #
 # includes
