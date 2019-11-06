@@ -1,0 +1,13 @@
+language: cpp
+
+env:
+  global: 
+    - LINUX_DIST=bionic
+    - CXX_FLAGSS="-Wall -pedantic"
+
+script:
+  - mkdir -p runtime
+  - cd runtime 
+  - cmake -DCMAKE_CXX_FLAGS=${CXX_FLAGSS} -DCMAKE_BUILD_TYPE=release -DBUILD_TESTS=ON ..
+  - make 
+  - ctest
