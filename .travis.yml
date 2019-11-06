@@ -14,6 +14,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-8
+            - gnuplot
       env:
         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
 
@@ -25,4 +26,4 @@ script:
   - cd runtime 
   - cmake -DCMAKE_CXX_FLAGS=${CXX_FLAGSS} -DCMAKE_BUILD_TYPE=release -DBUILD_TESTS=ON ..
   - make -j2
-  - ctest
+  - ctest --output-on-failure
