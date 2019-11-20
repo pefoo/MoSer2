@@ -14,7 +14,7 @@ Reports are generated and send as email notifications.
 ## Build
 ### Required packages
 - libsqlite3-dev
-- libcurl14-openssl-dev
+- libcurl4-openssl-dev
 
 ### Compiler
 A c++17 capable compiler is required.
