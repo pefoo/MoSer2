@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.com/pefoo/MoSer2.svg?branch=master)](https://travis-ci.com/pefoo/MoSer2)
+[![Actions Status](https://github.com/pefoo/MoSer2/workflows/C/C++%20CI/badge.svg)](https://github.com/pefoo/MoSer2/actions)
+
 
 # MoSer2
 
