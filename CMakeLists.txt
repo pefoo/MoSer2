@@ -35,7 +35,7 @@ endif()
 add_custom_target(coverage
   COMMAND lcov -q -d . -z
   COMMAND lcov -q -c -i -d . -o base.info
-  COMMAND ctest -Q
+  COMMAND ctest --output-on-failure
   COMMAND lcov -q -d . -c -o coverage.info
   COMMAND lcov -q -a base.info -a coverage.info -o total.info
   COMMAND lcov -Q -e total.info -o filtered_coverage.info '${PROJECT_SOURCE_DIR}/include/*' '${PROJECT_SOURCE_DIR}/src/*'

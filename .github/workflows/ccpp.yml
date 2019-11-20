@@ -1,0 +1,52 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - name: Install required tools / compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install gcc-8 g++-8 libsqlite3-dev libcurl4-openssl-dev
+    - name: Install lcov 1.14
+      run: |
+          wget http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz
+          tar xzf lcov-1.14.tar.gz
+          cd lcov-1.14/
+          sudo make install 
+    - name: Setup gcov version
+      run: sudo ln -sf $(which gcov-8) $(which gcov) 
+    - uses: actions/checkout@v1
+    - name: Create runtime dir 
+      run: mkdir -p runtime
+    - name: Run cmake
+      run: |
+        export CXX=$(which g++-8)
+        export CC=$(which gcc-8)               
+        cmake -DCMAKE_CXX_FLAGS="-Wall -pedantic" -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON ..
+      working-directory: ./runtime
+    - name: Run make
+      run: make -j2
+      working-directory: ./runtime
+    - name: Run tests and coverage
+      run: make coverage
+      working-directory: ./runtime
+    - name: Collect artifacts
+      run: |
+        mkdir artifacts
+        shopt -s extglob 
+        rsync -vt !(*.*) *.so *.conf *.gp template.html artifacts
+      working-directory: ./runtime
+    - uses: actions/upload-artifact@master
+      with:
+        name: build_artifacts
+        path: runtime/artifacts
+    - uses: actions/upload-artifact@master
+      with:
+        name: code_coverage
+        path: runtime/lcov-html
+
