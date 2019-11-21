@@ -18,7 +18,7 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S"
 set format x "%H:%M"
 set xlabel "Date"
-set ylabel "Disk [byte]"
+set ylabel "Disk [MB]"
 set y2label "Utilization [%]"
 set y2range [0:100]
 set y2tics nomirror
@@ -29,5 +29,6 @@ set xtics rotate
 set key noenhanced
 
 plot \
-  for [i=2:3] file_name using 1:i with lines axes x1y1 title columnheader(i), \
+  file_name using 1:($2*0.00000095367432) with lines axes x1y1 title columnheader(2), \
+  file_name using 1:($3*0.00000095367432) with lines axes x1y1 title columnheader(3), \
   file_name using 1:4 with filledcurves y2=0 axes x1y2 title columnheader(4)

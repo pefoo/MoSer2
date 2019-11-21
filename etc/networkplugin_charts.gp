@@ -16,9 +16,10 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S"
 set format x "%H:%M"
 set xlabel "Date"
-set ylabel "Network usage [byte/s]"
+set ylabel "Network usage [kbyte/s]"
 set grid
 set xtics rotate
 set key noenhanced
 
-plot for [i=2:3] file_name using 1:i with lines title columnheader(i)
+plot file_name using 1:($2*0.0009765625) with lines title columnheader(2), \
+  file_name using 1:($3*0.0009765625) with lines title columnheader(3),
