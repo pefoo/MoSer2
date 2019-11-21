@@ -1,6 +1,7 @@
 #include "monitoringplugins/cpuplugin/cpuplugin.hpp"
 #include <fstream>
 #include <string>
+#include <thread>
 #include "catch2/catch.hpp"
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
@@ -54,18 +55,19 @@ TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
         imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}})[0];
 
   REQUIRE(data.plugin_name() == "CpuPlugin");
-  REQUIRE(data.data().size() == 4);
-
-  REQUIRE(data.data().at(0).first == "core0");
-  REQUIRE(data.data().at(1).first == "core1");
-  REQUIRE(data.data().at(2).first == "core2");
-  REQUIRE(data.data().at(3).first == "core3");
+  auto core_count = std::thread::hardware_concurrency();
+  if (core_count > 4) {
+    FAIL("This stupid test should not run on machines with more than 4 cores.");
+  }
+  REQUIRE(data.data().size() == core_count);
 
   using namespace Catch::literals;
-  REQUIRE(std::any_cast<float>(data.data().at(0).second) == 6.6463_a);
-  REQUIRE(std::any_cast<float>(data.data().at(1).second) == 6.98991_a);
-  REQUIRE(std::any_cast<float>(data.data().at(2).second) == 7.42465_a);
-  REQUIRE(std::any_cast<float>(data.data().at(3).second) == 7.44534_a);
+  constexpr double results[] = {6.6463, 6.98991, 7.42465, 7.44534};
+  for (uint i = 0; i < core_count; ++i) {
+    REQUIRE(data.data().at(i).first == "core" + std::to_string(i));
+    REQUIRE(std::any_cast<float>(data.data().at(i).second) ==
+            Approx(results[i]));
+  }
 }
 
 TEST_CASE("CpuPlugin Data processor", "[CpuPlugin]") {
