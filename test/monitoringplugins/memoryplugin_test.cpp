@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "catch2/catch.hpp"
+#include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/memoryplugin/memorypluginprocessors.hpp"
 
@@ -28,15 +29,11 @@ TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
 }
 
 TEST_CASE("MemoryPlugin Data processor", "[MemoryPlugin]") {
+  dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::memoryplugin::CreateProcessors();
   auto time_series_processor = processors.front();
 
   auto time_series_response = time_series_processor->processor()(sample_data);
 
-  std::ifstream ref_stream{std::string{TESTDATA_DIR} +
-                           "/memoryplugin_time_series_response_ref"};
-  std::string ref;
-  std::getline(ref_stream, ref);
-
-  REQUIRE(time_series_response == ref);
+  REQUIRE(time_series_response == "bWVtX2NoYXJ0cy5ncAoK");
 }

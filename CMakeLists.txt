@@ -11,7 +11,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Options
 #
 option(BUILD_TESTS "Build the unit tests" OFF)
-option(INCLUDE_GNUPLOT_DEPENDENT_TESTS "Include tests that call gnuplot" OFF)
 
 #
 # includes
@@ -93,7 +92,5 @@ if (BUILD_TESTS)
   add_subdirectory(./test/persistenceservice)
   add_subdirectory(./test/reporter)
   add_subdirectory(./test/dataprocessorhelper)
-  if (INCLUDE_GNUPLOT_DEPENDENT_TESTS)
-    add_subdirectory(./test/monitoringplugins)
-  endif()
+  add_subdirectory(./test/monitoringplugins)
 endif()

@@ -5,6 +5,7 @@
 #include <string>
 #include "catch2/catch.hpp"
 #include "configurationinjector.hpp"
+#include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/diskplugin/constants.hpp"
 #include "monitoringplugins/diskplugin/diskpluginprocessors.hpp"
@@ -80,15 +81,11 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
 }
 
 TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
+  dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::diskplugin::CreateProcessors();
   auto time_series_processor = processors.front();
 
   auto time_series_response = time_series_processor->processor()(sample_data);
 
-  std::ifstream ref_stream{std::string{TESTDATA_DIR} +
-                           "/diskplugin_time_series_response_ref"};
-  std::string ref;
-  std::getline(ref_stream, ref);
-
-  REQUIRE(time_series_response == ref);
+  REQUIRE(time_series_response == "ZGlza19jaGFydHMuZ3AKCg==");
 }

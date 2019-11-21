@@ -10,6 +10,53 @@ namespace dataprocessorhelper {
 namespace gnuplot {
 
 ///
+/// \brief A wrapper class for the gnuplot backend
+/// \details Provides the possibility to test gnuplot dependent code without
+/// actually invoking gnuplot. If mock_call is active, gnuplot is NOT invoked.
+/// Passed parameter are written to the result file which was passed as
+/// parameter.
+///
+class GnuPlotBackend {
+ public:
+  GnuPlotBackend(const GnuPlotBackend&) = delete;
+  GnuPlotBackend& operator=(const GnuPlotBackend&) = delete;
+  GnuPlotBackend(GnuPlotBackend&&) = delete;
+  GnuPlotBackend& operator=(GnuPlotBackend&&) = delete;
+  ///
+  /// \brief Get the singleton instance
+  ///
+  static GnuPlotBackend& instance();
+
+  ///
+  /// \brief Get whether the gnuplot instance is configured to actually call
+  /// gnuplot
+  /// \return True, if mock call is active (NOT calling gnuplot)
+  ///
+  bool mock_call() const;
+
+  ///
+  /// \brief Set call behavior
+  /// \param mock_call True to bypass gnuplot
+  ///
+  void set_mock_call(bool mock_call);
+
+  ///
+  /// \brief Invoke gnuplot
+  /// \param script The script to execute
+  /// \param params The parameter to pass
+  /// \param out_file The file to write the output to
+  /// \return The return code of the gnuplot call
+  ///
+  int Invoke(const std::string& script,
+             const dataprocessorhelper::gnuplot::GnuPlotParameterDict& params,
+             const std::string& out_file);
+
+ private:
+  GnuPlotBackend();
+  bool mock_call_;
+};
+
+//
 /// \brief Execute a gnuplot script and pipe the output to a file
 /// \details To output a chart to a file, set your terminal to png, pngcairo or
 /// something similar. Piping the output of plot calls for this terminal type

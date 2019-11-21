@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "catch2/catch.hpp"
+#include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/cpuplugin/cpupluginprocessors.hpp"
 
@@ -68,6 +69,7 @@ TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
 }
 
 TEST_CASE("CpuPlugin Data processor", "[CpuPlugin]") {
+  dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::cpuplugin::CreateProcessors();
   auto time_series = *std::find_if(
       processors.begin(), processors.end(),
@@ -83,11 +85,8 @@ TEST_CASE("CpuPlugin Data processor", "[CpuPlugin]") {
   auto time_series_response = time_series->processor()(sample_data);
   auto avg_response = avg->processor()(sample_data);
 
-  std::ifstream ref_stream{std::string{TESTDATA_DIR} +
-                           "/cpuplugin_time_series_response_ref"};
-  std::string ref;
-  std::getline(ref_stream, ref);
-
-  REQUIRE(time_series_response == ref);
+  REQUIRE(time_series_response ==
+          "Y3B1X2NoYXJ0cy5ncAoieV9sYWJlbD0nVXNhZ2UgWyVdJzt5X3Nlcmllc19jb3VudD0y"
+          "Igo=");
   REQUIRE(avg_response == "7.5");
 }

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include "configurationinjector.hpp"
+#include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "monitoringplugins/logwatcherplugin/constants.hpp"
 #include "monitoringplugins/logwatcherplugin/logwatcherpluginprocessors.hpp"
 
