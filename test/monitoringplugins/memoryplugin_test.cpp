@@ -24,7 +24,7 @@ TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
 
   REQUIRE(std::any_cast<int>(data.data().at(0).second) > 0);
   REQUIRE(std::any_cast<int>(data.data().at(0).second) < 100);
-  REQUIRE(std::any_cast<int>(data.data().at(1).second) > 0);
+  REQUIRE(std::any_cast<int>(data.data().at(1).second) >= 0);
   REQUIRE(std::any_cast<int>(data.data().at(1).second) < 100);
 }
 
