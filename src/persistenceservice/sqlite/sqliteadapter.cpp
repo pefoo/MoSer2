@@ -50,7 +50,7 @@ void persistenceservice::sqlite::SqliteAdapter::Store(
     this->DoStore(*item);
   }
   rc = sqlite3_exec(this->db_, "END TRANSACTION;", nullptr, nullptr, &err_msg);
-  this->ThrowIfBadCall(rc, "Begin transaction", err_msg);
+  this->ThrowIfBadCall(rc, "End transaction", err_msg);
 }
 
 std::vector<imonitorplugin::PluginData>
@@ -111,6 +111,10 @@ void persistenceservice::sqlite::SqliteAdapter::ThrowIfBadCall(
     int rc, const std::string &action, const std::string &execution_info,
     int expected_result) const {
   if (rc != expected_result) {
+    if (sqlite3_get_autocommit(this->db_) == 0) {
+      sqlite3_exec(this->db_, "ROLLBACK TRANSACTION", nullptr, nullptr,
+                   nullptr);
+    }
     throw std::runtime_error("Action [" + action +
                              "] failed with return code " + std::to_string(rc) +
                              "! " + execution_info +
