@@ -44,6 +44,12 @@ class SqliteAdapter : public IDataAdapter {
   std::vector<imonitorplugin::PluginData> Load(const std::string &plugin_name,
                                                int64_t min_age) override;
 
+  ///
+  /// \copydoc IDataAdapter::LoadTable()
+  ///
+  utility::datastructure::Table LoadTable(const std::string &plugin_name,
+                                          int64_t min_age) override;
+
  private:
   std::vector<std::string> known_plugins_;
   // c interfaces dont like smart pointers...

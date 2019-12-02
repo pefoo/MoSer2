@@ -2,6 +2,7 @@
 #define FILEACCESSHELPER_H
 
 #include <filesystem>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -28,6 +29,31 @@ std::filesystem::path GetCurrentExecutablePath();
 /// \param path The (possible) relative path.
 ///
 std::filesystem::path MakeAbsolutePathFromExecutable(const std::string& path);
+
+///
+/// \brief Create a temporary file name.
+/// \details This function is using the <a
+/// href="https://linux.die.net/man/3/mkstemp">POSIX defined function
+/// mkstemp</a> to generate a unique temporary file name.
+/// The generated file is closed immediately. (see POSIX standard docs)
+/// \note mkstemp ensures the file name is unique. This does NOT hold true,
+/// if you add a path to the file.
+/// \param prefix The prefix for the new file. The result will look like
+/// prefix_{random stuff}
+/// \return The temp file name. Empty string if mkstemp fails
+///
+std::string GetTempFileName(const std::string& prefix = "moser2_tmp_file");
+
+///
+/// \brief Get a temporary file that is removed once the shared pointer calls
+/// its internal destructor
+/// \details See utility::filesystem::GetTempFileName
+/// for a description of the generated file name.
+/// \param prefix The prefix for the new file.
+/// \return A shared pointer that stores the file name
+///
+std::shared_ptr<std::string> GetTempFile(
+    const std::string& prefix = "moser2_tmp_file");
 
 }  // namespace filesystem
 }  // namespace utility

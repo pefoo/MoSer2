@@ -5,14 +5,7 @@
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/loadplugin/loadpluginprocessors.hpp"
-
-static const std::vector<imonitorplugin::PluginData> sample_data{
-    imonitorplugin::PluginData{
-        "LoadPlugin", 1558784370, {{"m1", 5}, {"m5", 10}, {"m15", 50}}},
-    imonitorplugin::PluginData{
-        "LoadPlugin", 1558784375, {{"m1", 5}, {"m5", 10}, {"m15", 50}}},
-    imonitorplugin::PluginData{
-        "LoadPlugin", 1558784380, {{"m1", 5}, {"m5", 10}, {"m15", 50}}}};
+#include "utility/datastructure/table.hpp"
 
 TEST_CASE("LoadPlugin Data acquisition", "[LoadPlugin]") {
   monitoringplugins::loadplugin::LoadPlugin plug{};
@@ -31,6 +24,15 @@ TEST_CASE("LoadPlugin Data acquisition", "[LoadPlugin]") {
 }
 
 TEST_CASE("LoadPlugin Data processor", "[LoadPlugin]") {
+  utility::datastructure::Table sample_data{"LoadPlugin"};
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"m1", {5, 5, 5}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"m5", {10, 10, 10}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"m15", {50, 50, 50}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "timestamp", {1558784370, 1558784375, 1558784380}});
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processor = monitoringplugins::loadplugin::CreateProcessors().front();
   auto time_series_response = processor->processor()(sample_data);

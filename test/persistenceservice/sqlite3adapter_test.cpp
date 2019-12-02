@@ -8,6 +8,7 @@
 #include "persistenceservice/idataadapter.hpp"
 #include "persistenceservice/sqlite/sqliteadapter.hpp"
 #include "persistenceservice/sqlite/sqlitesettings.hpp"
+#include "utility/datastructure/table.hpp"
 
 const std::string database_file = "sqlite3_adapter_test.db";
 static imonitorplugin::PluginData::data_vector data_vec = {
@@ -38,6 +39,17 @@ TEST_CASE("Sqlite3 adapter test", "[PersistenceService]") {
     REQUIRE_NOTHROW([&]() { records = adapter->Load(data.plugin_name()); }());
     REQUIRE(records.size() == 1);
     REQUIRE(records.front().ToString() == data.ToString());
+
+    utility::datastructure::Table table;
+    table = adapter->LoadTable(data.plugin_name());
+    REQUIRE(table.name() == data.plugin_name());
+    std::vector<std::string> col_names{"c_int",     "c_float",  "c_double",
+                                       "c_int64_t", "c_string", "timestamp"};
+    REQUIRE_THAT(table.GetColumnNames(),
+                 Catch::Matchers::UnorderedEquals(col_names));
+    // sqlite3 does not differentiate float and double.
+    REQUIRE(table.GetDataColumn<double>("c_float").data().front() ==
+            Approx(17.17f));
   }
   std::remove(database_file.c_str());
 }

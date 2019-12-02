@@ -8,30 +8,9 @@
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "monitoringplugins/logwatcherplugin/constants.hpp"
 #include "monitoringplugins/logwatcherplugin/logwatcherpluginprocessors.hpp"
+#include "utility/datastructure/table.hpp"
 
 static constexpr char kFileName[] = "unit_test_log_file.log";
-static const std::vector<imonitorplugin::PluginData> sample_data{
-    imonitorplugin::PluginData{
-        monitoringplugins::logwatcherplugin::constants::kPluginName,
-        1558784370,
-        {{monitoringplugins::logwatcherplugin::constants::kDbFieldEntry,
-          std::string{"Some error"}},
-         {monitoringplugins::logwatcherplugin::constants::kDbFieldTags,
-          std::string{"errors"}}}},
-    imonitorplugin::PluginData{
-        monitoringplugins::logwatcherplugin::constants::kPluginName,
-        1558784375,
-        {{monitoringplugins::logwatcherplugin::constants::kDbFieldEntry,
-          std::string{"No error"}},
-         {monitoringplugins::logwatcherplugin::constants::kDbFieldTags,
-          std::string{"another_tag"}}}},
-    imonitorplugin::PluginData{
-        monitoringplugins::logwatcherplugin::constants::kPluginName,
-        1558784380,
-        {{monitoringplugins::logwatcherplugin::constants::kDbFieldEntry,
-          std::string{"Error and another tag"}},
-         {monitoringplugins::logwatcherplugin::constants::kDbFieldTags,
-          std::string{"errors,another_tag"}}}}};
 
 void PrepareLogFile() {
   std::stringstream t{};
@@ -69,10 +48,19 @@ TEST_CASE("LogWatcherPlugin data acquisition", "[LogWatcherPlugin]") {
   REQUIRE(error1 == "Error bar");
   REQUIRE(error2 == "bar Error foo");
 }
+using namespace monitoringplugins::logwatcherplugin::constants;
 
 TEST_CASE("LogWatcherPlugin data processor", "[LogWatcherPlugin]") {
   ConfigurationInjector c{
       monitoringplugins::logwatcherplugin::constants::kPluginName};
+  utility::datastructure::Table sample_data{"LogWatcherPlugin"};
+  sample_data.AddColumn(utility::datastructure::DataColumn<std::string>{
+      kDbFieldEntry, {"Some error", "No error", "Error and another tag"}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<std::string>{
+      kDbFieldTags, {"errors", "another_tag", "errors,another_tag"}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "timestamp", {1558784370, 1558784375, 1558784380}});
+
   auto processors = monitoringplugins::logwatcherplugin::CreateProcessors();
 
   // One tag is configred -> one processor provided

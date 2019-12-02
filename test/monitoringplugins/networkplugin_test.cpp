@@ -7,14 +7,7 @@
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/networkplugin/constants.hpp"
 #include "monitoringplugins/networkplugin/networkpluginprocessors.hpp"
-
-static const std::vector<imonitorplugin::PluginData> sample_data{
-    imonitorplugin::PluginData{
-        "NetworkPlugin", 1558784370, {{"rx_bytes", 5}, {"tx_bytes", 10}}},
-    imonitorplugin::PluginData{
-        "NetworkPlugin", 1558784375, {{"rx_bytes", 5}, {"tx_bytes", 10}}},
-    imonitorplugin::PluginData{
-        "NetowrkPlugin", 1558784380, {{"rx_bytes", 5}, {"tx_bytes", 10}}}};
+#include "utility/datastructure/table.hpp"
 
 TEST_CASE("NetworkPlugin Data acquisition", "[NetworkPlugin]") {
   ConfigurationInjector c{
@@ -35,6 +28,14 @@ TEST_CASE("NetworkPlugin Data acquisition", "[NetworkPlugin]") {
 }
 
 TEST_CASE("NetworkPlugin Data processor", "[NetworkPlugin]") {
+  utility::datastructure::Table sample_data{"NetworkPlugin"};
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"rx_bytes", {5, 5, 5}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"tx_bytes", {10, 10, 10}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "timestamp", {1558784370, 1558784375, 1558784380}});
+
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::networkplugin::CreateProcessors();
   auto time_series_processor = processors.front();

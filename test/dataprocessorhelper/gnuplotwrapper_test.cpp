@@ -4,7 +4,7 @@
 #include <sstream>
 #include "catch2/catch.hpp"
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
-#include "imonitoringplugin/plugindata.hpp"
+#include "utility/filesystem/fileaccesshelper.hpp"
 
 std::string GetsinxScript() {
   std::stringstream ss{};
@@ -62,30 +62,28 @@ TEST_CASE("Execute script, pipe to file", "[DataProcessorHelper]") {
   std::string content{std::istreambuf_iterator<char>{output_stream},
                       std::istreambuf_iterator<char>{}};
 
-  REQUIRE(content == GetsinxScript() + "\n\"titletext='unit test 1'\"\n");
+  REQUIRE(content == "\"plot_sinx.gp\"\n\"titletext='unit test 1'\"\n");
   std::filesystem::remove(output_file);
 }
 
 TEST_CASE("Execute script with automatic intermediate file creation",
           "[DataProcessorHelper]") {
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
-  std::vector<imonitorplugin::PluginData> d{
-      imonitorplugin::PluginData{"sample data", 1558784370, {{"c_int", 17}}},
-      imonitorplugin::PluginData{"sample data", 1558784375, {{"c_int", 42}}},
-      imonitorplugin::PluginData{"sample data", 1558784380, {{"c_int", 17}}}};
   dataprocessorhelper::gnuplot::GnuPlotParameterDict dict{};
+  utility::datastructure::Table d{"sample data"};
+  d.AddColumn(utility::datastructure::DataColumn<int>("c_int", {17, 42, 17}));
+  d.AddColumn(utility::datastructure::DataColumn<int>(
+      "timestamp", {1558784370, 1558784375, 1558784380}));
   dict.AddParameter("y_series_count", "1", false);
 
-  std::string output_file = std::filesystem::temp_directory_path().string() +
-                            "/" + std::to_string(std::time(nullptr)) + ".png";
-  REQUIRE(dataprocessorhelper::gnuplot::ExecuteScript(
-              GetRecordsScript(), d, "file_name", output_file, dict) == 0);
-  std::ifstream output_stream{output_file};
+  auto output_file = utility::filesystem::GetTempFile();
+  REQUIRE(dataprocessorhelper::gnuplot::ExecuteScript(GetRecordsScript(), d,
+                                                      *output_file, dict) == 0);
+  std::ifstream output_stream{*output_file};
   std::string content{std::istreambuf_iterator<char>{output_stream},
                       std::istreambuf_iterator<char>{}};
 
-  REQUIRE(content == GetRecordsScript() + "\n\"y_series_count=1\"\n");
-  std::filesystem::remove(output_file);
+  REQUIRE(content == "\"plot_records.gp\"\n\"y_series_count=1\"\n");
 }
 
 TEST_CASE(
@@ -93,21 +91,20 @@ TEST_CASE(
     "base64",
     "[DataProcessorHelper]") {
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
-  std::vector<imonitorplugin::PluginData> d{
-      imonitorplugin::PluginData{"sample data", 1558784370, {{"c_int", 17}}},
-      imonitorplugin::PluginData{"sample data", 1558784375, {{"c_int", 42}}},
-      imonitorplugin::PluginData{"sample data", 1558784380, {{"c_int", 17}}}};
+  utility::datastructure::Table d{"sample data"};
+  d.AddColumn(utility::datastructure::DataColumn<int>("c_int", {17, 42, 17}));
+  d.AddColumn(utility::datastructure::DataColumn<int>(
+      "timestamp", {1558784370, 1558784375, 1558784380}));
   dataprocessorhelper::gnuplot::GnuPlotParameterDict dict{};
   dict.AddParameter("y_series_count", "1", false);
 
   auto encoded_img = dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
-      GetRecordsScript(), d, "file_name", dict);
+      GetRecordsScript(), d, dict);
   std::ifstream ref_stream{GetrecordsReferenceEncodedImageFile()};
   std::string ref_content;
   std::getline(ref_stream, ref_content);
   REQUIRE(encoded_img ==
-          "L2hvbWUvcGVlcGUvUHJvZ3JhbW1pbmcvY3BwL01vU2VyMi90ZXN0L3Rlc3RkYXRhL3Bs"
-          "b3RfcmVjb3Jkcy5ncAoieV9zZXJpZXNfY291bnQ9MSIK");
+          "InBsb3RfcmVjb3Jkcy5ncCIKInlfc2VyaWVzX2NvdW50PTEiCg==");
 }
 
 TEST_CASE("Execute script and convert output to base64",
@@ -123,6 +120,5 @@ TEST_CASE("Execute script and convert output to base64",
   std::string ref_content;
   std::getline(ref_stream, ref_content);
   REQUIRE(encoed_img ==
-          "L2hvbWUvcGVlcGUvUHJvZ3JhbW1pbmcvY3BwL01vU2VyMi90ZXN0L3Rlc3RkYXRhL3Bs"
-          "b3Rfc2lueC5ncAoidGl0bGV0ZXh0PSd1bml0IHRlc3QgMSciCg==");
+          "InBsb3Rfc2lueC5ncCIKInRpdGxldGV4dD0ndW5pdCB0ZXN0IDEnIgo=");
 }

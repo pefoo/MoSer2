@@ -5,14 +5,7 @@
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/memoryplugin/memorypluginprocessors.hpp"
-
-static const std::vector<imonitorplugin::PluginData> sample_data{
-    imonitorplugin::PluginData{
-        "MemoryPlugin", 1558784370, {{"mem_usage", 5}, {"swap_usage", 50}}},
-    imonitorplugin::PluginData{
-        "MemoryPlugin", 1558784375, {{"mem_usage", 5}, {"swap_usage", 50}}},
-    imonitorplugin::PluginData{
-        "MemoryPlugin", 1558784380, {{"mem_usage", 5}, {"swap_usage", 50}}}};
+#include "utility/datastructure/table.hpp"
 
 TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
   monitoringplugins::memoryplugin::MemoryPlugin plug{};
@@ -29,6 +22,14 @@ TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
 }
 
 TEST_CASE("MemoryPlugin Data processor", "[MemoryPlugin]") {
+  utility::datastructure::Table sample_data{"MemoryPlugin"};
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"mem_usage", {5, 5, 5}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"swap_usage", {50, 50, 50}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "timestamp", {1558784370, 1558784375, 1558784380}});
+
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::memoryplugin::CreateProcessors();
   auto time_series_processor = processors.front();

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include "imonitoringplugin/plugindata.hpp"
+#include "utility/datastructure/table.hpp"
 
 namespace imonitorplugin {
 
@@ -22,7 +23,8 @@ class IPluginDataProcessor {
   /// \details A function that processes the plugin data. This is bound to
   /// actual records later on.
   ///
-  using DataProcessor = std::function<std::string(std::vector<PluginData>)>;
+  using DataProcessor =
+      std::function<std::string(utility::datastructure::Table)>;
 
   ///
   /// \brief ~IPluginDataProcessor

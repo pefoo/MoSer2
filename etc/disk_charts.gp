@@ -15,7 +15,7 @@ if(!exists("file_name")) exit
 set terminal pngcairo size 1000,400 background rgb '#636363'
 set datafile separator ";"
 set xdata time
-set timefmt "%Y-%m-%d %H:%M:%S"
+set timefmt "%s"
 set format x "%H:%M"
 set xlabel "Date"
 set ylabel "Disk [MB]"

@@ -38,8 +38,7 @@ class TemplateTokenFactory {
 
  private:
   std::shared_ptr<persistenceservice::IDataAdapter> data_adapter_;
-  std::unordered_map<std::string, std::vector<imonitorplugin::PluginData>>
-      data_;
+  std::unordered_map<std::string, utility::datastructure::Table> data_;
 };
 
 }  // namespace templateprocessor

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "imonitoringplugin/plugindata.hpp"
+#include "utility/datastructure/table.hpp"
 
 namespace persistenceservice {
 ///
@@ -40,6 +41,15 @@ class IDataAdapter {
   /// \return A vector with matching entries
   ///
   virtual std::vector<imonitorplugin::PluginData> Load(
+      const std::string& plugin_name, int64_t min_age = 0) = 0;
+
+  ///
+  /// \brief Load data from the adapter using the table structure
+  /// \param plugin_name The name of the plugin whose data to laod
+  /// \param min_age The minimum time stamp (unix time)
+  /// \return A table with the laoded data
+  ///
+  virtual utility::datastructure::Table LoadTable(
       const std::string& plugin_name, int64_t min_age = 0) = 0;
 };
 

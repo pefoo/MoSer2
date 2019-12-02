@@ -3,6 +3,7 @@ set(SOURCES
   gnuplot/gnuplotparameterdict.cpp
   gnuplot/gnuplotwrapper.cpp
   settingshelper.cpp
+  tablecalchelper.cpp
 )
 
 ADD_LIBRARY(DataProcessorHelper STATIC ${SOURCES})

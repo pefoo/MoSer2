@@ -6,7 +6,9 @@
 #include <vector>
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
+#include "dataprocessorhelper/tablecalchelper.hpp"
 #include "monitoringplugins/cpuplugin/constants.hpp"
+#include "utility/datastructure/table.hpp"
 
 monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringplugins::cpuplugin::CreateProcessors() {
@@ -14,8 +16,8 @@ monitoringplugins::cpuplugin::CreateProcessors() {
       {// The cpu usage chart, base64 encoded
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
            "%%CPU_TIME_SERIES_DATA%%",
-           [](std::vector<imonitorplugin::PluginData> records) -> std::string {
-             if (records.empty()) {
+           [](utility::datastructure::Table data) -> std::string {
+             if (data.MaxSize() == 0) {
                return "";
              }
              dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
@@ -24,33 +26,23 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                  "Usage [%]", true);
              params.AddParameter(
                  monitoringplugins::cpuplugin::constants::kGpArgYSeriesCount,
-                 std::to_string(records.front().data().size()), false);
+                 std::to_string(data.ColumnCount() - 1), false);
 
              return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
-                 monitoringplugins::cpuplugin::constants::kGpScriptName,
-                 records,
-                 monitoringplugins::cpuplugin::constants::kGpArgFileName,
+                 monitoringplugins::cpuplugin::constants::kGpScriptName, data,
                  params);
            })},
       {// The average cpu usage. a single value
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
            "%%CPU_USAGE_AVERAGE%%",
-           [](std::vector<imonitorplugin::PluginData> records) -> std::string {
-             if (records.empty()) {
+           [](utility::datastructure::Table data) -> std::string {
+             if (data.MaxSize() == 0) {
                return "";
              }
-             double core_count = records.front().data().size();
-             double total = 0.0;
-             for (const auto& record : records) {
-               for (const auto& v : record.data()) {
-                 // We know its double right now. See sqlite3 data types.
-                 total += std::any_cast<double>(v.second);
-               }
-             }
-             auto rounded =
-                 (std::round((total / core_count / records.size()) * 10)) / 10;
+             auto avg =
+                 std::round(dataprocessorhelper::Avg<double>(data) * 10) / 10;
              std::stringstream f{};
-             f << rounded;
+             f << avg;
              return f.str();
            })}};
 }

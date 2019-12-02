@@ -6,6 +6,7 @@
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/cpuplugin/cpupluginprocessors.hpp"
+#include "utility/datastructure/table.hpp"
 
 constexpr char snapshot_1[] =
     "cpu  118170 409 39814 1626469 1218 0 3923 0 0 0\n"
@@ -39,14 +40,6 @@ constexpr char snapshot_2[] =
     "procs_blocked 0\n"
     "softirq 2939767 689520 694940 876 329936 121162 0 4056 590473 0 508804";
 
-static const std::vector<imonitorplugin::PluginData> sample_data{
-    imonitorplugin::PluginData{
-        "CpuPlugin", 1558784370, {{"core0", 5.0}, {"core1", 10.0}}},
-    imonitorplugin::PluginData{
-        "CpuPlugin", 1558784375, {{"core0", 5.0}, {"core1", 10.0}}},
-    imonitorplugin::PluginData{
-        "CpuPlugin", 1558784380, {{"core0", 5.0}, {"core1", 10.0}}}};
-
 TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
   monitoringplugins::cpuplugin::CpuPlugin plug{};
 
@@ -71,6 +64,13 @@ TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
 }
 
 TEST_CASE("CpuPlugin Data processor", "[CpuPlugin]") {
+  utility::datastructure::Table sample_data{"CpuPlugion"};
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<double>{"core0", {5.0, 5.0, 5.0}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<double>{"core1", {10.0, 10.0, 10.0}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "timestamp", {1558784370, 1558784375, 1558784380}});
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::cpuplugin::CreateProcessors();
   auto time_series = *std::find_if(

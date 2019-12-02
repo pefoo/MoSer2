@@ -12,6 +12,7 @@
 #include "dataprocessorhelper/settingshelper.hpp"
 #include "monitoringplugins/diskplugin/constants.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
+#include "utility/datastructure/table.hpp"
 
 #if __x86_64 || __ppc64__
 using Statvfs = struct statvfs64;
@@ -42,28 +43,24 @@ monitoringplugins::diskplugin::CreateProcessors() {
       processors.push_back(
           std::make_shared<monitoringpluginbase::PluginDataProcessor>(
               "%%DISK_" + device + "_TIME_SERIES_DATA%%",
-              [device](std::vector<imonitorplugin::PluginData> records)
-                  -> std::string {
-                if (records.empty()) {
+              [device](utility::datastructure::Table data) -> std::string {
+                if (data.MaxSize() == 0) {
                   return "";
                 }
                 auto record_filter = [device](const std::string& key) {
-                  return key.find(device) == 0;
+                  return key.find(device) == 0 || key == "timestamp";
                 };
                 dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
 
                 return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
                     monitoringplugins::diskplugin::constants::kGpScriptName,
-                    records,
-                    monitoringplugins::diskplugin::constants::kGpArgFileName,
-                    params, ";", record_filter);
+                    data, params, record_filter);
               }));
     }
     processors.push_back(
         std::make_shared<monitoringpluginbase::PluginDataProcessor>(
             "%%DISK_USAGE%%",
-            [device_list](
-                [[gnu::unused]] std::vector<imonitorplugin::PluginData> records)
+            [device_list]([[gnu::unused]] utility::datastructure::Table data)
                 -> std::string {
               auto mount_points = GetMountPoints();
               std::stringstream out{};

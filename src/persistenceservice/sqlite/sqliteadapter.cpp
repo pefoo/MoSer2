@@ -107,6 +107,47 @@ persistenceservice::sqlite::SqliteAdapter::Load(const std::string &plugin_name,
   return records;
 }
 
+utility::datastructure::Table
+persistenceservice::sqlite::SqliteAdapter::LoadTable(
+    const std::string &plugin_name, int64_t min_age) {
+  sqlite3_stmt *stmt;
+  auto query = persistenceservice::sqlite::QueryHelper::BuildSelectQuery(
+      plugin_name, min_age);
+  int rc = sqlite3_prepare_v2(this->db_, query.c_str(), -1, &stmt, nullptr);
+  this->ThrowIfBadCall(rc, "Prepare select for " + plugin_name);
+  utility::datastructure::Table table{plugin_name};
+
+  // Table rows
+  while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+    // Table columns
+    for (int col = 0; col < sqlite3_data_count(stmt); ++col) {
+      std::string col_name = sqlite3_column_name(stmt, col);
+      // Handle data columns
+      switch (sqlite3_column_type(stmt, col)) {
+        case SQLITE_INTEGER: {
+          table.AddValue(sqlite3_column_int(stmt, col), col_name);
+          break;
+        }
+        case SQLITE_FLOAT: {
+          table.AddValue(sqlite3_column_double(stmt, col), col_name);
+          break;
+        }
+        case SQLITE_TEXT: {
+          // Thanks for the unsigned char.
+          table.AddValue(std::string(reinterpret_cast<const char *>(
+                             sqlite3_column_text(stmt, col))),
+                         col_name);
+          break;
+        }
+        case SQLITE_NULL:
+        case SQLITE_BLOB:
+          throw std::runtime_error("Not supported sql type.");
+      }
+    }
+  }
+  return table;
+}
+
 void persistenceservice::sqlite::SqliteAdapter::ThrowIfBadCall(
     int rc, const std::string &action, const std::string &execution_info,
     int expected_result) const {

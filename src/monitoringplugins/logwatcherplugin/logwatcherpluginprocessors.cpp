@@ -4,6 +4,7 @@
 #include "dataprocessorhelper/settingshelper.hpp"
 #include "monitoringplugins/logwatcherplugin/constants.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
+#include "utility/datastructure/table.hpp"
 
 using namespace monitoringplugins::logwatcherplugin::constants;
 
@@ -28,34 +29,26 @@ monitoringplugins::logwatcherplugin::CreateProcessors() {
     processors.push_back(
         std::make_shared<monitoringpluginbase::PluginDataProcessor>(
             "%%LOG_TABLE_" + tag + "%%",
-            [tag](std::vector<imonitorplugin::PluginData> records)
-                -> std::string {
+            [tag](utility::datastructure::Table data) -> std::string {
               std::stringstream out{};
               std::stringstream table_content{};
-              int row_counter = 0;
-              for (const auto& record : records) {
-                std::string tags = "";
-                std::string entry = "";
-                for (const auto& field : record.data()) {
-                  if (field.first == kDbFieldEntry) {
-                    entry = std::any_cast<std::string>(field.second);
-                    continue;
-                  } else if (field.first == kDbFieldTags) {
-                    tags = std::any_cast<std::string>(field.second);
-                  }
-                }
-                if (tags.find(tag) == std::string::npos) {
-                  continue;
-                }
-                ++row_counter;
+
+              auto entries_col =
+                  data.GetDataColumn<std::string>(kDbFieldEntry).data();
+              auto tags_col =
+                  data.GetDataColumn<std::string>(kDbFieldTags).data();
+              size_t row;
+              for (row = 0; row < data.MaxSize(); ++row) {
+                auto entry = entries_col.at(row);
+                auto tags = tags_col.at(row);
+                if (tags.find(tag) == std::string::npos) continue;
                 table_content << kTableRowStart << kTableColumnStart << entry
                               << kTableColumnEnd << kTableRowEnd;
               }
 
-              if (row_counter != 0) {
+              if (row != 0) {
                 out << kTableStart << kTableRowStart << kTableHeaderStart << tag
-                    << " [" << row_counter << "]" << kTableHeaderEnd
-                    << kTableRowEnd;
+                    << " [" << row << "]" << kTableHeaderEnd << kTableRowEnd;
                 out << table_content.rdbuf();
                 out << kTableEnd;
               }

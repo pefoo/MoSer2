@@ -9,6 +9,7 @@
 #include "imonitoringplugin/inputfilecontent.hpp"
 #include "monitoringplugins/diskplugin/constants.hpp"
 #include "monitoringplugins/diskplugin/diskpluginprocessors.hpp"
+#include "utility/datastructure/table.hpp"
 
 constexpr char snapshot_1[] =
     "7       0 loop0 50 0 2088 80 0 0 0 0 0 4 28\n"
@@ -35,23 +36,6 @@ constexpr char snapshot_2[] =
     "8       4 sda4 72114 1273 4167098 24668 122285 106951 20263536 356572 0 "
     "53968 381140\n"
     "7       8 loop8 33 0 656 4 0 0 0 0 0 0 0\n";
-
-static const std::vector<imonitorplugin::PluginData> sample_data{
-    imonitorplugin::PluginData{"DiskPlugin",
-                               1558784370,
-                               {{"sda3_bytes_read", 5},
-                                {"sda3_bytes_written", 10},
-                                {"sda3_utilization", 50}}},
-    imonitorplugin::PluginData{"DiskPlugin",
-                               1558784375,
-                               {{"sda3_bytes_read", 5},
-                                {"sda3_bytes_written", 10},
-                                {"sda3_utilization", 50}}},
-    imonitorplugin::PluginData{"DiskPlugin",
-                               1558784380,
-                               {{"sda3_bytes_read", 5},
-                                {"sda3_bytes_written", 10},
-                                {"sda3_utilization", 50}}}};
 
 TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
   ConfigurationInjector c{
@@ -81,6 +65,15 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
 }
 
 TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
+  utility::datastructure::Table sample_data{"DiskPlugin"};
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"sda3_bytes_read", {5, 5, 5}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "sda3_bytes_written", {10, 10, 10}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "sda3_utilization", {50, 50, 50}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
+      "timestamp", {1558784370, 1558784375, 1558784380}});
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::diskplugin::CreateProcessors();
   auto time_series_processor = processors.front();
