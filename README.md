@@ -43,7 +43,10 @@ The actualy configuration expects them to be installed at _/usr/local/lib/MoSer2
 ### Coverage
 To execute the code coverage the following tools are required:
 - gcov (make sure to use a version that matches your compiler)
+  - easiest way is to overwrite the existing symlink in /usr/bin
+  - `sudo ln -sf $(which gcov-8) $(which gcov)` 
 - lcov  (version >= 1.14 required with gcc-8)
+  - Get it [here](http://ltp.sourceforge.net/coverage/lcov.php)
 - genhtml
 
 Run
@@ -84,15 +87,6 @@ Each metric that is created during runtime is created using a dynamically loaded
 A plugin is responsible for data acquisition and data processing. 
 The goal is to store the data in a arbitrary data sink and create html document based reports using the stored data at any given time. 
 The reports may be send via email eventually.
-
-## Features
-- [x] core plugin framework
-- [x] plugin samples (cpu usage, load average)
-- [x] first data sink (sqlite3)
-- [x] basic report creation capabilities
-- [x] send report (mail)
-- [x] installation
-- [ ] scripting interface for report creation
 
 ## Plugins
 The plugin framework is based on [dlopen](http://man7.org/linux/man-pages/man3/dlopen.3.html) and thus **linux only**.
@@ -153,7 +147,6 @@ The template is written mainly in html.
 Eventually, the result of the replacement is send as an email.
 
 ###  Built-in Tokens
-
 
 |Token|Value|
 |---|---|
