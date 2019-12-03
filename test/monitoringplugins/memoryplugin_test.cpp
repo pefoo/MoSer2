@@ -36,5 +36,5 @@ TEST_CASE("MemoryPlugin Data processor", "[MemoryPlugin]") {
 
   auto time_series_response = time_series_processor->processor()(sample_data);
 
-  REQUIRE(time_series_response == "bWVtX2NoYXJ0cy5ncAoK");
+  REQUIRE(time_series_response == "Im1lbV9jaGFydHMuZ3AiCgo=");
 }

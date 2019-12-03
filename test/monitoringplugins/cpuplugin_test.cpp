@@ -88,7 +88,7 @@ TEST_CASE("CpuPlugin Data processor", "[CpuPlugin]") {
   auto avg_response = avg->processor()(sample_data);
 
   REQUIRE(time_series_response ==
-          "Y3B1X2NoYXJ0cy5ncAoieV9sYWJlbD0nVXNhZ2UgWyVdJzt5X3Nlcmllc19jb3VudD0y"
-          "Igo=");
+          "ImNwdV9jaGFydHMuZ3AiCiJ5X2xhYmVsPSdVc2FnZSBbJV0nO3lfc2VyaWVzX2NvdW50"
+          "PTIiCg==");
   REQUIRE(avg_response == "7.5");
 }

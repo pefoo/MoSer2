@@ -80,5 +80,5 @@ TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
 
   auto time_series_response = time_series_processor->processor()(sample_data);
 
-  REQUIRE(time_series_response == "ZGlza19jaGFydHMuZ3AKCg==");
+  REQUIRE(time_series_response == "ImRpc2tfY2hhcnRzLmdwIgoK");
 }

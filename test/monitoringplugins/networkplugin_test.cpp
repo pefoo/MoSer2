@@ -41,5 +41,5 @@ TEST_CASE("NetworkPlugin Data processor", "[NetworkPlugin]") {
   auto time_series_processor = processors.front();
 
   auto time_series_response = time_series_processor->processor()(sample_data);
-  REQUIRE(time_series_response == "bmV0d29ya3BsdWdpbl9jaGFydHMuZ3AKCg==");
+  REQUIRE(time_series_response == "Im5ldHdvcmtwbHVnaW5fY2hhcnRzLmdwIgoK");
 }

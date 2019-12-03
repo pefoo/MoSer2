@@ -24,10 +24,10 @@ TEST_CASE("Max value", "[TableCalcHelper]") {
 
 TEST_CASE("Avg value", "[TableCalcHelper]") {
   utility::datastructure::Table t;
-  t.AddColumn(utility::datastructure::DataColumn<int>("c1", {10, 20, 30, 40}));
-  t.AddColumn(utility::datastructure::DataColumn<int>("c2", {10, 4, 30, 40}));
+  t.AddColumn(utility::datastructure::DataColumn<int>("c1", {1, 2, 3, 4}));
+  t.AddColumn(utility::datastructure::DataColumn<int>("c2", {1, 4, 3, 4}));
   t.AddColumn(
       utility::datastructure::DataColumn<int>("timestamp", {-345, 2, 3, 4}));
 
-  REQUIRE(dataprocessorhelper::Avg<int>(t) == 22.5);
+  REQUIRE(dataprocessorhelper::Avg<int>(t) == 2.75);
 }

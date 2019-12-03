@@ -37,5 +37,5 @@ TEST_CASE("LoadPlugin Data processor", "[LoadPlugin]") {
   auto processor = monitoringplugins::loadplugin::CreateProcessors().front();
   auto time_series_response = processor->processor()(sample_data);
 
-  REQUIRE(time_series_response == "bG9hZF9jaGFydHMuZ3AKCg==");
+  REQUIRE(time_series_response == "ImxvYWRfY2hhcnRzLmdwIgoK");
 }
