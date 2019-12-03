@@ -26,28 +26,24 @@ void CallbackTimer::Start(int interval_ms, const std::function<void()>& func) {
     std::unique_lock<std::mutex> lk(mutex);
     auto last_run = std::chrono::system_clock::now();
     while (this->is_running_.load(std::memory_order_acquire)) {
-      // Since condition variables tend to signal spurious, double check using a
-      // calculated duration
-      if (!this->cv_.wait_for(
-              lk, std::chrono::milliseconds(interval_ms), [&]() {
-                auto elapsed =
-                    std::chrono::duration_cast<std::chrono::milliseconds>(
-                        std::chrono::system_clock::now() - last_run)
-                        .count();
-                return this->is_running_.load(std::memory_order_acquire) &&
-                       elapsed >= interval_ms;
-              })) {
+      if (this->cv_.wait_for(lk, std::chrono::milliseconds(interval_ms)) !=
+          std::cv_status::timeout) {
         continue;
       }
-      {
-        last_run = std::chrono::system_clock::now();
-        try {
-          func();
-        } catch (const std::exception& e) {
-          LOG(ERROR) << "An error occurred during function execution in a "
-                        "callback timer. "
-                     << e.what();
-        }
+      // Since condition variables tend to signal spurious, double check using a
+      // calculated duration
+      auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+                         std::chrono::system_clock::now() - last_run)
+                         .count();
+      if (elapsed < interval_ms) continue;
+
+      last_run = std::chrono::system_clock::now();
+      try {
+        func();
+      } catch (const std::exception& e) {
+        LOG(ERROR) << "An error occurred during function execution in a "
+                      "callback timer. "
+                   << e.what();
       }
     }
   });
