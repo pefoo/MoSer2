@@ -72,8 +72,13 @@ int main() {
     for (const auto &processor : processor_plugins) {
       auto min_age =
           GetDataMinAge(settings->GetValue(constants::settings::DataAge()));
-      auto t = token_factory.BuildTokens(processor->Instance(), min_age);
-      tokens.insert(tokens.end(), t.begin(), t.end());
+      try {
+        auto t = token_factory.BuildTokens(processor->Instance(), min_age);
+        tokens.insert(tokens.end(), t.begin(), t.end());
+      } catch (std::runtime_error &re) {
+        LOG(ERROR) << "Failed to build the tokens for "
+                   << processor->Instance()->plugin() << ". " << re.what();
+      }
     }
 
     // Load the build in tokens
