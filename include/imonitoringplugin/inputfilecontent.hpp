@@ -33,13 +33,13 @@ class InputFileContent {
   /// \brief Get the first snapshot
   /// \return The content of the file
   ///
-  std::string snapshot_1() const { return this->snapshot_1_; }
+  [[nodiscard]] std::string snapshot_1() const { return this->snapshot_1_; }
 
   ///
   /// \brief Get the second snaphot
   /// \return The content of the file
   ///
-  std::string snapshot_2() const { return this->snapshot_2_; }
+  [[nodiscard]] std::string snapshot_2() const { return this->snapshot_2_; }
 
   ///
   /// \brief Set the first snapshot
@@ -61,13 +61,13 @@ class InputFileContent {
   /// \brief Get the timestamp of the first snapshot
   /// \return The timestamp of the first read
   ///
-  int64_t timestamp_1() const { return this->timestamp_1_; }
+  [[nodiscard]] int64_t timestamp_1() const { return this->timestamp_1_; }
 
   ///
   /// \brief Get the timestamp of the second snapshot
   /// \return The timestamp of the second read
   ///
-  int64_t timestamp_2() const { return this->timestamp_2_; }
+  [[nodiscard]] int64_t timestamp_2() const { return this->timestamp_2_; }
 
   ///
   /// \brief Set timestamp of the first snapshot
@@ -87,7 +87,7 @@ class InputFileContent {
   /// \brief Get the delay between the consecutive reads
   /// \return The delay in seconds
   ///
-  int delay() const { return this->delay_; }
+  [[nodiscard]] int delay() const { return this->delay_; }
 
  private:
   int64_t timestamp_1_;

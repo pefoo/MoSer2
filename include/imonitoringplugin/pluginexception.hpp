@@ -32,19 +32,21 @@ class PluginException : public std::exception {
   /// \brief The exception message including the plugin name
   /// \return A c style string with the exception message
   ///
-  const char* what() const noexcept override { return this->what_.c_str(); }
+  [[nodiscard]] const char* what() const noexcept override {
+    return this->what_.c_str();
+  }
 
   ///
   /// \brief Get the plugin name
   /// \return The name of the plugin
   ///
-  std::string plugin_name() const { return plugin_name_; }
+  [[nodiscard]] std::string plugin_name() const { return plugin_name_; }
 
   ///
   /// \brief Get the thrown message
   /// \return The message
   ///
-  std::string msg() const { return msg_; }
+  [[nodiscard]] std::string msg() const { return msg_; }
 
  private:
   std::string plugin_name_;

@@ -109,21 +109,27 @@ class PluginLoader {
   /// \brief Get the path to the library this loader holds
   /// \return The path to the library
   ///
-  std::string GetLibraryPath() const { return this->library_path_; }
+  [[nodiscard]] std::string GetLibraryPath() const {
+    return this->library_path_;
+  }
 
   ///
   /// \brief Get the name of the function that creates actual instances of the
   /// plugin
   /// \return The function name
   ///
-  std::string GetConstructorName() const { return this->constructor_name_; }
+  [[nodiscard]] std::string GetConstructorName() const {
+    return this->constructor_name_;
+  }
 
   ///
   /// \brief Get the name of the function that actually destroys plugin
   /// instances
   /// \return The function name
   ///
-  std::string GetDestructorName() const { return this->destructor_name_; }
+  [[nodiscard]] std::string GetDestructorName() const {
+    return this->destructor_name_;
+  }
 
  private:
   ///
@@ -235,7 +241,9 @@ class PluginLoader {
     ///
     /// \copydoc pluginmanager::IPlugin::GetLibraryPath()
     ///
-    std::string GetLibraryPath() const override { return this->libraryPath_; }
+    [[nodiscard]] std::string GetLibraryPath() const override {
+      return this->libraryPath_;
+    }
 
    private:
     PluginInterface* instance_;

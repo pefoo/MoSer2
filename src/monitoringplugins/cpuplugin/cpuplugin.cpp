@@ -102,7 +102,8 @@ CpuPlugin::CpuStat CpuPlugin::GetCpuStat(const std::string& snapshot) const {
   std::string line;
 
   while (std::getline(stream, line, '\n')) {
-    if (line.find("cpu") == 0) {
+    // line starts with cpu
+    if (line.rfind("cpu", 0) == 0) {
       if (std::regex_search(line, match, rgx)) {
         user.push_back(CpuStat::ToDType(match[1]));
         nice.push_back(CpuStat::ToDType(match[2]));

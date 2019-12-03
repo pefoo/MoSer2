@@ -44,7 +44,7 @@ class GnuPlotBackend {
   /// gnuplot
   /// \return True, if mock call is active (NOT calling gnuplot)
   ///
-  bool mock_call() const;
+  [[nodiscard]] bool mock_call() const;
 
   ///
   /// \brief Set call behavior
@@ -70,7 +70,7 @@ class GnuPlotBackend {
 
  private:
   GnuPlotBackend();
-  bool mock_call_;
+  bool mock_call_{false};
   std::shared_ptr<GnuPlotSettings> settings_;
 };
 
@@ -89,12 +89,11 @@ class GnuPlotBackend {
 /// \return The return code of the gnuplot interpreter
 /// (most likely, actually depends on the implementation of std::system)
 ///
-int ExecuteScript(const std::string& script,
-                  const utility::datastructure::Table& data,
-                  const std::string& output_file,
-                  GnuPlotParameterDict parameter,
-                  const std::function<bool(const std::string&)> filter =
-                      [](const std::string&) { return true; });
+int ExecuteScript(
+    const std::string& script, const utility::datastructure::Table& data,
+    const std::string& output_file, GnuPlotParameterDict parameter,
+    const std::function<bool(const std::string&)>& filter =
+        [](const std::string&) { return true; });
 
 ///
 /// \brief Execute a gnuplot script and convert the output to base 64
@@ -115,9 +114,9 @@ std::string EncodeScriptOutputToBase64(const std::string& script,
 /// \return The base64 encoded output
 ///
 std::string EncodeScriptOutputToBase64(
-    const std::string& script, utility::datastructure::Table data,
+    const std::string& script, const utility::datastructure::Table& data,
     GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string&)> filter =
+    const std::function<bool(const std::string&)>& filter =
         [](const std::string&) { return true; });
 
 }  // namespace gnuplot

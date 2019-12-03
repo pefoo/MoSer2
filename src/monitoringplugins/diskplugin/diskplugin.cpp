@@ -42,7 +42,6 @@ monitoringplugins::diskplugin::DiskPlugin::DiskPlugin()
     sector_sizes.push_back(std::stoi(tmp));
   }
   tmp = "";
-  std::vector<std::string> device_list;
   size_t i = 0;
   while (std::getline(devices, tmp, ';')) {
     this->device_list_[tmp] = sector_sizes.at(i);

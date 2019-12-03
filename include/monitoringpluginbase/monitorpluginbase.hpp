@@ -51,12 +51,12 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::name()
   ///
-  std::string name() const override;
+  [[nodiscard]] std::string name() const override;
 
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::input_files()
   ///
-  std::vector<std::string> input_files() const override;
+  [[nodiscard]] std::vector<std::string> input_files() const override;
 
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::AcquireData()
@@ -70,7 +70,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::DoSanityCheck()
   ///
-  virtual std::vector<std::string> DoSanityCheck() const override;
+  [[nodiscard]] virtual std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   ///
@@ -89,7 +89,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \brief Raise a plugin exception
   /// \param msg The message to raise
   ///
-  void ThrowPluginException[[noreturn]](const std::string& msg) const;
+  void ThrowPluginException [[noreturn]] (const std::string& msg) const;
 
   ///
   /// \brief Register a file to be read by the plugin framework
@@ -102,7 +102,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \brief Create a unix time stamp
   /// \return The current time in unix time
   ///
-  std::int64_t MakeTimestamp() const;
+  [[nodiscard]] std::int64_t MakeTimestamp() const;
 
   std::unique_ptr<settingsprovider::ISettingsProvider> settings_;
 

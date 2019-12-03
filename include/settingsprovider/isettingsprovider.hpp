@@ -13,12 +13,12 @@ class ISettingsProvider {
   ///
   /// \brief ISettingsProvider
   ///
-  ISettingsProvider() {}
+  ISettingsProvider() = default;
 
   ///
   /// \brief ~ISettingsProvider
   ///
-  virtual ~ISettingsProvider() {}
+  virtual ~ISettingsProvider() = default;
 
   ///
   /// \brief Get the value
@@ -26,21 +26,22 @@ class ISettingsProvider {
   /// \param section The section of the value
   /// \return The requested setting
   ///
-  virtual std::string GetValue(const std::string& key,
-                               const std::string& section) const = 0;
+  [[nodiscard]] virtual std::string GetValue(
+      const std::string& key, const std::string& section) const = 0;
 
   ///
   /// \brief Get the value
   /// \param identifier The identifier of the value to get
   /// \return The requested setting
   ///
-  virtual std::string GetValue(const SettingIdentifier& identifier) const = 0;
+  [[nodiscard]] virtual std::string GetValue(
+      const SettingIdentifier& identifier) const = 0;
 
   ///
   /// \brief Get a list of all available sections
   /// \return A vector with all section of the configuration file
   ///
-  virtual std::vector<std::string> Sections() const = 0;
+  [[nodiscard]] virtual std::vector<std::string> Sections() const = 0;
 };
 
 }  // namespace settingsprovider

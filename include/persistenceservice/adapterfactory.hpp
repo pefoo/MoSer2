@@ -24,7 +24,7 @@ class AdapterFactory {
   /// \brief Create a new adapter
   /// \return A new adapter of the requested type
   ///
-  std::unique_ptr<IDataAdapter> CreateAdapter() const;
+  [[nodiscard]] std::unique_ptr<IDataAdapter> CreateAdapter() const;
 
  private:
   std::unique_ptr<AdapterSettings> adapter_settings_;

@@ -80,7 +80,7 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
 
   while (std::getline(stream, line)) {
     ++line_c;
-    if (line.find('#') == 0) {  // line starts with # -> comment
+    if (line.rfind('#', 0) == 0) {  // line starts with # -> comment
       continue;
     }
     if (line.empty()) {

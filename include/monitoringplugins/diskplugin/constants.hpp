@@ -2,7 +2,7 @@
 #define CPUPLUGINCONSTANTS_HPP
 
 namespace monitoringplugins {
-namespace diskplugin{
+namespace diskplugin {
 namespace constants {
 
 static constexpr char kGpArgFileName[] = "file_name";

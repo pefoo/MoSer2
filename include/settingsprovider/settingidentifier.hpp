@@ -12,8 +12,8 @@ class SettingIdentifier {
   SettingIdentifier(std::string key, std::string section);
 
   ~SettingIdentifier();
-  std::string key() const;
-  std::string section() const;
+  [[nodiscard]] std::string key() const;
+  [[nodiscard]] std::string section() const;
 
  private:
   std::string key_;

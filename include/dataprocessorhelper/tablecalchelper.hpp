@@ -68,7 +68,7 @@ std::vector<std::string> ApplyColumnFilter(
 /// \param init The inital value to use
 /// \param filter The column filter to apply
 ///
-template <typename ColumnType,typename BinaryOperation>
+template <typename ColumnType, typename BinaryOperation>
 ColumnType BinOpWrapper(const utility::datastructure::Table& data,
                         BinaryOperation operation,
                         ColumnType init = ColumnType{},
@@ -91,9 +91,10 @@ ColumnType BinOpWrapper(const utility::datastructure::Table& data,
 template <typename ColumnType>
 ColumnType Min(const utility::datastructure::Table& data,
                ColumnFilter filter = Filter::DefaultFilter) {
-  const ColumnType& (*func)(const ColumnType&, const ColumnType&) = std::min<ColumnType>;
-  return BinOpWrapper(data, func,
-                      std::numeric_limits<ColumnType>::max(), filter);
+  const ColumnType& (*func)(const ColumnType&, const ColumnType&) =
+      std::min<ColumnType>;
+  return BinOpWrapper(data, func, std::numeric_limits<ColumnType>::max(),
+                      filter);
 }
 
 ///
@@ -105,9 +106,10 @@ ColumnType Min(const utility::datastructure::Table& data,
 template <typename ColumnType>
 ColumnType Max(const utility::datastructure::Table& data,
                ColumnFilter filter = Filter::DefaultFilter) {
-  const ColumnType& (*func)(const ColumnType&, const ColumnType&) = std::max<ColumnType>;
-  return BinOpWrapper(data, func,
-                      std::numeric_limits<ColumnType>::min(), filter);
+  const ColumnType& (*func)(const ColumnType&, const ColumnType&) =
+      std::max<ColumnType>;
+  return BinOpWrapper(data, func, std::numeric_limits<ColumnType>::min(),
+                      filter);
 }
 
 ///
@@ -116,9 +118,12 @@ ColumnType Max(const utility::datastructure::Table& data,
 /// \param filter A column filter
 /// \return The average value across all selected columns
 ///
-template<typename ColumnType>
-double Avg(const utility::datastructure::Table& data, ColumnFilter filter = Filter::DefaultFilter){
-  double sum = BinOpWrapper<ColumnType>(data, [] (const ColumnType& a, const ColumnType& b) {return a+b;}, 0, filter);
+template <typename ColumnType>
+double Avg(const utility::datastructure::Table& data,
+           ColumnFilter filter = Filter::DefaultFilter) {
+  double sum = BinOpWrapper<ColumnType>(
+      data, [](const ColumnType& a, const ColumnType& b) { return a + b; }, 0,
+      filter);
   return sum / (ApplyColumnFilter(data, filter).size() * data.MaxSize());
 }
 

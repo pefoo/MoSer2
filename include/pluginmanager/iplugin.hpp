@@ -30,7 +30,7 @@ class IPlugin {
   /// \brief Get the library path
   /// \return The path to the library the underlying plugin was load from
   ///
-  virtual std::string GetLibraryPath() const = 0;
+  [[nodiscard]] virtual std::string GetLibraryPath() const = 0;
 };
 }  // namespace pluginmanager
 // LCOV_EXCL_STOP

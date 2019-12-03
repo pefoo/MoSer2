@@ -17,7 +17,7 @@ class IDataAdapter {
   ///
   /// \brief ~IDataAdapter
   ///
-  virtual ~IDataAdapter() {}
+  virtual ~IDataAdapter() = default;
 
   ///
   /// \brief Store some data

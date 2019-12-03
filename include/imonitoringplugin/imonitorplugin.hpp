@@ -19,19 +19,19 @@ class IMonitorPlugin {
   ///
   /// \brief ~IMonitorPlugin
   ///
-  virtual ~IMonitorPlugin() {}
+  virtual ~IMonitorPlugin() = default;
 
   ///
   /// \brief Get the plugin name
   /// \return The name of the plugin
   ///
-  virtual std::string name() const = 0;
+  [[nodiscard]] virtual std::string name() const = 0;
 
   ///
   /// \brief Get the requested input files
   /// \return The file names
   ///
-  virtual std::vector<std::string> input_files() const = 0;
+  [[nodiscard]] virtual std::vector<std::string> input_files() const = 0;
 
   ///
   /// \brief Acquire the data.
@@ -46,7 +46,7 @@ class IMonitorPlugin {
   /// \brief Check the plugin configuration and basic functionality
   /// \return A vector of messages, empty if everything is ok
   ///
-  virtual std::vector<std::string> DoSanityCheck() const = 0;
+  [[nodiscard]] virtual std::vector<std::string> DoSanityCheck() const = 0;
 };
 
 }  // namespace imonitorplugin

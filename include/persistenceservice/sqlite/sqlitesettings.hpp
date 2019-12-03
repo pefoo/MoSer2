@@ -21,7 +21,7 @@ class SqliteSettings : public AdapterSettings {
   /// \brief Get the database file name and path
   /// \return The database file name and path
   ///
-  std::string file_name() const;
+  [[nodiscard]] std::string file_name() const;
 
  private:
   std::string file_name_;

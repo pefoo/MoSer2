@@ -39,7 +39,7 @@ class CallbackTimer {
   /// \brief Get whether the timer is runner
   /// \return True, if the timer is running
   ///
-  bool is_running() const;
+  [[nodiscard]] bool is_running() const;
 
  private:
   std::atomic_bool is_running_;

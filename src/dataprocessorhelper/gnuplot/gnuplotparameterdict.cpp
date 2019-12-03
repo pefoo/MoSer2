@@ -4,10 +4,10 @@
 namespace dataprocessorhelper {
 namespace gnuplot {
 
-GnuPlotParameterDict::GnuPlotParameterDict() {}
+GnuPlotParameterDict::GnuPlotParameterDict() = default;
 
 void GnuPlotParameterDict::AddParameter(const std::string &key,
-                                        const std::string& value, bool quote,
+                                        const std::string &value, bool quote,
                                         bool replace_existing) {
   if (!replace_existing && this->parameter_.count(key)) {
     return;

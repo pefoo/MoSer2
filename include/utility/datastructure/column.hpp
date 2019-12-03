@@ -15,7 +15,7 @@ class Column {
   /// \brief Create a new instance
   /// \param name The column name
   ///
-  Column(std::string name) : name_(std::move(name)) {}
+  explicit Column(std::string name) : name_(std::move(name)) {}
 
   virtual ~Column() = default;
 
@@ -23,7 +23,7 @@ class Column {
   /// \brief Get the column name
   /// \return The name of the column
   ///
-  std::string name() const { return this->name_; }
+  [[nodiscard]] std::string name() const { return this->name_; }
 
   ///
   /// \brief Set the column name
@@ -35,14 +35,15 @@ class Column {
   /// \brief Get the column size
   /// \return The column size
   ///
-  virtual size_t size() const = 0;
+  [[nodiscard]] virtual size_t size() const = 0;
 
   ///
   /// \brief Get the string representation of an element
   /// \param index The index of the element
   /// \return The string representation of the element
   ///
-  virtual std::string ElementAtToString(const size_t index) const = 0;
+  [[nodiscard]] virtual std::string ElementAtToString(
+      const size_t index) const = 0;
 
   ///
   /// \brief Clone the underlying data
@@ -51,7 +52,7 @@ class Column {
   /// method is implemented in utility::datastructure::DataColumn and invokes
   /// the copy constructur of said implementation.
   ///
-  virtual Column* Clone() const = 0;
+  [[nodiscard]] virtual Column* Clone() const = 0;
 
  private:
   std::string name_;

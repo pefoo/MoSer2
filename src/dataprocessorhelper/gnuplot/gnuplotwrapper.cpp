@@ -22,7 +22,7 @@ dataprocessorhelper::gnuplot::GnuPlotBackend::instance() {
   return gpl_backend_;
 }
 dataprocessorhelper::gnuplot::GnuPlotBackend::GnuPlotBackend()
-    : mock_call_(false), settings_(std::make_shared<GnuPlotSettings>()) {}
+    : settings_(std::make_shared<GnuPlotSettings>()) {}
 
 bool dataprocessorhelper::gnuplot::GnuPlotBackend::mock_call() const {
   return mock_call_;
@@ -77,7 +77,7 @@ int dataprocessorhelper::gnuplot::ExecuteScript(
     const std::string &script, const utility::datastructure::Table &data,
     const std::string &output_file,
     dataprocessorhelper::gnuplot::GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string &)> filter) {
+    const std::function<bool(const std::string &)> &filter) {
   auto tmp_file = utility::filesystem::GetTempFile();
   data.ToFile(GnuPlotBackend::instance().settings()->data_file_separator,
               *tmp_file, true, filter);
@@ -92,9 +92,9 @@ int dataprocessorhelper::gnuplot::ExecuteScript(
 }
 
 std::string dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
-    const std::string &script, utility::datastructure::Table data,
+    const std::string &script, const utility::datastructure::Table &data,
     dataprocessorhelper::gnuplot::GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string &)> filter) {
+    const std::function<bool(const std::string &)> &filter) {
   auto tmp_file = utility::filesystem::GetTempFile();
   data.ToFile(GnuPlotBackend::instance().settings()->data_file_separator,
               *tmp_file, true, filter);

@@ -25,7 +25,7 @@ class Table {
   /// \brief Create a new instance
   /// \param name The table name
   ///
-  Table(std::string name = "default") : name_(std::move(name)) {}
+  explicit Table(std::string name = "default") : name_(std::move(name)) {}
 
   ///
   /// \brief Copy constructor
@@ -103,8 +103,14 @@ class Table {
                              this->name_);
   }
 
+  ///
+  /// \brief Get a column
+  /// \param name The name of the column to get
+  /// \return The underlying data column
+  ///
   template <typename ColumnType>
-  DataColumn<ColumnType>& GetDataColumn(const std::string name) const {
+  [[nodiscard]] DataColumn<ColumnType>& GetDataColumn(
+      const std::string& name) const {
     if (auto dc = FindColumn<ColumnType>(name)) {
       return *dc;
     }
@@ -116,7 +122,7 @@ class Table {
   /// \brief Get all column names
   /// \return A vector with all column names
   ///
-  std::vector<std::string> GetColumnNames() const {
+  [[nodiscard]] std::vector<std::string> GetColumnNames() const {
     std::vector<std::string> names;
     std::transform(this->columns_.begin(), this->columns_.end(),
                    std::back_inserter(names),
@@ -136,10 +142,11 @@ class Table {
   /// written to the first column of the file. This is done to ensure
   /// compatibility with existing gpl scripts
   ///
-  std::string ToFile(const char separator, const std::string& file = "",
-                     bool write_header = true,
-                     const std::function<bool(const std::string&)> filter =
-                         [](const std::string&) { return true; }) const {
+  std::string ToFile(
+      const char separator, const std::string& file = "",
+      bool write_header = true,
+      const std::function<bool(const std::string&)>& filter =
+          [](const std::string&) { return true; }) const {
     std::string out_file = file;
     if (out_file.empty()) {
       char name_template[] = "/tmp/table_XXXXXX";
@@ -199,7 +206,7 @@ class Table {
   /// \brief Check if all columns are of same size
   /// \return True, if all columns have the same size
   ///
-  bool IsUniformSize() const {
+  [[nodiscard]] bool IsUniformSize() const {
     size_t s = this->columns_.front()->size();
     for (const auto& c : this->columns_) {
       if (s != c->size()) return false;
@@ -211,7 +218,7 @@ class Table {
   /// \brief Get the size of the largest column
   /// \return The size of the largest column
   ///
-  size_t MaxSize() const {
+  [[nodiscard]] size_t MaxSize() const {
     size_t max_size = 0;
     for (const auto& c : this->columns_) {
       max_size = std::max(max_size, c->size());
@@ -223,13 +230,13 @@ class Table {
   /// \brief Get the column count
   /// \return The coloumn count of the table
   ///
-  size_t ColumnCount() const { return this->columns_.size(); }
+  [[nodiscard]] size_t ColumnCount() const { return this->columns_.size(); }
 
   ///
   /// \brief Get the table name
   /// \return The name of the table
   ///
-  std::string name() const { return this->name_; }
+  [[nodiscard]] std::string name() const { return this->name_; }
 
   ///
   /// \brief Set the table name
@@ -239,7 +246,8 @@ class Table {
 
  private:
   template <typename ColumnType>
-  DataColumn<ColumnType>* FindColumn(const std::string& name) const {
+  [[nodiscard]] DataColumn<ColumnType>* FindColumn(
+      const std::string& name) const {
     for (auto& c : this->columns_) {
       if (c->name() == name) {
         auto dc = dynamic_cast<DataColumn<ColumnType>*>(c.get());

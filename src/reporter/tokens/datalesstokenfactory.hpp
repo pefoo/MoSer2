@@ -1,8 +1,8 @@
 #ifndef DATALESSTOKENFACTORY_H
 #define DATALESSTOKENFACTORY_H
 
-#include <vector>
 #include <string>
+#include <vector>
 #include "reporter/templateprocessor/templatetoken.hpp"
 
 namespace reporter {

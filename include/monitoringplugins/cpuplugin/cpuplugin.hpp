@@ -16,7 +16,7 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   CpuPlugin();
 
-  std::vector<std::string> DoSanityCheck() const override;
+  [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
@@ -25,7 +25,7 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
 
  private:
   struct CpuStat;
-  CpuStat GetCpuStat(const std::string &snapshot) const;
+  [[nodiscard]] CpuStat GetCpuStat(const std::string &snapshot) const;
   u_int core_count_;
 };
 

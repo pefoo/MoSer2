@@ -65,7 +65,7 @@ class CircularBuffer {
   /// \brief Get the current size of the buffer
   /// \return The size of the buffer
   ///
-  size_t size() const {
+  [[nodiscard]] size_t size() const {
     size_t s = this->max_size_;
     if (!this->is_full()) {
       if (this->head_ >= this->tail_) {
@@ -81,7 +81,7 @@ class CircularBuffer {
   /// \brief is_empty
   /// \return True, if the buffer is empty
   ///
-  bool is_empty() const {
+  [[nodiscard]] bool is_empty() const {
     return !this->is_full() && this->head_ == this->tail_;
   }
 
@@ -89,7 +89,7 @@ class CircularBuffer {
   /// \brief is_full
   /// \return True, if the buffer is full
   ///
-  bool is_full() const { return this->full_; }
+  [[nodiscard]] bool is_full() const { return this->full_; }
 
  private:
   const size_t max_size_;

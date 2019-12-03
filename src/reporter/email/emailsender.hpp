@@ -18,7 +18,7 @@ namespace email {
 /// \return True, if the email was send
 ///
 bool SendReport(const std::string& report_file,
-                std::vector<std::string> recipients,
+                const std::vector<std::string>& recipients,
                 const std::string& smtp_server, const std::string& user,
                 const std::string& password);
 

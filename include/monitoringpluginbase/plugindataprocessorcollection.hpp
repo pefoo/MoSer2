@@ -61,12 +61,12 @@ class PluginDataProcessorCollection
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessorCollection::plugin()
   ///
-  std::string plugin() const override;
+  [[nodiscard]] std::string plugin() const override;
 
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessorCollection::processors()
   ///
-  ProcessorVector processors() const override;
+  [[nodiscard]] ProcessorVector processors() const override;
 
  private:
   const std::string plugin_;

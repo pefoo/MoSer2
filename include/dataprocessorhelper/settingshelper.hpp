@@ -2,8 +2,8 @@
 #define DPSETTINGSHELPER_H
 
 #include <memory>
-#include "settingsprovider/isettingsprovider.hpp"
 #include <string>
+#include "settingsprovider/isettingsprovider.hpp"
 
 namespace dataprocessorhelper {
 

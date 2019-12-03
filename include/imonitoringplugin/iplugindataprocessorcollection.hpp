@@ -19,21 +19,21 @@ class IPluginDataProcessorCollection {
   ///
   /// \brief ~IPluginDataProcessorCollection
   ///
-  virtual ~IPluginDataProcessorCollection() {}
+  virtual ~IPluginDataProcessorCollection() = default;
 
   ///
   /// \brief Get the name of the plugin this collection belongs to
   /// \return The plugin name
   ///
-  virtual std::string plugin() const = 0;
+  [[nodiscard]] virtual std::string plugin() const = 0;
 
   ///
   /// \brief Get the defined processors.
   /// \details Note that this list might be empty, if the plugin does not define
   /// a processor \return A vector with pointers to the processors
   ///
-  virtual std::vector<std::shared_ptr<IPluginDataProcessor>> processors()
-      const = 0;
+  [[nodiscard]] virtual std::vector<std::shared_ptr<IPluginDataProcessor>>
+  processors() const = 0;
 };
 
 }  // namespace imonitorplugin

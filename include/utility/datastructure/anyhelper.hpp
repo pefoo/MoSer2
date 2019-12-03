@@ -2,8 +2,8 @@
 #define ANYHELPER_H
 
 #include <any>
-#include <string>
 #include <stdexcept>
+#include <string>
 
 namespace utility::datastructure {
 

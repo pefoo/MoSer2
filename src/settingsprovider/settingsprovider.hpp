@@ -66,7 +66,7 @@ class SettingsProvider : public ISettingsProvider {
 
  private:
   struct Setting {
-    Setting() {}
+    Setting() = default;
     Setting(std::string key, std::string section,
             std::string default_value = "", Verifier verifier = DefaultVerifier)
         : key_(std::move(key)),

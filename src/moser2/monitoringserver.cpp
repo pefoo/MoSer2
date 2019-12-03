@@ -7,8 +7,9 @@
 
 moser2::MonitoringServer::MonitoringServer(
     std::shared_ptr<settingsprovider::ISettingsProvider> settings)
-    : settings_(std::move(settings)), is_running_(false) {
-  this->plugin_controller_ = std::make_unique<plugin::PluginController>();
+    : plugin_controller_(std::make_unique<plugin::PluginController>()),
+      settings_(std::move(settings)),
+      is_running_(false) {
   this->plugin_controller_->LoadPlugins(
       this->settings_->GetValue(constants::settings::PluginBasePath()),
       this->settings_->GetValue(constants::settings::PluginFilter()));

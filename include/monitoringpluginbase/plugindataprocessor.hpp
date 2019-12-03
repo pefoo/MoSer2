@@ -23,12 +23,12 @@ class PluginDataProcessor : public imonitorplugin::IPluginDataProcessor {
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessor::processor()
   ///
-  DataProcessor processor() const override;
+  [[nodiscard]] DataProcessor processor() const override;
 
   ///
   /// \copydoc imonitorplugin::IPluginDataProcessor::key()
   ///
-  std::string key() const override;
+  [[nodiscard]] std::string key() const override;
 
  private:
   const std::string token_;

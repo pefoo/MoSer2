@@ -26,7 +26,7 @@ class AdapterSettings {
   /// \brief The type of the adapter this settings belong to
   /// \return The adapter type
   ///
-  AdapterTypes adapter_type() const;
+  [[nodiscard]] AdapterTypes adapter_type() const;
 
  private:
   AdapterTypes adapter_type_;

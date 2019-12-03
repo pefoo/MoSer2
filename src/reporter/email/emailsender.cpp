@@ -25,7 +25,7 @@ class CurlRaiiWrapper {
 ///
 class CurlRecipientsRaiiWrapper {
  public:
-  CurlRecipientsRaiiWrapper() {}
+  CurlRecipientsRaiiWrapper() = default;
   ~CurlRecipientsRaiiWrapper() { curl_slist_free_all(this->recipients_); }
   void AddRecipient(const std::string &recipient) {
     this->recipients_ = curl_slist_append(this->recipients_, recipient.c_str());
@@ -46,7 +46,7 @@ bool reporter::email::SendReport(const std::string &report_file,
 }
 
 bool reporter::email::SendReport(const std::string &report_file,
-                                 std::vector<std::string> recipients,
+                                 const std::vector<std::string> &recipients,
                                  const std::string &smtp_server,
                                  const std::string &user,
                                  const std::string &password) {

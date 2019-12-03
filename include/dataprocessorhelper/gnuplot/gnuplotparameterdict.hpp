@@ -42,7 +42,7 @@ class GnuPlotParameterDict {
   /// \brief Get the string representation, used to call gnuplot scripts
   /// \return The string representation of the parameter dict
   ///
-  std::string ToString() const;
+  [[nodiscard]] std::string ToString() const;
 
  private:
   std::map<std::string, std::pair<std::string, bool>> parameter_;

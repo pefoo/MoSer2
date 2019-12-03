@@ -29,20 +29,20 @@ class IPluginDataProcessor {
   ///
   /// \brief ~IPluginDataProcessor
   ///
-  virtual ~IPluginDataProcessor() {}
+  virtual ~IPluginDataProcessor() = default;
 
   ///
   /// \brief Get the defined processor
   /// \return The processor function
   ///
-  virtual DataProcessor processor() const = 0;
+  [[nodiscard]] virtual DataProcessor processor() const = 0;
 
   ///
   /// \brief Get the key, this processor should replace
   /// \return The key in the report
   /// \details Note that keys should have the format \%\%KEY\%\%
   ///
-  virtual std::string key() const = 0;
+  [[nodiscard]] virtual std::string key() const = 0;
 };
 
 }  // namespace imonitorplugin

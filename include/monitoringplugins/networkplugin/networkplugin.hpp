@@ -16,7 +16,7 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   NetworkPlugin();
 
-  std::vector<std::string> DoSanityCheck() const override;
+  [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(

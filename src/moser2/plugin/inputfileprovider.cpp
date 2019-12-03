@@ -7,7 +7,7 @@
 #include <thread>
 #include "imonitoringplugin/inputfilecontent.hpp"
 
-moser2::plugin::InputFileProvider::InputFileProvider() {}
+moser2::plugin::InputFileProvider::InputFileProvider() = default;
 
 void moser2::plugin::InputFileProvider::UpdateFiles() {
   for (auto const &[plugin, files] : this->files_) {

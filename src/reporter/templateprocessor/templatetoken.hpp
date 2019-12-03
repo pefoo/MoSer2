@@ -27,7 +27,7 @@ class TemplateToken {
   /// \brief Get the key
   /// \return The key
   ///
-  std::string key() const;
+  [[nodiscard]] std::string key() const;
 
   ///
   /// \brief Get the value

@@ -76,7 +76,7 @@ class PluginManager {
     this->open_loader_.erase(
         std::remove_if(std::begin(this->open_loader_),
                        std::end(this->open_loader_),
-                       [](auto& x) { return x.instances.size() == 0; }),
+                       [](auto& x) { return x.instances.empty(); }),
         std::end(this->open_loader_));
 
     plug = nullptr;

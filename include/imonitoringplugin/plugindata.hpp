@@ -30,25 +30,25 @@ class PluginData {
   /// \brief plugin_name
   /// \return
   ///
-  std::string plugin_name() const { return this->plugin_name_; }
+  [[nodiscard]] std::string plugin_name() const { return this->plugin_name_; }
 
   ///
   /// \brief timestamp
   /// \return
   ///
-  std::int64_t timestamp() const { return this->timestamp_; }
+  [[nodiscard]] std::int64_t timestamp() const { return this->timestamp_; }
 
   ///
   /// \brief data
   /// \return
   ///
-  data_vector data() const { return this->data_; }
+  [[nodiscard]] data_vector data() const { return this->data_; }
 
   ///
   /// \brief ToString
   /// \return
   ///
-  std::string ToString() const {
+  [[nodiscard]] std::string ToString() const {
     std::stringstream ss;
     ss << this->plugin_name() << std::string(" [")
        << std::to_string(this->timestamp()) << std::string("]: ");
@@ -61,7 +61,7 @@ class PluginData {
   }
 
  private:
-  std::function<std::string(std::any&)> GetStringConverter(
+  [[nodiscard]] std::function<std::string(std::any&)> GetStringConverter(
       const std::type_info& type) const {
     if (type == typeid(int)) {
       return [](std::any& data) -> std::string {
@@ -72,15 +72,18 @@ class PluginData {
       return [](std::any& data) -> std::string {
         return std::to_string(std::any_cast<int64_t>(data));
       };
-    } else if (type == typeid(float)) {
+    }
+    if (type == typeid(float)) {
       return [](std::any& data) -> std::string {
         return std::to_string(std::any_cast<float>(data));
       };
-    } else if (type == typeid(double)) {
+    }
+    if (type == typeid(double)) {
       return [](std::any& data) -> std::string {
         return std::to_string(std::any_cast<double>(data));
       };
-    } else if (type == typeid(std::string)) {
+    }
+    if (type == typeid(std::string)) {
       return [](std::any& data) -> std::string {
         return std::any_cast<std::string>(data);
       };

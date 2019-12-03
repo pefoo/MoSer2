@@ -39,7 +39,7 @@ class MonitoringServer {
   /// \brief Get whether the server is running
   /// \return True, if the server is running
   ///
-  bool is_running() const;
+  [[nodiscard]] bool is_running() const;
 
  private:
   std::unique_ptr<plugin::PluginController> plugin_controller_;
