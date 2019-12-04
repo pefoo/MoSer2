@@ -1,5 +1,5 @@
 #include "reporter/tokens/processmemoryusage.hpp"
-#include <linux/version.h>
+#include <sys/utsname.h>
 #include <unistd.h>
 #include <cmath>
 #include <filesystem>
@@ -26,7 +26,8 @@ static constexpr char kTableRowStart[] = "<tr class=default>";
 static constexpr char kTableRowEnd[] = "</tr>";
 static constexpr char kTableHeaderStart[] = "<th class=default>";
 static constexpr char kTableHeaderEnd[] = "</th>";
-static constexpr char kTableColumnStart[] = "<td class=default>";
+static constexpr char kTableColumnStart[] =
+    "<td class=default style='padding:4px'>";
 static constexpr char kTableColumnEnd[] = "</td>";
 
 ///
@@ -39,7 +40,7 @@ struct reporter::tokens::ProcessMemoryUsage::ProcessStatus {
   std::string cmd_line{""};
   // Size of resident anonymous memory (this is considered the actual memory
   // usage of the process)
-  size_t rss_anon{0};
+  size_t anonymous_memory{0};
   // Virtuel memory size of the process
   size_t vm_size{0};
   // Process id
@@ -57,7 +58,7 @@ std::string reporter::tokens::ProcessMemoryUsage::GetMemoryUsageByProcessTable(
     uint entries) {
   std::sort(this->proc_status_.begin(), this->proc_status_.end(),
             [](const ProcessStatus& a, const ProcessStatus& b) {
-              return a.rss_anon > b.rss_anon;
+              return a.anonymous_memory > b.anonymous_memory;
             });
   std::stringstream ss;
   ss << kTableStart << kTableRowStart;
@@ -70,8 +71,8 @@ std::string reporter::tokens::ProcessMemoryUsage::GetMemoryUsageByProcessTable(
     const auto& entry = this->proc_status_.at(i);
     ss << kTableRowStart;
     ss << kTableColumnStart << entry.name << kTableColumnEnd;
-    ss << kTableColumnStart << std::round(pow(2.0, -10.0) * entry.rss_anon)
-       << kTableColumnEnd;
+    ss << kTableColumnStart
+       << std::round(pow(2.0, -10.0) * entry.anonymous_memory);
     ss << kTableColumnStart << entry.cmd_line << kTableColumnEnd;
     ss << kTableRowEnd;
   }
@@ -80,6 +81,16 @@ std::string reporter::tokens::ProcessMemoryUsage::GetMemoryUsageByProcessTable(
 }
 
 void reporter::tokens::ProcessMemoryUsage::ReadProcessStatus() {
+  struct utsname unameData;
+  uname(&unameData);
+  std::istringstream stream{unameData.release};
+  std::vector<std::string> version;
+  std::string token;
+  while (std::getline(stream, token, '.')) {
+    version.push_back(token);
+  }
+  bool rss_anon_available =
+      std::stoi(version[0]) >= 4 && std::stoi(version[1]) >= 5;
   for (const auto& entry : std::filesystem::directory_iterator("/proc")) {
     if (entry.is_directory() && StringRgxGrep(entry.path(), R"(^/proc/\d+$)")) {
       auto l = PathCombine({entry.path(), "status"});
@@ -90,18 +101,16 @@ void reporter::tokens::ProcessMemoryUsage::ReadProcessStatus() {
       // regular expressions to retrieve the value (factor ~50).
       while (std::getline(status_stream, line)) {
         std::smatch sm;
-        if (StringStartsWith(line, "RssAnon")) {
+        if (rss_anon_available && StringStartsWith(line, "RssAnon")) {
           StringRgxGrep(line, kFieldRssAnon, &sm);
-          status.rss_anon = std::stoul(sm[1]);
+          status.anonymous_memory = std::stoul(sm[1]);
           continue;
         }
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
         if (StringStartsWith(line, "VmSize")) {
           StringRgxGrep(line, kFieldVmSize, &sm);
           status.vm_size = std::stoul(sm[1]);
           continue;
         }
-#endif
         if (StringStartsWith(line, "Name")) {
           StringRgxGrep(line, kFieldName, &sm);
           status.name = sm[1];
@@ -113,22 +122,24 @@ void reporter::tokens::ProcessMemoryUsage::ReadProcessStatus() {
           continue;
         }
       }
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(4, 5, 0)
-      // the field RssAnon was added in kernel version 4.5
-      // use statm to get the resident set size and shared resident set size (in
-      // pages)
-      std::ifstream statm_stream{PathCombine({entry.path(), "statm"})};
-      std::string statm((std::istreambuf_iterator<char>(statm_stream)),
-                        std::istreambuf_iterator<char>());
-      std::smatch sm;
-      if (StringRgxGrep(statm, R"((\d+)\s+(\d+)\s+(\d+).*\n?)", &sm)) {
-        size_t resident = std::stoul(sm[2]);
-        size_t shared = std::stoul(sm[3]);
-        long page_size = sysconf(_SC_PAGESIZE);
-        status.rss_anon =
-            static_cast<size_t>((resident - shared) * (page_size / 1024.0));
+      if (!rss_anon_available) {
+        // the field RssAnon was added in kernel version 4.5
+        // use statm to get the resident set size and shared resident set size
+        // (in pages)
+        std::ifstream statm_stream{PathCombine({entry.path(), "statm"})};
+        std::string statm((std::istreambuf_iterator<char>(statm_stream)),
+                          std::istreambuf_iterator<char>());
+        std::smatch sm;
+        if (StringRgxGrep(statm, R"((\d+)\s+(\d+)\s+(\d+).*\n?)", &sm)) {
+          size_t resident = std::stoul(sm[2]);
+          size_t shared = std::stoul(sm[3]);
+          long page_size = sysconf(_SC_PAGESIZE);
+          // resident and shared are measured in pages. Use page size (converted
+          // to KB) to get the memory usage in KB
+          status.anonymous_memory =
+              static_cast<size_t>((resident - shared) * (page_size / 1024.0));
+        }
       }
-#endif
       std::ifstream cmdline_stream{
           PathCombine({entry.path(), kFileProcCmdLine})};
       status.cmd_line =
