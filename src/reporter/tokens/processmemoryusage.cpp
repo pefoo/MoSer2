@@ -1,4 +1,6 @@
 #include "reporter/tokens/processmemoryusage.hpp"
+#include <linux/version.h>
+#include <unistd.h>
 #include <cmath>
 #include <filesystem>
 #include <fstream>
@@ -27,11 +29,20 @@ static constexpr char kTableHeaderEnd[] = "</th>";
 static constexpr char kTableColumnStart[] = "<td class=default>";
 static constexpr char kTableColumnEnd[] = "</td>";
 
+///
+/// \brief thr process status
+///
 struct reporter::tokens::ProcessMemoryUsage::ProcessStatus {
+  // Process name
   std::string name{""};
+  // Process command line
   std::string cmd_line{""};
+  // Size of resident anonymous memory (this is considered the actual memory
+  // usage of the process)
   size_t rss_anon{0};
+  // Virtuel memory size of the process
   size_t vm_size{0};
+  // Process id
   size_t pid{0};
 };
 
@@ -84,11 +95,13 @@ void reporter::tokens::ProcessMemoryUsage::ReadProcessStatus() {
           status.rss_anon = std::stoul(sm[1]);
           continue;
         }
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
         if (StringStartsWith(line, "VmSize")) {
           StringRgxGrep(line, kFieldVmSize, &sm);
           status.vm_size = std::stoul(sm[1]);
           continue;
         }
+#endif
         if (StringStartsWith(line, "Name")) {
           StringRgxGrep(line, kFieldName, &sm);
           status.name = sm[1];
@@ -100,6 +113,22 @@ void reporter::tokens::ProcessMemoryUsage::ReadProcessStatus() {
           continue;
         }
       }
+#if LINUX_VERSION_CODE <= KERNEL_VERSION(4, 5, 0)
+      // the field RssAnon was added in kernel version 4.5
+      // use statm to get the resident set size and shared resident set size (in
+      // pages)
+      std::ifstream statm_stream{PathCombine({entry.path(), "statm"})};
+      std::string statm((std::istreambuf_iterator<char>(statm_stream)),
+                        std::istreambuf_iterator<char>());
+      std::smatch sm;
+      if (StringRgxGrep(statm, R"((\d+)\s+(\d+)\s+(\d+).*\n?)", &sm)) {
+        size_t resident = std::stoul(sm[2]);
+        size_t shared = std::stoul(sm[3]);
+        long page_size = sysconf(_SC_PAGESIZE);
+        status.rss_anon =
+            static_cast<size_t>((resident - shared) * (page_size / 1024.0));
+      }
+#endif
       std::ifstream cmdline_stream{
           PathCombine({entry.path(), kFileProcCmdLine})};
       status.cmd_line =
