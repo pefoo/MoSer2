@@ -5,6 +5,7 @@
 #include <sstream>
 #include <tuple>
 #include <vector>
+#include "reporter/tokens/processmemoryusage.hpp"
 
 std::vector<reporter::templateprocessor::TemplateToken>
 reporter::tokens::GetDatalessTokens() {
@@ -33,6 +34,11 @@ reporter::tokens::GetDatalessTokens() {
                    {
                      auto t = std::time(nullptr);
                      return std::ctime(&t);
+                   }),
+      CREATE_TOKEN("%%PROC_MEM_USAGE%%",
+                   {
+                     auto info = reporter::tokens::ProcessMemoryUsage{};
+                     return info.GetMemoryUsageByProcessTable(5);
                    }),
       CREATE_TOKEN_CAPTURE("%%HOSTNAME%%", info, { return info.nodename; }),
       CREATE_TOKEN_CAPTURE("%%KERNEL_VERSION%%", info,

@@ -2,6 +2,7 @@ set(SOURCES
   ./threading/callbacktimer.cpp
   ./filesystem/fileaccesshelper.cpp
   ./datastructure/anyhelper.cpp
+  ./helper/stringhelper.cpp
   ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 

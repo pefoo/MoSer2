@@ -4,6 +4,7 @@ set(SOURCES
   datastructure/circularbuffer_test.cpp
   filesystem/fileaccesshelper_test.cpp
   datastructure/table_test.cpp
+  helper/stringhelper_test.cpp
 )
 
 add_executable(utility_unit_test ${SOURCES})
