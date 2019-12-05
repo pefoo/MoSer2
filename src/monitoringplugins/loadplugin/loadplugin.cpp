@@ -5,6 +5,7 @@
 #include <streambuf>
 #include <string>
 #include <utility>
+#include "utility/helper/stringhelper.hpp"
 
 monitoringplugins::loadplugin::LoadPlugin::LoadPlugin()
     : monitoringpluginbase::MonitorPluginBase("LoadPlugin") {}
@@ -23,10 +24,10 @@ monitoringplugins::loadplugin::LoadPlugin::AcquireDataInternal(
   buffer << stream.rdbuf();
   std::string content = buffer.str();
 
-  std::regex rgx{R"((\d+.\d+) (\d+\.\d+) (\d+\.\d+).*\n)"};
+  std::string rgx{R"((\d+.\d+) (\d+\.\d+) (\d+\.\d+).*\n)"};
   std::smatch match;
 
-  if (std::regex_match(content, match, rgx)) {
+  if (utility::helper::StringRgxGrep(content, rgx, &match)) {
     float m1 = std::stof(match[1]);
     float m5 = std::stof(match[2]);
     float m15 = std::stof(match[3]);

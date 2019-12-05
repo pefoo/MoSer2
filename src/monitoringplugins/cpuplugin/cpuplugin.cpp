@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 #include "monitoringplugins/cpuplugin/constants.hpp"
+#include "utility/helper/stringhelper.hpp"
 
 namespace monitoringplugins {
 namespace cpuplugin {
@@ -103,7 +104,7 @@ CpuPlugin::CpuStat CpuPlugin::GetCpuStat(const std::string& snapshot) const {
 
   while (std::getline(stream, line, '\n')) {
     // line starts with cpu
-    if (line.rfind("cpu", 0) == 0) {
+    if (utility::helper::StringStartsWith(line, "cpu")) {
       if (std::regex_search(line, match, rgx)) {
         user.push_back(CpuStat::ToDType(match[1]));
         nice.push_back(CpuStat::ToDType(match[2]));

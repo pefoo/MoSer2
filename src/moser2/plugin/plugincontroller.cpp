@@ -9,6 +9,7 @@
 #include "imonitoringplugin/pluginexception.hpp"
 #include "pluginfacade.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
+#include "utility/helper/stringhelper.hpp"
 #include "utility/threading/callbacktimer.hpp"
 
 namespace moser2 {
@@ -55,10 +56,10 @@ void PluginController::LoadPlugins(const std::string &path,
   auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
   LOG(DEBUG) << "Loading plugins from " + abs_path.string()
              << " using the filter " << name_filter;
-  std::regex rgx{name_filter};
   for (const auto &file : std::filesystem::directory_iterator(abs_path)) {
     if (name_filter.empty() ||
-        std::regex_match(file.path().filename().string(), rgx)) {
+        utility::helper::StringRgxGrep(file.path().filename().string(),
+                                       name_filter)) {
       this->LoadPlugin(std::filesystem::canonical(file));
     }
   }

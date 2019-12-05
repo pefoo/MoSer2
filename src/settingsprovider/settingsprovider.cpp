@@ -7,6 +7,7 @@
 #include "regex"
 #include "settingsprovider/settingverifier.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
+#include "utility/helper/stringhelper.hpp"
 
 namespace settingsprovider {
 
@@ -66,6 +67,7 @@ std::string SettingsProvider::BuildKey(const std::string &key,
 
 bool SettingsProvider::ReadFromFile(const std::string &file,
                                     std::vector<std::string> *msg) {
+  using namespace utility::helper;
   if (!std::filesystem::exists(file)) {
     msg->push_back("The file was not found!");
     return false;
@@ -74,24 +76,23 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
   std::string line;
   bool result = true;
   std::string current_section;
-  std::regex section_rgx(R"(^\[(.*)\]\s*$)");
-  std::regex kv_rgx(R"(^([\w\d\S]+)\s*=\s*([\w\d\S\s]+)\s*$)");
+  std::string section_rgx(R"(^\[(.*)\]\s*$)");
+  std::string kv_rgx(R"(^([\w\d\S]+)\s*=\s*([\w\d\S\s]+)\s*$)");
   int line_c = 0;
 
   while (std::getline(stream, line)) {
     ++line_c;
-    if (line.rfind('#', 0) == 0) {  // line starts with # -> comment
+    if (StringStartsWith(line, "#")) {  // line starts with # -> comment
       continue;
     }
     if (line.empty()) {
       continue;
     }
     std::smatch match;
-    if (std::regex_match(line, match,
-                         section_rgx)) {  // line is a section header
+    if (StringRgxGrep(line, section_rgx, &match)) {  // line is a section header
       current_section = match[1];
-    } else if (std::regex_match(line, match,
-                                kv_rgx)) {  // line is a key value pair
+    } else if (StringRgxGrep(line, kv_rgx, &match)) {
+      // line is a key value pair
       std::string key = match[1];
       std::string value = match[2];
       if (this->settings_.find(this->BuildKey(key, current_section)) !=
@@ -118,6 +119,6 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
   }
 
   return result;
-}
+}  // namespace settingsprovider
 
 }  // namespace settingsprovider

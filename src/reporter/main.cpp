@@ -17,6 +17,7 @@
 #include "reporter/tokens/datalesstokenfactory.hpp"
 #include "templateprocessor/templateprocessor.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
+#include "utility/helper/stringhelper.hpp"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -112,11 +113,11 @@ std::vector<std::string> DiscoverPlugins(const std::string &path,
   LOG(DEBUG) << "Loading plugins from " + path << " using the filter "
              << name_filter;
   std::vector<std::string> files;
-  std::regex rgx{name_filter};
   auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
   for (const auto &file : std::filesystem::directory_iterator(abs_path)) {
     if (name_filter.empty() ||
-        std::regex_match(file.path().filename().string(), rgx)) {
+        utility::helper::StringRgxGrep(file.path().filename().string(),
+                                       name_filter)) {
       files.push_back(std::filesystem::canonical(file.path()));
     }
   }

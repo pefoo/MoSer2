@@ -4,6 +4,7 @@
 #include <regex>
 #include <utility>
 #include "monitoringplugins/logwatcherplugin/constants.hpp"
+#include "utility/helper/stringhelper.hpp"
 
 namespace monitoringplugins {
 namespace logwatcherplugin {
@@ -61,7 +62,7 @@ std::vector<imonitorplugin::PluginData> LogWatcherPlugin::AcquireData(
     s.seekg(log_file.position_);
     std::string line;
     while (std::getline(s, line)) {
-      if (!std::regex_match(line, std::regex{log_file.pattern_})) {
+      if (!utility::helper::StringRgxGrep(line, log_file.pattern_)) {
         continue;
       }
       data.push_back(imonitorplugin::PluginData{
