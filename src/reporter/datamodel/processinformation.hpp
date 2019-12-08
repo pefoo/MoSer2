@@ -79,6 +79,11 @@ class ProcessInformation {
   ///
   [[nodiscard]] size_t disk_write() const;
 
+  ///
+  /// \brief Sort operator
+  ///
+  bool operator <(const ProcessInformation& o) const;
+
  private:
   size_t pid_;
   size_t virtual_memory_{0};

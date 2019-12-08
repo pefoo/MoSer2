@@ -151,3 +151,9 @@ size_t reporter::datamodel::ProcessInformation::disk_read() const {
 size_t reporter::datamodel::ProcessInformation::disk_write() const {
   return this->disk_write_;
 }
+
+bool reporter::datamodel::ProcessInformation::operator<(
+    const reporter::datamodel::ProcessInformation &o) const {
+  return this->name() == o.name() ? this->cmd_line() < o.cmd_line()
+                                  : this->name() < o.name();
+}

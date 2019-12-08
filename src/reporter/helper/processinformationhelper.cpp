@@ -15,5 +15,13 @@ reporter::helper::GetProcessInformation() {
           reporter::datamodel::ProcessInformation{std::stoul(sm[1])});
     }
   }
+  std::sort(procs.begin(), procs.end());
+  procs.erase(std::unique(procs.begin(), procs.end(),
+                          [](const reporter::datamodel::ProcessInformation& a,
+                             const reporter::datamodel::ProcessInformation& b) {
+                            return (a.name() == b.name()) &&
+                                   (a.cmd_line() == b.cmd_line());
+                          }),
+              procs.end());
   return procs;
 }
