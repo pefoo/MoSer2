@@ -2,15 +2,21 @@
 #include <sys/sysinfo.h>
 #include <sys/utsname.h>
 #include <ctime>
+#include <memory>
 #include <sstream>
 #include <tuple>
 #include <vector>
-#include "reporter/tokens/processmemoryusage.hpp"
+#include "reporter/viewmodel/processinformationviewmodel.hpp"
+#include "reporter/views/processinformationviews.hpp"
 
 std::vector<reporter::templateprocessor::TemplateToken>
 reporter::tokens::GetDatalessTokens() {
   struct utsname info {};
   uname(&info);
+  auto pi_model =
+      std::make_shared<reporter::viewmodel::ProcessInformationViewModel>();
+  auto pi_views =
+      std::make_shared<reporter::views::ProcessInformationViews>(pi_model);
   return std::vector<reporter::templateprocessor::TemplateToken>{
       CREATE_TOKEN("%%UPTIME%%",
                    {
@@ -35,11 +41,15 @@ reporter::tokens::GetDatalessTokens() {
                      auto t = std::time(nullptr);
                      return std::ctime(&t);
                    }),
-      CREATE_TOKEN("%%PROC_MEM_USAGE%%",
-                   {
-                     auto info = reporter::tokens::ProcessMemoryUsage{};
-                     return info.GetMemoryUsageByProcessTable(5);
-                   }),
+      CREATE_TOKEN_CAPTURE(
+          "%%PROC_MEM_USAGE%%", pi_views,
+          { return pi_views->GetTopMemoryUsingProcessesWidget(5); }),
+      CREATE_TOKEN_CAPTURE(
+          "%%PROC_DISK_WRITE%%", pi_views,
+          { return pi_views->GetTopDiskWriteProcessWidget(5); }),
+      CREATE_TOKEN_CAPTURE(
+          "%%PROC_DISK_READ%%", pi_views,
+          { return pi_views->GetTopDiskReadProcessWidget(5); }),
       CREATE_TOKEN_CAPTURE("%%HOSTNAME%%", info, { return info.nodename; }),
       CREATE_TOKEN_CAPTURE("%%KERNEL_VERSION%%", info,
                            { return info.release; }),

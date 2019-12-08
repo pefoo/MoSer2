@@ -159,6 +159,8 @@ Eventually, the result of the replacement is send as an email.
 |%%DATETIME%%|The current date and time in the format Www Mmm dd hh:mm:ss yyyy.|
 |%%UPTIME%%|The update in the format X days X hours x minutes x seconds. Zero values are omitted|
 |%%PROC_MEM_USAGE%%|A table with memory usage by process (5 entries, highest first)|
+|%%PROC_DISK_WRITE%%|A table with disk write stats by process (5 entries, highest first)|
+|%%PROC_DISK_READ%%|A table with disk write stats by process (5 entries, highest first)|
 |**Cpu plugin:**||
 |%%CPU_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the cpu usage.|
 |%%CPU_USAGE_AVERAGE%%|The average cpu usage. A single value.|

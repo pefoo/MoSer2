@@ -65,6 +65,8 @@ monitoringplugins::diskplugin::CreateProcessors() {
               auto mount_points = GetMountPoints();
               std::stringstream out{};
               out << "<table style=\"width:100%\">";
+              out << "<col width=50%/>";
+              out << "<col width=50%/>";
               for (const auto& device : device_list) {
                 if (mount_points.count("/dev/" + device) != 0) {
                   auto total =

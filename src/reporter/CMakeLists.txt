@@ -7,7 +7,10 @@ set(SOURCES
   templateprocessor/templatetokenfactory.cpp
   email/emailsender.cpp
   tokens/datalesstokenfactory.cpp
-  tokens/processmemoryusage.cpp
+  helper/processinformationhelper.cpp
+  datamodel/processinformation.cpp
+  viewmodel/processinformationviewmodel.cpp
+  views/processinformationviews.cpp
   ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
