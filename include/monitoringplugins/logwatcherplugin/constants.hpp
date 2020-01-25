@@ -6,7 +6,7 @@ namespace logwatcherplugin {
 namespace constants {
 
 static constexpr char kPluginName[] = "LogWatcherPlugin";
-static constexpr char kGpScriptName[] = "logwatcherplugin_charts.gp";
+static constexpr char kGpScriptName[] = "logwatcher_charts.gp";
 static constexpr char kGpArgFileName[] = "file_name";
 static constexpr char kSettingsSectionReporter[] = "Reporter";
 static constexpr char kReportTags[] = "ReportTags";
@@ -16,6 +16,7 @@ static constexpr char kFileName[] = "File";
 static constexpr char kTags[] = "Tags";
 static constexpr char kDbFieldEntry[] = "entry";
 static constexpr char kDbFieldTags[] = "tags";
+static constexpr char kGpArgYLabel[] = "y_label";
 
 }  // namespace constants
 }  // namespace logwatcherplugin

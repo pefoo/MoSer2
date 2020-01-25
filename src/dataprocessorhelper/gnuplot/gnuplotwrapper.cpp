@@ -77,10 +77,11 @@ int dataprocessorhelper::gnuplot::ExecuteScript(
     const std::string &script, const utility::datastructure::Table &data,
     const std::string &output_file,
     dataprocessorhelper::gnuplot::GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string &)> &filter) {
+    const utility::datastructure::ColumnFilter &filter,
+    const utility::datastructure::FieldFilter &field_filter) {
   auto tmp_file = utility::filesystem::GetTempFile();
   data.ToFile(GnuPlotBackend::instance().settings()->data_file_separator,
-              *tmp_file, true, filter);
+              *tmp_file, true, filter, field_filter);
   // Do not add the tmp file path to the params for mock mode (since the file
   // path is random)
   if (!GnuPlotBackend::instance().mock_call()) {
@@ -94,10 +95,11 @@ int dataprocessorhelper::gnuplot::ExecuteScript(
 std::string dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
     const std::string &script, const utility::datastructure::Table &data,
     dataprocessorhelper::gnuplot::GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string &)> &filter) {
+    const utility::datastructure::ColumnFilter &filter,
+    const utility::datastructure::FieldFilter &field_filter) {
   auto tmp_file = utility::filesystem::GetTempFile();
   data.ToFile(GnuPlotBackend::instance().settings()->data_file_separator,
-              *tmp_file, true, filter);
+              *tmp_file, true, filter, field_filter);
   // Do not add the tmp file path to the params for mock mode (since the file
   // path is random)
   if (!GnuPlotBackend::instance().mock_call()) {

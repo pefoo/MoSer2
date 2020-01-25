@@ -1,10 +1,13 @@
 #include "monitoringplugins/logwatcherplugin/logwatcherpluginprocessors.hpp"
+#include <regex>
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "dataprocessorhelper/settingshelper.hpp"
 #include "monitoringplugins/logwatcherplugin/constants.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 #include "utility/datastructure/table.hpp"
+#include "utility/datastructure/tablefilter.hpp"
+#include "utility/helper/stringhelper.hpp"
 
 using namespace monitoringplugins::logwatcherplugin::constants;
 
@@ -54,6 +57,33 @@ monitoringplugins::logwatcherplugin::CreateProcessors() {
               }
               return out.str();
             }));
+    processors.push_back(std::make_shared<
+                         monitoringpluginbase::PluginDataProcessor>(
+        "%%LOG_CHART_" + tag + "%%",
+        [tag](utility::datastructure::Table data) -> std::string {
+          if (data.MaxSize() == 0) {
+            return "";
+          }
+          dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
+          params.AddParameter(
+              monitoringplugins::logwatcherplugin::constants::kGpArgYLabel,
+              "Invalid ssh user names", true);
+          // Only timestamps of events are required
+          auto column_filter = [](const std::string& c) {
+            return c != "timestamp";
+          };
+          auto field_filter = [tag](const std::string& c,
+                                    const std::string& v) {
+            if (c !=
+                monitoringplugins::logwatcherplugin::constants::kDbFieldTags)
+              return false;
+
+            return utility::helper::StringRgxGrep(v, "\\b" + tag);
+          };
+          return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
+              monitoringplugins::logwatcherplugin::constants::kGpScriptName,
+              data, params, column_filter, field_filter);
+        }));
   }
   return processors;
 }

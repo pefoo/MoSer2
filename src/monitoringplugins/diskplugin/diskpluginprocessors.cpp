@@ -48,7 +48,7 @@ monitoringplugins::diskplugin::CreateProcessors() {
                   return "";
                 }
                 auto record_filter = [device](const std::string& key) {
-                  return key.find(device) == 0 || key == "timestamp";
+                  return !(key.find(device) == 0 || key == "timestamp");
                 };
                 dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
 

@@ -175,3 +175,4 @@ Eventually, the result of the replacement is send as an email.
 |%%NETWORK_TIMES_SERIES_DATA%%|A base 64 encoded time series chart of the network usage.|
 |**Logwatcher plugin:**||
 |%%LOG_TABLE_{tag}%%|A html table that displays the log messages for the given tag.|
+|%%LOG_CHART_{tag}%%|A chart that displays a histogram for the events with a given tag.|

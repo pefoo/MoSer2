@@ -3,4 +3,3 @@ timestamp;int_col;string_col
 8;1;v1
 7;2;v2
 6;3;v3
-5;4;v4

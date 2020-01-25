@@ -63,12 +63,26 @@ TEST_CASE("LogWatcherPlugin data processor", "[LogWatcherPlugin]") {
 
   auto processors = monitoringplugins::logwatcherplugin::CreateProcessors();
 
-  // One tag is configred -> one processor provided
-  REQUIRE(processors.size() == 1);
-  auto processor = processors.at(0);
-  REQUIRE(processor->key() == "%%LOG_TABLE_errors%%");
-  auto result = processor->processor()(sample_data);
-  REQUIRE(result.find("Some error") != std::string::npos);
-  REQUIRE(result.find("Error and another tag") != std::string::npos);
-  REQUIRE(result.find("No error") == std::string::npos);
+  // One tag is configred -> two processors provided
+  REQUIRE(processors.size() == 2);
+
+  SECTION("Log table processor") {
+    auto processor = processors.at(0);
+    REQUIRE(processor->key() == "%%LOG_TABLE_errors%%");
+    auto result = processor->processor()(sample_data);
+    REQUIRE(result.find("Some error") != std::string::npos);
+    REQUIRE(result.find("Error and another tag") != std::string::npos);
+    REQUIRE(result.find("No error") == std::string::npos);
+  }
+
+  SECTION("Log chart processor") {
+    dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(
+        true);
+    auto processor = processors.at(1);
+    REQUIRE(processor->key() == "%%LOG_CHART_errors%%");
+    auto result = processor->processor()(sample_data);
+    REQUIRE(result ==
+            "ImxvZ3dhdGNoZXJfY2hhcnRzLmdwIgoieV9sYWJlbD0nSW52YWxpZCBzc2ggdXNlci"
+            "BuYW1lcyciCg==");
+  }
 }

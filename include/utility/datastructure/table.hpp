@@ -4,12 +4,14 @@
 #include <algorithm>
 #include <fstream>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
 #include "functional"
 #include "utility/datastructure/column.hpp"
 #include "utility/datastructure/datacolumn.hpp"
+#include "utility/datastructure/tablefilter.hpp"
 
 namespace utility {
 namespace datastructure {
@@ -130,23 +132,26 @@ class Table {
     return names;
   }
 
+  // TODO: Rewrite (this and everyone that calls it) to use filter as blacklist
   ///
   /// \brief Write the table content to file
   /// \param separator The column field separator
   /// \param file The file to write to (a tmp file is choosen if left empty)
   /// \param write_header True, if the first line should contain the column
   /// names
-  /// \param filter A column name filter to apply (not matching columns wont be
-  /// written to the file \return The path to the written file \details If the
-  /// table contains a column that is called timestamp, this column will be
-  /// written to the first column of the file. This is done to ensure
-  /// compatibility with existing gpl scripts
+  /// \param column_filter A column name filter to apply (not matching columns
+  /// wont be written to the file
+  /// \param field_filter A filter to apply to the fields. The current column
+  /// name and the field value (as string) is passed to the expression
+  /// \return The path to the written file
+  /// \details If the table contains a column that
+  /// is called timestamp, this column will be written to the first column of
+  /// the file. This is done to ensure compatibility with existing gpl scripts
   ///
-  std::string ToFile(
-      const char separator, const std::string& file = "",
-      bool write_header = true,
-      const std::function<bool(const std::string&)>& filter =
-          [](const std::string&) { return true; }) const {
+  std::string ToFile(const char separator, const std::string& file = "",
+                     bool write_header = true,
+                     const ColumnFilter& column_filter = NoColumnFilter,
+                     const FieldFilter field_filter = NoFieldFilter) const {
     std::string out_file = file;
     if (out_file.empty()) {
       char name_template[] = "/tmp/table_XXXXXX";
@@ -155,13 +160,14 @@ class Table {
     }
     size_t max_size = this->MaxSize();
     std::ofstream out{out_file};
+    std::stringstream line_buffer{};
 
     // columns provides a sorted view to the stored data.
     // This ensures, that the timestamp column is always at positon 0
     const std::string timestamp_column = "timestamp";
     std::vector<Column*> columns;
     bool first_reserved = false;
-    if (filter(timestamp_column) &&
+    if (!column_filter(timestamp_column) &&
         std::any_of(this->columns_.begin(), this->columns_.end(),
                     [timestamp_column](const ColumnRsc& c) {
                       return c->name() == timestamp_column;
@@ -180,24 +186,40 @@ class Table {
 
     if (write_header) {
       for (const auto& c : columns) {
-        if (!filter(c->name())) continue;
+        if (column_filter(c->name())) continue;
         out << c->name() << separator;
       }
+      // remove trailing separator
       out.seekp(-1, std::ios_base::end);
       out << std::endl;
     }
 
     for (size_t i = 0; i < max_size; ++i) {
+      // reset the line buffer
+      line_buffer.str(std::string{});
+      line_buffer.clear();
+      bool drop_line{false};
       for (const auto& c : columns) {
-        if (!filter(c->name())) continue;
+        // drop column
+        if (column_filter(c->name())) continue;
+        std::string value = c->ElementAtToString(i);
+        // drop entire line
+        if (field_filter(c->name(), value)) {
+          drop_line = true;
+          break;
+        }
         if (c->size() > i) {
-          out << c->ElementAtToString(i) << separator;
+          line_buffer << value << separator;
         } else {
-          out << "N.a." << separator;
+          line_buffer << "N.a." << separator;
         }
       }
-      out.seekp(-1, std::ios_base::end);
-      out << std::endl;
+      if (!drop_line) {
+        // remove trailing separator
+        line_buffer.seekp(-1, std::ios_base::end);
+        line_buffer << std::endl;
+        out << line_buffer.str();
+      }
     }
     return out_file;
   }

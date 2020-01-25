@@ -58,9 +58,14 @@ TEST_CASE("Table", "[Utility]") {
   }
 
   SECTION("Write to file") {
-    file = t.ToFile(';', "", [](const std::string& column) {
-      return !(column == "larger_col");
-    });
+    std::function<bool(const std::string&)> column_filter =
+        [](const std::string& c) { return c == "larger_col"; };
+    std::function<bool(const std::string&, const std::string&)> field_filter =
+        [](const std::string& c, const std::string& v) {
+          return c == "string_col" && v == "v4";
+        };
+
+    file = t.ToFile(';', "", true, column_filter, field_filter);
 
     std::fstream ref_stream{GetTestFile("table_file.txt")};
     std::string ref_content((std::istreambuf_iterator<char>(ref_stream)),

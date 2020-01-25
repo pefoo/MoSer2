@@ -7,6 +7,7 @@
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
 #include "imonitoringplugin/plugindata.hpp"
 #include "utility/datastructure/table.hpp"
+#include "utility/datastructure/tablefilter.hpp"
 
 namespace dataprocessorhelper {
 namespace gnuplot {
@@ -85,15 +86,19 @@ class GnuPlotBackend {
 /// \param data The data to plot
 /// \param output_file The name of the output file to create
 /// \param parameter The paramter for the script
-/// \param filter A filter for the columns to include
+/// \param column_filter A filter for the columns to include
+/// \param field_filter A filter for table fields
 /// \return The return code of the gnuplot interpreter
 /// (most likely, actually depends on the implementation of std::system)
 ///
-int ExecuteScript(
-    const std::string& script, const utility::datastructure::Table& data,
-    const std::string& output_file, GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string&)>& filter =
-        [](const std::string&) { return true; });
+int ExecuteScript(const std::string& script,
+                  const utility::datastructure::Table& data,
+                  const std::string& output_file,
+                  GnuPlotParameterDict parameter,
+                  const utility::datastructure::ColumnFilter& column_filter =
+                      utility::datastructure::NoColumnFilter,
+                  const utility::datastructure::FieldFilter& field_filter =
+                      utility::datastructure::NoFieldFilter);
 
 ///
 /// \brief Execute a gnuplot script and convert the output to base 64
@@ -109,15 +114,18 @@ std::string EncodeScriptOutputToBase64(const std::string& script,
 /// The records timestamps are always used for x axis.
 /// \param script The script the execute
 /// \param data The data to plot
-/// \param filter A function to filter record data based on the column name
-/// \param parameter The parameter for the script
-/// \return The base64 encoded output
+/// \param column_filter A function to filter record data based on the column
+/// \param field_filter A filter for table fields
+/// name \param parameter The parameter for the script \return The base64
+/// encoded output
 ///
 std::string EncodeScriptOutputToBase64(
     const std::string& script, const utility::datastructure::Table& data,
     GnuPlotParameterDict parameter,
-    const std::function<bool(const std::string&)>& filter =
-        [](const std::string&) { return true; });
+    const utility::datastructure::ColumnFilter& column_filter =
+        utility::datastructure::NoColumnFilter,
+    const utility::datastructure::FieldFilter& field_filter =
+        utility::datastructure::NoFieldFilter);
 
 }  // namespace gnuplot
 }  // namespace dataprocessorhelper
