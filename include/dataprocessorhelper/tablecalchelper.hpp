@@ -45,6 +45,13 @@ inline ColumnFilter GetFilter(std::vector<std::string> ignored_columns) {
   };
 }
 
+inline ColumnFilter GetInclusiveFilter(std::vector<std::string> columns) {
+  return [columns](const std::string& col) {
+    return DefaultFilter(col) &&
+           (std::find(columns.begin(), columns.end(), col) != columns.end());
+  };
+}
+
 }  // namespace Filter
 
 /*

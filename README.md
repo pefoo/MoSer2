@@ -164,6 +164,7 @@ Eventually, the result of the replacement is send as an email.
 |**Cpu plugin:**||
 |%%CPU_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the cpu usage.|
 |%%CPU_USAGE_AVERAGE%%|The average cpu usage. A single value.|
+|%%CPU_USAGE_STATS%%|Cpu usage stats per core.|
 |**Memory plugin:**||
 |%%MEMORY_TIME_SERIES_DATA%%|A base 64 encoded time series chart of the memory usage.|
 |**Load average plugin:**||
