@@ -65,25 +65,18 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                    << kTableHeaderEnd << kTableRowEnd;
 
              for (uint i = 0; i < core_count; ++i) {
+               // clang-format off
                auto filter = dataprocessorhelper::Filter::GetInclusiveFilter(
                    {"core" + std::to_string(i)});
-               auto avg =
-                   std::round(dataprocessorhelper::Avg<double>(data, filter) *
-                              10) /
-                   10;
-               auto min =
-                   std::round(dataprocessorhelper::Min<double>(data, filter) *
-                              10) /
-                   10;
-               auto max =
-                   std::round(dataprocessorhelper::Max<double>(data, filter) *
-                              10) /
-                   10;
-               auto std_dev =
-                   std::round(
-                       dataprocessorhelper::StdDev<double>(data, filter) * 10) /
-                   10;
-
+               auto avg = std::round(
+                     dataprocessorhelper::Avg<double>(data, filter) * 10) / 10;
+               auto min = std::round(
+                     dataprocessorhelper::Min<double>(data, filter) * 10) / 10;
+               auto max = std::round(
+                     dataprocessorhelper::Max<double>(data, filter) * 10) / 10;
+               auto std_dev = std::round(
+                     dataprocessorhelper::StdDev<double>(data, filter) * 10) / 10;
+               // clang-format on
                table << kTableRowStart << kTableColumnStart << i
                      << kTableColumnEnd << kTableColumnStart << avg
                      << kTableColumnEnd << kTableColumnStart << min
