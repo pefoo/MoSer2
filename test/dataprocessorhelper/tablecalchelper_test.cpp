@@ -50,3 +50,14 @@ TEST_CASE("Filter creation", "[TableCalcHelper]") {
   REQUIRE(!inclusive_filter("c2"));
   REQUIRE(!inclusive_filter("timestamp"));
 }
+
+TEST_CASE("Standard deviation", "[TableCalcHelper]") {
+  utility::datastructure::Table t;
+  t.AddColumn(utility::datastructure::DataColumn<int>(
+      "c1", {9, 2, 5, 4, 12, 7, 8, 11, 9, 3}));
+  t.AddColumn(utility::datastructure::DataColumn<int>(
+      "c2", {4, 12, 5, 4, 10, 9, 6, 9, 4, 7}));
+
+  auto std_dev = dataprocessorhelper::StdDev<int>(t);
+  REQUIRE(std_dev == Approx(2.9832867780352594));
+}

@@ -60,6 +60,8 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                    << "Core" << kTableHeaderEnd << kTableHeaderStart << "Avg"
                    << kTableHeaderEnd << kTableHeaderStart << "Min"
                    << kTableHeaderEnd << kTableHeaderStart << "Max"
+                   << kTableHeaderEnd << kTableHeaderStart
+                   << "&#x3C3;"  // sigma
                    << kTableHeaderEnd << kTableRowEnd;
 
              for (uint i = 0; i < core_count; ++i) {
@@ -77,11 +79,16 @@ monitoringplugins::cpuplugin::CreateProcessors() {
                    std::round(dataprocessorhelper::Max<double>(data, filter) *
                               10) /
                    10;
+               auto std_dev =
+                   std::round(
+                       dataprocessorhelper::StdDev<double>(data, filter) * 10) /
+                   10;
 
                table << kTableRowStart << kTableColumnStart << i
                      << kTableColumnEnd << kTableColumnStart << avg
                      << kTableColumnEnd << kTableColumnStart << min
                      << kTableColumnEnd << kTableColumnStart << max
+                     << kTableColumnEnd << kTableColumnStart << std_dev
                      << kTableColumnEnd << kTableRowEnd;
              }
              table << kTableEnd;

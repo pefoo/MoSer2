@@ -2,6 +2,7 @@
 #define TABLECALCHELPER_H
 
 #include <algorithm>
+#include <cmath>
 #include <functional>
 #include <limits>
 #include <numeric>
@@ -9,6 +10,11 @@
 #include <type_traits>
 #include <vector>
 #include "utility/datastructure/table.hpp"
+
+/*
+ * Various calculation. The length of the columns of one table is expected to be
+ * uniform!
+ */
 
 namespace dataprocessorhelper {
 
@@ -133,6 +139,22 @@ double Avg(const utility::datastructure::Table& data,
       data, [](const ColumnType& a, const ColumnType& b) { return a + b; }, 0,
       filter);
   return sum / (ApplyColumnFilter(data, filter).size() * data.MaxSize());
+}
+
+///
+/// \brief Calculate the standard deviation
+/// \param data The data table
+/// \param filter A column filter
+/// \return The standard deviation
+///
+template <typename ColumnType>
+double StdDev(const utility::datastructure::Table& data,
+              ColumnFilter filter = Filter::DefaultFilter) {
+  double avg = Avg<ColumnType>(data, filter);
+  double sum = AccumulateWrapper<ColumnType>(
+      data, [avg](double x, double y) { return x + (y - avg) * (y - avg); },
+      0.0, filter);
+  return sqrt(sum / (ApplyColumnFilter(data, filter).size() * data.MaxSize()));
 }
 
 }  // namespace dataprocessorhelper
