@@ -174,6 +174,7 @@ Eventually, the result of the replacement is send as an email.
 |%%DISK_USAGE%%|A table that shows the disk usage of all configured devices.|
 |**Network plugin:**||
 |%%NETWORK_TIMES_SERIES_DATA%%|A base 64 encoded time series chart of the network usage.|
+|%%NETWORK_USAGE_STATS%%|Network usage statistics.|
 |**Logwatcher plugin:**||
 |%%LOG_TABLE_{tag}%%|A html table that displays the log messages for the given tag.|
 |%%LOG_CHART_{tag}%%|A chart that displays a histogram for the events with a given tag.|
