@@ -11,7 +11,7 @@ monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringplugins::memoryplugin::CreateProcessors() {
   return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{
       {std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-          "%%MEMORY_TIME_SERIES_DATA%%",
+          kTokenMemoryTimeSeriesData,
           [](utility::datastructure::Table data) -> std::string {
             if (data.MaxSize() == 0) return "";
             dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};

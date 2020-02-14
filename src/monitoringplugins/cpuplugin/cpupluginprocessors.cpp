@@ -25,7 +25,7 @@ monitoringplugins::cpuplugin::CreateProcessors() {
   return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{
       {// The cpu usage chart, base64 encoded
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-           "%%CPU_TIME_SERIES_DATA%%",
+           kTokenCpuTimeSeriesData,
            [](utility::datastructure::Table data) -> std::string {
              if (data.MaxSize() == 0) {
                return "";
@@ -44,7 +44,7 @@ monitoringplugins::cpuplugin::CreateProcessors() {
            })},
       {// Cpu usage stats per core
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-           "%%CPU_USAGE_STATS%%",
+           kTokenCpuUsageStats,
            [](utility::datastructure::Table data) -> std::string {
              if (data.MaxSize() == 0) {
                return "";
@@ -89,7 +89,7 @@ monitoringplugins::cpuplugin::CreateProcessors() {
            })},
       {// The average cpu usage. a single value
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-           "%%CPU_USAGE_AVERAGE%%",
+           kTokenCpuUsageAverage,
            [](utility::datastructure::Table data) -> std::string {
              if (data.MaxSize() == 0) {
                return "";

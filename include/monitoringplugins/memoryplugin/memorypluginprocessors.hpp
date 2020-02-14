@@ -8,6 +8,14 @@
 namespace monitoringplugins {
 namespace memoryplugin {
 
+///
+/// \brief The memory time series data in base64 format.
+/// \details The result of this token should be embedded into an img tag with
+/// data type set to base64.
+///
+static constexpr char kTokenMemoryTimeSeriesData[] =
+    "%%MEMORY_TIME_SERIES_DATA%%";
+
 monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 CreateProcessors();
 

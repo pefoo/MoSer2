@@ -31,7 +31,7 @@ monitoringplugins::logwatcherplugin::CreateProcessors() {
   while (std::getline(tags, tag, ';')) {
     processors.push_back(
         std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-            "%%LOG_TABLE_" + tag + "%%",
+            TokenLogTable(tag),
             [tag](utility::datastructure::Table data) -> std::string {
               std::stringstream out{};
               std::stringstream table_content{};
@@ -59,7 +59,7 @@ monitoringplugins::logwatcherplugin::CreateProcessors() {
             }));
     processors.push_back(std::make_shared<
                          monitoringpluginbase::PluginDataProcessor>(
-        "%%LOG_CHART_" + tag + "%%",
+        TokenLogChart(tag),
         [tag](utility::datastructure::Table data) -> std::string {
           if (data.MaxSize() == 0) {
             return "";

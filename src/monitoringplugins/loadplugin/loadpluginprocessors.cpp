@@ -10,7 +10,7 @@ monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringplugins::loadplugin::CreateProcessors() {
   return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{
       {std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-          "%%LOAD_TIME_SERIES_DATA%%",
+          kTokenLoadTimeSeriesData,
           [](utility::datastructure::Table data) -> std::string {
             if (data.MaxSize() == 0) {
               return "";

@@ -42,7 +42,7 @@ monitoringplugins::diskplugin::CreateProcessors() {
     for (const auto& device : device_list) {
       processors.push_back(
           std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-              "%%DISK_" + device + "_TIME_SERIES_DATA%%",
+              TokenDiskTimeSeriesData(device),
               [device](utility::datastructure::Table data) -> std::string {
                 if (data.MaxSize() == 0) {
                   return "";
@@ -59,7 +59,7 @@ monitoringplugins::diskplugin::CreateProcessors() {
     }
     processors.push_back(
         std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-            "%%DISK_USAGE%%",
+            kTokenDiskUsage,
             [device_list]([[gnu::unused]] utility::datastructure::Table data)
                 -> std::string {
               auto mount_points = GetMountPoints();

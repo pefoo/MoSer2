@@ -20,7 +20,7 @@ monitoringplugins::networkplugin::CreateProcessors() {
   return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{
       {// The network usage chart, base64 encoded
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-           "%%NETWORK_TIME_SERIES_DATA%%",
+           kTokenNetworkTimeSeriesData,
            [](utility::datastructure::Table data) -> std::string {
              if (data.MaxSize() == 0) return "";
              dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
@@ -31,7 +31,7 @@ monitoringplugins::networkplugin::CreateProcessors() {
            })},
       {// Network usage statistics
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-           "%%NETWORK_USAGE_STATS%%",
+           kTokenNetworkUsageStats,
            [](utility::datastructure::Table data) -> std::string {
              if (data.MaxSize() == 0) {
                return "";
