@@ -18,7 +18,7 @@ static constexpr char kTableColumnEnd[] = "</td>";
 monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
 monitoringplugins::networkplugin::CreateProcessors() {
   return std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>{
-      {// The cpu usage chart, base64 encoded
+      {// The network usage chart, base64 encoded
        std::make_shared<monitoringpluginbase::PluginDataProcessor>(
            "%%NETWORK_TIME_SERIES_DATA%%",
            [](utility::datastructure::Table data) -> std::string {
