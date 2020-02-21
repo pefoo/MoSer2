@@ -11,15 +11,16 @@ jobs:
     - name: Install required tools / compiler
       run: |
         sudo apt-get update
-        sudo apt-get install gcc-8 g++-8 libsqlite3-dev libcurl4-openssl-dev
+        sudo apt-get install libsqlite3-dev libcurl4-openssl-dev
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-8 \        
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-8
     - name: Install lcov 1.14
       run: |
           wget http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz
           tar xzf lcov-1.14.tar.gz
           cd lcov-1.14/
-          sudo make install 
-    - name: Setup gcov version
-      run: sudo ln -sf $(which gcov-8) $(which gcov) 
+          sudo make install   
     - uses: actions/checkout@v1
     - name: Create runtime dir 
       run: mkdir -p runtime
