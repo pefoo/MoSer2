@@ -39,6 +39,14 @@ class PluginConfigSelector : public imonitorplugin::IPluginConfigSelector {
                        std::string help_text = "");
 
   ///
+  /// \brief Create a new selector
+  /// \param key The configuration key
+  /// \param value The configuration value to set
+  /// \details This will directly set a value, use it to provide defaults
+  ///
+  PluginConfigSelector(std::string key, const std::string& value);
+
+  ///
   /// \copydoc imonitorplugin::IPluginConfigSelector::SelectConfig()
   ///
   [[nodiscard]] std::tuple<std::string, std::string> SelectConfig()

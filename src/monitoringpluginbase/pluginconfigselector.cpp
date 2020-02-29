@@ -13,6 +13,10 @@ monitoringpluginbase::PluginConfigSelector::PluginConfigSelector(
   this->selector_ = this->BuildSelector(help_text, applicable_values);
 }
 
+monitoringpluginbase::PluginConfigSelector::PluginConfigSelector(
+    std::string key, const std::string &value)
+    : key_(std::move(key)), selector_([value]() { return value; }) {}
+
 std::tuple<std::string, std::string>
 monitoringpluginbase::PluginConfigSelector::SelectConfig() const {
   return {this->key_, this->selector_()};
