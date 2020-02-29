@@ -3,23 +3,26 @@
 
 monitoringpluginbase::PluginConfigSelector::PluginConfigSelector(
     std::string key,
-    const monitoringpluginbase::PluginConfigSelector::Selector &selector)
-    : key_(std::move(key)), selector_(selector) {}
+    const monitoringpluginbase::PluginConfigSelector::Selector &selector,
+    std::string section)
+    : key_(std::move(key)), selector_(selector), section_(std::move(section)) {}
 
 monitoringpluginbase::PluginConfigSelector::PluginConfigSelector(
     std::string key, std::vector<std::string> applicable_values,
-    std::string help_text)
-    : key_(std::move(key)) {
+    std::string section, std::string help_text)
+    : key_(std::move(key)), section_(std::move(section)) {
   this->selector_ = this->BuildSelector(help_text, applicable_values);
 }
 
 monitoringpluginbase::PluginConfigSelector::PluginConfigSelector(
-    std::string key, const std::string &value)
-    : key_(std::move(key)), selector_([value]() { return value; }) {}
+    std::string key, const std::string &value, std::string section)
+    : key_(std::move(key)),
+      selector_([value]() { return value; }),
+      section_(std::move(section)) {}
 
-std::tuple<std::string, std::string>
+std::tuple<std::string, std::string, std::string>
 monitoringpluginbase::PluginConfigSelector::SelectConfig() const {
-  return {this->key_, this->selector_()};
+  return {this->key_, this->section_, this->selector_()};
 }
 
 std::function<std::string()>

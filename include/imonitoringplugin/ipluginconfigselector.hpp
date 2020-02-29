@@ -19,10 +19,10 @@ class IPluginConfigSelector {
 
   ///
   /// \brief Select the config value
-  /// \return The config key and the selected value
+  /// \return The config key, the section name and the selected value
   ///
-  [[nodiscard]] virtual std::tuple<std::string, std::string> SelectConfig()
-      const = 0;
+  [[nodiscard]] virtual std::tuple<std::string, std::string, std::string>
+  SelectConfig() const = 0;
 };
 
 }  // namespace imonitorplugin
