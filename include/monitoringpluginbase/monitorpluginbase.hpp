@@ -9,6 +9,7 @@
 #include "imonitoringplugin/constants.hpp"
 #include "imonitoringplugin/imonitorplugin.hpp"
 #include "imonitoringplugin/inputfilecontent.hpp"
+#include "imonitoringplugin/ipluginconfigselector.hpp"
 #include "settingsprovider/isettingsprovider.hpp"
 
 namespace monitoringpluginbase {
@@ -72,6 +73,11 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   [[nodiscard]] virtual std::vector<std::string> DoSanityCheck() const override;
 
+  ///
+  /// \copydoc imonitorplugin::IMonitorPlugin::Configure()
+  ///
+  void Configure() const override;
+
  protected:
   ///
   /// \brief This is the easy version of AcquireData and just suffice most
@@ -85,6 +91,12 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) = 0;
 
+  ///
+  /// \copydoc imonitorplugin::IMonitorPlugin::GetConfigSelectors()
+  /// \note Override this empty implementation to actually expose some selectors
+  ///
+  virtual std::vector<imonitorplugin::IPluginConfigSelector>
+  GetConfigSelectors() const override;
   ///
   /// \brief Raise a plugin exception
   /// \param msg The message to raise

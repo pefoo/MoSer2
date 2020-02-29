@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include "imonitoringplugin/inputfilecontent.hpp"
+#include "imonitoringplugin/ipluginconfigselector.hpp"
 #include "imonitoringplugin/plugindata.hpp"
 
 namespace imonitorplugin {
@@ -47,6 +48,20 @@ class IMonitorPlugin {
   /// \return A vector of messages, empty if everything is ok
   ///
   [[nodiscard]] virtual std::vector<std::string> DoSanityCheck() const = 0;
+
+  ///
+  /// \brief Executes the registered configuration selectors and writes the
+  /// configuration file for the plugin
+  ///
+  virtual void Configure() const = 0;
+
+ protected:
+  ///
+  /// \brief Get the configuration selectors defined by the plugin
+  /// \return A vector with configuration selectors
+  ///
+  [[nodiscard]] virtual std::vector<imonitorplugin::IPluginConfigSelector>
+  GetConfigSelectors() const = 0;
 };
 
 }  // namespace imonitorplugin

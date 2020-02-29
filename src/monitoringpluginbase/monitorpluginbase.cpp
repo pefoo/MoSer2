@@ -42,6 +42,15 @@ monitoringpluginbase::MonitorPluginBase::DoSanityCheck() const {
   return {};
 }
 
+void monitoringpluginbase::MonitorPluginBase::Configure() const {
+  this->ThrowPluginException("Configure function not yet implemented");
+}
+
+std::vector<imonitorplugin::IPluginConfigSelector>
+monitoringpluginbase::MonitorPluginBase::GetConfigSelectors() const {
+  return {};
+}
+
 void monitoringpluginbase::MonitorPluginBase::RegisterFileToRead(
     const std::string& file) {
   this->input_files_.push_back(file);
