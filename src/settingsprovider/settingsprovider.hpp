@@ -64,6 +64,12 @@ class SettingsProvider : public ISettingsProvider {
   ///
   bool ReadFromFile(const std::string& file, std::vector<std::string>* msg);
 
+  ///
+  /// \brief Write the registered settings to a file
+  /// \param file The file to write to
+  ///
+  void WriteToFile(const std::string& file);
+
  private:
   struct Setting {
     Setting() = default;

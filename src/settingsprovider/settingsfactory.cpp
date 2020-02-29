@@ -29,3 +29,11 @@ settingsprovider::SettingsFactory::ReadFromFile(const std::string &file,
   settings->ReadFromFile(file, msg);
   return std::move(settings);
 }
+
+void settingsprovider::SettingsFactory::WriteToFile(const std::string &file) {
+  settingsprovider::SettingsProvider settings{};
+  for (const Setting &s : this->settings_) {
+    settings.RegisterSetting(s.key_, s.section_, s.value_, s.verifier_);
+  }
+  settings.WriteToFile(file);
+}
