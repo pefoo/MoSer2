@@ -76,7 +76,7 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   ///
   /// \copydoc imonitorplugin::IMonitorPlugin::Configure()
   ///
-  void Configure() const override;
+  void Configure() override;
 
  protected:
   ///

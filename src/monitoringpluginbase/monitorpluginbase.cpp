@@ -42,8 +42,15 @@ monitoringpluginbase::MonitorPluginBase::DoSanityCheck() const {
   return {};
 }
 
-void monitoringpluginbase::MonitorPluginBase::Configure() const {
-  this->ThrowPluginException("Configure function not yet implemented");
+void monitoringpluginbase::MonitorPluginBase::Configure() {
+  settingsprovider::SettingsFactory factory{};
+  for (const auto& selector : GetConfigSelectors()) {
+    auto [key, section, value] = selector.SelectConfig();
+    factory.RegisterSetting(key, section, value);
+  }
+  factory.WriteToFile(this->name() + ".conf");
+  std::vector<std::string> msg;
+  this->settings_ = factory.ReadFromFile(this->name() + ".conf", &msg);
 }
 
 std::vector<imonitorplugin::IPluginConfigSelector>

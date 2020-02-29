@@ -53,7 +53,7 @@ class IMonitorPlugin {
   /// \brief Executes the registered configuration selectors and writes the
   /// configuration file for the plugin
   ///
-  virtual void Configure() const = 0;
+  virtual void Configure() = 0;
 
  protected:
   ///
