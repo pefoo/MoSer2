@@ -6,6 +6,7 @@ set(SOURCES
 
 set(LIBRARIES
   IMonitorPlugin
+  MeasurementPluginBase
   Utility
   SettingsProvider
   stdc++fs
