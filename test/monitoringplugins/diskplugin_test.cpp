@@ -42,6 +42,7 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
       monitoringplugins::diskplugin::constants::kPluginName};
 
   monitoringplugins::diskplugin::DiskPlugin plug{};
+  plug.Init();
   auto data = plug.AcquireData(
       {{"/proc/diskstats",
         imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}})[0];
@@ -65,6 +66,8 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
 }
 
 TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
+  ConfigurationInjector c{
+      monitoringplugins::diskplugin::constants::kPluginName};
   utility::datastructure::Table sample_data{"DiskPlugin"};
   sample_data.AddColumn(
       utility::datastructure::DataColumn<int>{"sda3_bytes_read", {5, 5, 5}});

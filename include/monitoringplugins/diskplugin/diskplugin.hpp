@@ -17,6 +17,7 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   DiskPlugin();
 
+  void Init() override;
   std::vector<std::string> DoSanityCheck() const override;
 
  protected:

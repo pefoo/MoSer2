@@ -12,8 +12,12 @@
 namespace imonitorplugin {
 ///
 /// \brief The interface monitoring plugins have to implement
-/// \note This interface is implemented by
-/// monitoringpluginbase::MonitorPluginBase
+/// \details Plugin construction should not depend on actual plugin
+/// configuration, as imonitorplugin::IMonitorPlugin::Configure() requires an
+/// instance. The moser2::plugin::PluginController will always run the
+/// imonitorplugin::IMonitorPlugin::DoSanityCheck() function the check the
+/// provided plugin configuration after actually initializing the plugin using
+/// imonitorplugin::IMonitorPlugin::Init()
 ///
 class IMonitorPlugin {
  public:
@@ -21,6 +25,11 @@ class IMonitorPlugin {
   /// \brief ~IMonitorPlugin
   ///
   virtual ~IMonitorPlugin() = default;
+
+  ///
+  /// \brief Initialize the plugin
+  ///
+  virtual void Init() = 0;
 
   ///
   /// \brief Get the plugin name

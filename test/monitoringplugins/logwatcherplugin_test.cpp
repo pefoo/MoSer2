@@ -32,6 +32,7 @@ TEST_CASE("LogWatcherPlugin data acquisition", "[LogWatcherPlugin]") {
   ConfigurationInjector c{
       monitoringplugins::logwatcherplugin::constants::kPluginName};
   monitoringplugins::logwatcherplugin::LogWatcherPlugin plug{};
+  plug.Init();
   auto messages = plug.DoSanityCheck();
   REQUIRE(messages.size() == 0);
 

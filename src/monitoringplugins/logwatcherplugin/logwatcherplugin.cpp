@@ -11,7 +11,9 @@ namespace logwatcherplugin {
 
 using namespace logwatcherplugin::constants;
 LogWatcherPlugin::LogWatcherPlugin()
-    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {
+    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
+
+void LogWatcherPlugin::Init() {
   if (!this->settings_) {
     this->ThrowPluginException(
         "The log watcher plugin requires a configuration.");

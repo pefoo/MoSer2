@@ -6,7 +6,9 @@ namespace monitoringplugins {
 namespace networkplugin {
 
 NetworkPlugin::NetworkPlugin()
-    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {
+    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
+
+void NetworkPlugin::Init() {
   if (this->settings_) {
     auto interface = this->settings_->GetValue("Interface", "");
     if (interface.empty()) {

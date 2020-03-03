@@ -50,6 +50,11 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   explicit MonitorPluginBase(std::string name_);
 
   ///
+  /// \copydoc imonitoringplugin::IMonitoringPlugin::Init()
+  ///
+  void Init() override;
+
+  ///
   /// \copydoc imonitorplugin::IMonitorPlugin::name()
   ///
   [[nodiscard]] std::string name() const override;

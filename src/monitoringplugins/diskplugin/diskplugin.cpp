@@ -31,7 +31,9 @@ struct monitoringplugins::diskplugin::DiskPlugin::DiskStat {
 };
 
 monitoringplugins::diskplugin::DiskPlugin::DiskPlugin()
-    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {
+    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
+
+void monitoringplugins::diskplugin::DiskPlugin::Init() {
   this->RegisterFileToRead("/proc/diskstats");
   auto devices = std::stringstream{this->settings_->GetValue("Devices", "")};
   auto sectors =

@@ -14,6 +14,7 @@ namespace logwatcherplugin {
 class LogWatcherPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   LogWatcherPlugin();
+  void Init() override;
   [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
   std::vector<imonitorplugin::PluginData> AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>

@@ -52,9 +52,9 @@ struct CpuPlugin::CpuStat {
 
 CpuPlugin::CpuPlugin()
     : monitoringpluginbase::MonitorPluginBase(constants::kPluginName),
-      core_count_(std::thread::hardware_concurrency()) {
-  this->RegisterFileToRead("/proc/stat");
-}
+      core_count_(std::thread::hardware_concurrency()) {}
+
+void CpuPlugin::Init() { this->RegisterFileToRead("/proc/stat"); }
 
 std::vector<std::string> CpuPlugin::DoSanityCheck() const {
   std::vector<std::string> msg;

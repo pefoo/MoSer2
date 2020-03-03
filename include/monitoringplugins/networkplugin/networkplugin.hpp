@@ -16,6 +16,7 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   NetworkPlugin();
 
+  void Init() override;
   [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
 
  protected:

@@ -19,6 +19,8 @@ monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
   }
 }
 
+void monitoringpluginbase::MonitorPluginBase::Init() {}
+
 std::string monitoringpluginbase::MonitorPluginBase::name() const {
   return this->name_;
 }
@@ -43,14 +45,19 @@ monitoringpluginbase::MonitorPluginBase::DoSanityCheck() const {
 }
 
 void monitoringpluginbase::MonitorPluginBase::Configure() {
+  std::string config_file_name = this->name() + ".conf";
+  if (std::filesystem::exists(config_file_name)) {
+    std::filesystem::copy(config_file_name, config_file_name + ".bak",
+                          std::filesystem::copy_options::overwrite_existing);
+  }
   settingsprovider::SettingsFactory factory{};
   for (const auto& selector : GetConfigSelectors()) {
     auto [key, section, value] = selector.SelectConfig();
     factory.RegisterSetting(key, section, value);
   }
-  factory.WriteToFile(this->name() + ".conf");
+  factory.WriteToFile(config_file_name);
   std::vector<std::string> msg;
-  this->settings_ = factory.ReadFromFile(this->name() + ".conf", &msg);
+  this->settings_ = factory.ReadFromFile(config_file_name, &msg);
 }
 
 std::vector<imonitorplugin::IPluginConfigSelector>
