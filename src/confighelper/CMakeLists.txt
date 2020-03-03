@@ -2,11 +2,13 @@ set(EXEC_NAME ConfigHelper)
 
 set(SOURCES
   main.cpp
+  ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
 set(LIBRARIES
   IMonitorPlugin
   MeasurementPluginBase
+  Core
   Utility
   SettingsProvider
   stdc++fs
