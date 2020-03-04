@@ -19,6 +19,8 @@ PluginController::PluginController()
       timer_(new utility::threading::CallbackTimer{}),
       inputfile_provider_(std::make_unique<InputFileProvider>()) {}
 
+PluginController::~PluginController() { this->plugin_manager_->DestroyAll(); }
+
 void PluginController::LoadPlugin(const std::string &path) {
   auto abs_path = utility::filesystem::MakeAbsolutePathFromExecutable(path);
   try {

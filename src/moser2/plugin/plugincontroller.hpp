@@ -20,6 +20,12 @@ class PluginController {
   /// \brief PluginController
   ///
   PluginController();
+
+  ///
+  /// \brief ~PluginController
+  ///
+  ~PluginController();
+
   ///
   /// \brief Load a single plugin
   /// \param path The path to the file to load the plugin from (a shared
