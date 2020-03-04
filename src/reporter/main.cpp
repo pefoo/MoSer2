@@ -38,7 +38,8 @@ int main() {
   }
 
   // Get settings and data adapter
-  auto settings = core::settings::GetApplicationSettings();
+  std::shared_ptr<settingsprovider::ISettingsProvider> settings =
+      core::settings::GetApplicationSettings();
   auto adapter_factory = std::make_shared<persistenceservice::AdapterFactory>(
       std::make_unique<persistenceservice::sqlite::SqliteSettings>(
           utility::filesystem::MakeAbsolutePathFromExecutable(
@@ -87,7 +88,8 @@ int main() {
     tokens.insert(tokens.end(), dataless_tokens.begin(), dataless_tokens.end());
 
     // Run the template processor
-    reporter::templateprocessor::TemplateProcessor template_processor{tokens};
+    reporter::templateprocessor::TemplateProcessor template_processor{tokens,
+                                                                      settings};
     auto result_file = template_processor.ProcessTemplate(
         settings->GetValue(constants::settings::ReporTemplate()));
     LOG(DEBUG) << "Report file was written to " << result_file;

@@ -26,7 +26,7 @@ std::string ExpectedContent() {
 }
 
 TEST_CASE("Tokenprocessor normal run", "[Reporter]") {
-  reporter::templateprocessor::TemplateProcessor processor{Tokens()};
+  reporter::templateprocessor::TemplateProcessor processor{Tokens(), nullptr};
 
   auto result = processor.ProcessTemplate(GetTestFile("reporter_template"));
 
@@ -40,7 +40,7 @@ TEST_CASE("Tokenprocessor normal run", "[Reporter]") {
 }
 
 TEST_CASE("Tokenprocessor in place", "[Reporter]") {
-  reporter::templateprocessor::TemplateProcessor processor{Tokens()};
+  reporter::templateprocessor::TemplateProcessor processor{Tokens(), nullptr};
 
   std::filesystem::copy(GetTestFile("reporter_template"), ".tmp",
                         std::filesystem::copy_options::overwrite_existing);

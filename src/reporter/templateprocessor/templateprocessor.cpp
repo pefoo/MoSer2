@@ -4,11 +4,15 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "constants/settings/settingsidentifier.hpp"
+#include "easyloggingpp-9.96.5/easylogging++.h"
+#include "settingsprovider/settingnotfoundexception.hpp"
 #include "utility/filesystem/fileaccesshelper.hpp"
 
 reporter::templateprocessor::TemplateProcessor::TemplateProcessor(
-    std::vector<reporter::templateprocessor::TemplateToken> tokens)
-    : tokens_(std::move(tokens)) {}
+    std::vector<reporter::templateprocessor::TemplateToken> tokens,
+    std::shared_ptr<settingsprovider::ISettingsProvider> settings)
+    : tokens_(std::move(tokens)), settings_(std::move(settings)) {}
 
 std::string reporter::templateprocessor::TemplateProcessor::ProcessTemplate(
     const std::string& template_file, bool in_place) {
@@ -34,6 +38,28 @@ std::string reporter::templateprocessor::TemplateProcessor::ProcessTemplate(
 
   std::ofstream out(result_file, std::ios::trunc);
   out << buffer.rdbuf();
+
+  try {
+    if (this->settings_) {
+      auto script_path = this->settings_->GetValue(
+          constants::settings::PostProcessingScript());
+      if (!std::filesystem::exists(script_path)) {
+        throw std::runtime_error("The script " + script_path +
+                                 " does not exist.");
+      }
+      std::string cmd = script_path + " '" + result_file + "'";
+      if (auto ret = std::system(cmd.c_str()) != 0) {
+        throw std::runtime_error("Execution of script " + script_path +
+                                 " failed with return code " +
+                                 std::to_string(ret));
+      }
+    }
+  } catch (settingsprovider::SettingNotFoundException&) {
+    // We dont care for not configured postprocessing scripts
+  } catch (std::exception& e) {
+    LOG(ERROR) << "Failed to execute the report postprocessing script. "
+               << e.what();
+  }
 
   return result_file;
 }
