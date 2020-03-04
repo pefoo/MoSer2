@@ -1,9 +1,11 @@
 #ifndef TEMPLATEPROCESSOR_H
 #define TEMPLATEPROCESSOR_H
 
+#include <memory>
 #include <string>
 #include <vector>
 #include "reporter/templateprocessor/templatetoken.hpp"
+#include "settingsprovider/isettingsprovider.hpp"
 
 namespace reporter {
 namespace templateprocessor {
@@ -16,8 +18,11 @@ class TemplateProcessor {
   ///
   /// \brief Create a new instance
   /// \param tokens The tokens to be used for replacement
+  /// \param settings The application settings
   ///
-  explicit TemplateProcessor(std::vector<TemplateToken> tokens);
+  TemplateProcessor(
+      std::vector<TemplateToken> tokens,
+      std::shared_ptr<settingsprovider::ISettingsProvider> settings);
 
   ///
   /// \brief Process a template file
@@ -33,6 +38,7 @@ class TemplateProcessor {
 
  private:
   std::vector<TemplateToken> tokens_;
+  std::shared_ptr<settingsprovider::ISettingsProvider> settings_;
 
   std::string ReplaceAll(std::string subject, TemplateToken* token);
 };

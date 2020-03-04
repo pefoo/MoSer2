@@ -2,6 +2,7 @@ set(SOURCES
   ./settingsprovider.cpp
   settingidentifier.cpp
   settingsfactory.cpp
+  settingnotfoundexception.cpp
   ${EXTERNAL_DIR}/easyloggingpp-9.96.5/easylogging++.cc
 )
 
