@@ -8,6 +8,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include "monitoringpluginbase/pluginconfigselector.hpp"
 #include "monitoringplugins/diskplugin/constants.hpp"
 
 ///
@@ -119,6 +120,73 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
   }
 
   return data;
+}
+
+std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+monitoringplugins::diskplugin::DiskPlugin::GetConfigSelectors(
+    std::ostream &os, std::istream &is) const {
+  return {// Selector for devices property
+          std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+              new monitoringpluginbase::PluginConfigSelector(
+                  "Devices",
+                  [&os, &is]() {
+                    std::ifstream mounts{"/proc/mounts"};
+                    if (mounts.fail()) {
+                    }
+                    std::stringstream ss{};
+                    ss << "Select the devices you want to monitor. Separate "
+                          "devices "
+                          "using "
+                          "a "
+                          "semicolon."
+                       << std::endl;
+                    ss << "E.g.: /dev/sda1;/dev/sda4" << std::endl;
+                    ss << std::endl;
+
+                    auto ignored_types = {
+                        "squashfs",   "cgroup",   "sysfs",      "tmpfs",
+                        "proc",       "devtmpfs", "securityfs", "debugfs",
+                        "rpc_pipefs", "cgroup2",  "devpts",     "binfmt_misc",
+                        "tracefs",    "configfs", "fusectl",    "pstore",
+                        "efivarfs",   "autofs",   "mqueue",     "hugetlbfs"};
+                    while (!mounts.eof()) {
+                      std::string device, mnt, type;
+                      mounts >> device >> mnt >> type;
+                      mounts.ignore(std::numeric_limits<std::streamsize>::max(),
+                                    '\n');
+                      if (std::find(ignored_types.begin(), ignored_types.end(),
+                                    type) != ignored_types.end())
+                        continue;
+                      if (device.empty()) continue;
+
+                      ss << device << " (Mount point: " << mnt
+                         << " type: " << type << ")" << std::endl;
+                    }
+                    os << ss.str();
+                    os << ">>";
+                    std::string value;
+                    getline(is, value);
+                    return value;
+                  })),
+          // Selector for the SectorSizes property
+          std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+              new monitoringpluginbase::PluginConfigSelector(
+                  "SectorSizes", [&os, &is]() {
+                    os << "Select the sector sizes for the configured devices"
+                       << std::endl;
+                    os << "Select one sector size per configured device, "
+                          "separate them using semicolons."
+                       << std::endl;
+                    os << "E.g.: 512;512" << std::endl;
+                    os << "You may check the sector size using the following "
+                          "command: sudo fdisk -l"
+                       << std::endl;
+                    os << std::endl;
+                    os << ">>";
+                    std::string value;
+                    getline(is, value);
+                    return value;
+                  }))};
 }
 
 std::unordered_map<std::string,

@@ -25,6 +25,9 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) override;
 
+  std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector>>
+  GetConfigSelectors(std::ostream& os, std::istream& is) const override;
+
  private:
   struct DiskStat;
   std::unordered_map<std::string, DiskStat> ParseDiskstat(
