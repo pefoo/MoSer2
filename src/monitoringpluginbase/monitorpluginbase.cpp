@@ -52,16 +52,18 @@ void monitoringpluginbase::MonitorPluginBase::Configure() {
                           std::filesystem::copy_options::overwrite_existing);
   }
   settingsprovider::SettingsFactory factory{};
-  std::cout << "##################################################"
-            << std::endl;
-  std::cout << this->name() << std::endl;
-  std::cout << "##################################################"
-            << std::endl;
-  for (const auto& selector : GetConfigSelectors(std::cout, std::cin)) {
-    auto [key, section, value] = selector->SelectConfig();
-    factory.RegisterSetting(key, section, value);
+  auto selectors = GetConfigSelectors(std::cout, std::cin);
+  if (!selectors.empty()) {
+    std::cout << "##################################################"
+              << std::endl;
+    std::cout << this->name() << std::endl;
+    std::cout << "##################################################"
+              << std::endl;
+    for (const auto& selector : selectors) {
+      auto [key, section, value] = selector->SelectConfig();
+    }
+    factory.WriteToFile(config_file_name);
   }
-  factory.WriteToFile(config_file_name);
   std::vector<std::string> msg;
   this->settings_ = factory.ReadFromFile(config_file_name, &msg);
 }
