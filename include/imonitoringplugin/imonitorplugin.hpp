@@ -2,6 +2,7 @@
 #define IMONITORPLUGIN_H
 // LCOV_EXCL_START
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -67,10 +68,13 @@ class IMonitorPlugin {
  protected:
   ///
   /// \brief Get the configuration selectors defined by the plugin
+  /// \param os The output stream to write to during configuration
+  /// \param is The input stream to read from during configuration
   /// \return A vector with configuration selectors
   ///
-  [[nodiscard]] virtual std::vector<imonitorplugin::IPluginConfigSelector>
-  GetConfigSelectors() const = 0;
+  [[nodiscard]] virtual std::vector<
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>>
+  GetConfigSelectors(std::ostream& os, std::istream& is) const = 0;
 };
 
 }  // namespace imonitorplugin

@@ -100,8 +100,8 @@ class MonitorPluginBase : virtual public imonitorplugin::IMonitorPlugin {
   /// \copydoc imonitorplugin::IMonitorPlugin::GetConfigSelectors()
   /// \note Override this empty implementation to actually expose some selectors
   ///
-  virtual std::vector<imonitorplugin::IPluginConfigSelector>
-  GetConfigSelectors() const override;
+  virtual std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector>>
+  GetConfigSelectors(std::ostream& os, std::istream& is) const override;
   ///
   /// \brief Raise a plugin exception
   /// \param msg The message to raise

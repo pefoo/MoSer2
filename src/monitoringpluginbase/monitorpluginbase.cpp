@@ -1,5 +1,6 @@
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 #include <filesystem>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <utility>
@@ -51,8 +52,13 @@ void monitoringpluginbase::MonitorPluginBase::Configure() {
                           std::filesystem::copy_options::overwrite_existing);
   }
   settingsprovider::SettingsFactory factory{};
-  for (const auto& selector : GetConfigSelectors()) {
-    auto [key, section, value] = selector.SelectConfig();
+  std::cout << "##################################################"
+            << std::endl;
+  std::cout << this->name() << std::endl;
+  std::cout << "##################################################"
+            << std::endl;
+  for (const auto& selector : GetConfigSelectors(std::cout, std::cin)) {
+    auto [key, section, value] = selector->SelectConfig();
     factory.RegisterSetting(key, section, value);
   }
   factory.WriteToFile(config_file_name);
@@ -60,8 +66,9 @@ void monitoringpluginbase::MonitorPluginBase::Configure() {
   this->settings_ = factory.ReadFromFile(config_file_name, &msg);
 }
 
-std::vector<imonitorplugin::IPluginConfigSelector>
-monitoringpluginbase::MonitorPluginBase::GetConfigSelectors() const {
+std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+monitoringpluginbase::MonitorPluginBase::GetConfigSelectors(
+    std::ostream&, std::istream&) const {
   return {};
 }
 
