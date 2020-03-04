@@ -61,8 +61,11 @@ void monitoringpluginbase::MonitorPluginBase::Configure() {
               << std::endl;
     for (const auto& selector : selectors) {
       auto [key, section, value] = selector->SelectConfig();
+      factory.RegisterSetting(key, section, value);
     }
     factory.WriteToFile(config_file_name);
+    std::cout << "Configuration file was written to " << config_file_name
+              << std::endl;
   }
   std::vector<std::string> msg;
   this->settings_ = factory.ReadFromFile(config_file_name, &msg);
