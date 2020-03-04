@@ -1,6 +1,8 @@
 #include "monitoringplugins/networkplugin/networkplugin.hpp"
 #include <ifaddrs.h>
+#include "monitoringpluginbase/pluginconfigselector.hpp"
 #include "monitoringplugins/networkplugin/constants.hpp"
+#include "sys/types.h"
 
 namespace monitoringplugins {
 namespace networkplugin {
@@ -33,11 +35,15 @@ std::vector<std::string> NetworkPlugin::DoSanityCheck() const {
   auto interface = this->settings_->GetValue("Interface", "");
   struct ifaddrs* ifaddr;
   getifaddrs(&ifaddr);
+  bool found{false};
   for (auto ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
     if (interface == ifa->ifa_name) {
-      return {};
+      found = true;
+      break;
     }
   }
+  freeifaddrs(ifaddr);
+  if (found) return {};
   return {"The configured network interface " + interface + " was not found."};
 }
 
@@ -50,6 +56,24 @@ imonitorplugin::PluginData::data_vector NetworkPlugin::AcquireDataInternal(
   int64_t tx2 = std::stol(input_file[this->tx_bytes_file].snapshot_2());
 
   return {{"rx", rx2 - rx1}, {"tx", tx2 - tx1}};
+}
+
+std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+NetworkPlugin::GetConfigSelectors([[maybe_unused]] std::ostream& os,
+                                  [[maybe_unused]] std::istream& is) const {
+  struct ifaddrs* ifaddr;
+  getifaddrs(&ifaddr);
+
+  std::vector<std::string> names;
+  for (auto ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
+    if (std::find(names.begin(), names.end(), ifa->ifa_name) == names.end()) {
+      names.push_back(ifa->ifa_name);
+    }
+  }
+  freeifaddrs(ifaddr);
+  return {std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+      new monitoringpluginbase::PluginConfigSelector(
+          "Interface", names, "", "Select an network interface to monitor."))};
 }
 
 }  // namespace networkplugin

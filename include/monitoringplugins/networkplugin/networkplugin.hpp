@@ -24,6 +24,9 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
           &&input_file) override;
 
+  std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+  GetConfigSelectors(std::ostream &os, std::istream &is) const override;
+
  private:
   std::string rx_bytes_file;
   std::string tx_bytes_file;
