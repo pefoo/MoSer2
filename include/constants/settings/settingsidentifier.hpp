@@ -30,6 +30,7 @@ MAKESETTING(MailRecipient, "MailRecipient", "Reporter")
 MAKESETTING(SmtpServer, "SmtpServer", "Reporter")
 MAKESETTING(MailUser, "MailUser", "Reporter")
 MAKESETTING(MailPassword, "MailPassword", "Reporter")
+MAKESETTING(PostProcessingScript, "PostProcessingScript", "Reporter");
 }  // namespace settings
 }  // namespace constants
 
