@@ -9,6 +9,7 @@
 
 TEST_CASE("MemoryPlugin Data acquisition", "[MemoryPlugin]") {
   monitoringplugins::memoryplugin::MemoryPlugin plug{};
+  plug.Init();
   auto data = plug.AcquireData({})[0];
 
   REQUIRE(data.data().size() == 2);

@@ -16,6 +16,7 @@ class CpuPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   CpuPlugin();
 
+  void Init() override;
   [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
 
  protected:

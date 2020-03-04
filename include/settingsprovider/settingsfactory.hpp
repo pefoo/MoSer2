@@ -49,6 +49,12 @@ class SettingsFactory {
   std::unique_ptr<ISettingsProvider> ReadFromFile(
       const std::string& file, std::vector<std::string>* msg);
 
+  ///
+  /// \brief Write the currently registered settings to a file
+  /// \param file The file path to write the settings to
+  ///
+  void WriteToFile(const std::string& file);
+
  private:
   struct Setting {
     Setting() = default;

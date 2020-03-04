@@ -2,17 +2,23 @@
 #define IMONITORPLUGIN_H
 // LCOV_EXCL_START
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include "imonitoringplugin/inputfilecontent.hpp"
+#include "imonitoringplugin/ipluginconfigselector.hpp"
 #include "imonitoringplugin/plugindata.hpp"
 
 namespace imonitorplugin {
 ///
 /// \brief The interface monitoring plugins have to implement
-/// \note This interface is implemented by
-/// monitoringpluginbase::MonitorPluginBase
+/// \details Plugin construction should not depend on actual plugin
+/// configuration, as imonitorplugin::IMonitorPlugin::Configure() requires an
+/// instance. The moser2::plugin::PluginController will always run the
+/// imonitorplugin::IMonitorPlugin::DoSanityCheck() function the check the
+/// provided plugin configuration after actually initializing the plugin using
+/// imonitorplugin::IMonitorPlugin::Init()
 ///
 class IMonitorPlugin {
  public:
@@ -20,6 +26,11 @@ class IMonitorPlugin {
   /// \brief ~IMonitorPlugin
   ///
   virtual ~IMonitorPlugin() = default;
+
+  ///
+  /// \brief Initialize the plugin
+  ///
+  virtual void Init() = 0;
 
   ///
   /// \brief Get the plugin name
@@ -47,6 +58,23 @@ class IMonitorPlugin {
   /// \return A vector of messages, empty if everything is ok
   ///
   [[nodiscard]] virtual std::vector<std::string> DoSanityCheck() const = 0;
+
+  ///
+  /// \brief Executes the registered configuration selectors and writes the
+  /// configuration file for the plugin
+  ///
+  virtual void Configure() = 0;
+
+ protected:
+  ///
+  /// \brief Get the configuration selectors defined by the plugin
+  /// \param os The output stream to write to during configuration
+  /// \param is The input stream to read from during configuration
+  /// \return A vector with configuration selectors
+  ///
+  [[nodiscard]] virtual std::vector<
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>>
+  GetConfigSelectors(std::ostream& os, std::istream& is) const = 0;
 };
 
 }  // namespace imonitorplugin

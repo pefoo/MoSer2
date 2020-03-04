@@ -3,6 +3,7 @@
 #include <fstream>
 #include <regex>
 #include <utility>
+#include "monitoringpluginbase/pluginconfigselector.hpp"
 #include "monitoringplugins/logwatcherplugin/constants.hpp"
 #include "utility/helper/stringhelper.hpp"
 
@@ -11,7 +12,9 @@ namespace logwatcherplugin {
 
 using namespace logwatcherplugin::constants;
 LogWatcherPlugin::LogWatcherPlugin()
-    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {
+    : monitoringpluginbase::MonitorPluginBase(constants::kPluginName) {}
+
+void LogWatcherPlugin::Init() {
   if (!this->settings_) {
     this->ThrowPluginException(
         "The log watcher plugin requires a configuration.");
@@ -35,6 +38,82 @@ std::vector<std::string> LogWatcherPlugin::DoSanityCheck() const {
     }
   }
   return messages;
+}
+
+std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+LogWatcherPlugin::GetConfigSelectors(std::ostream& os, std::istream& is) const {
+  return {
+      // TODO Is this field actually required?
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+          new monitoringpluginbase::PluginConfigSelector(
+              constants::kDisplayName,
+              [&os, &is]() {
+                os << "Select a display name for the first log watcher rule."
+                   << std::endl;
+                os << "You may add multiple rules to the configuration file by "
+                      "manually. This process will get you started with your "
+                      "first rule. You may change the rule header (default: "
+                      "Category1) to whatever you like (avoid whitespace)."
+                   << std::endl;
+                os << std::endl;
+                os << ">>";
+                std::string value;
+                getline(is, value);
+                return value;
+              },
+              "Category1")),
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+          new monitoringpluginbase::PluginConfigSelector(
+              constants::kFileName,
+              [&os, &is]() {
+                os << "Select a file to monitor." << std::endl;
+                os << std::endl;
+                os << ">>";
+                std::string value;
+                getline(is, value);
+                return value;
+              },
+              "Category1")),
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+          new monitoringpluginbase::PluginConfigSelector(
+              constants::kPattern,
+              [&os, &is]() {
+                os << "Select a pattern to look for (regular expression)."
+                   << std::endl;
+                os << std::endl;
+                os << ">>";
+                std::string value;
+                getline(is, value);
+                return value;
+              },
+              "Category1")),
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+          new monitoringpluginbase::PluginConfigSelector(
+              constants::kTags,
+              [&os, &is]() {
+                os << "Select the tags to apply. Separate each tag with a "
+                      "comma."
+                   << std::endl;
+                os << std::endl;
+                os << ">>";
+                std::string value;
+                getline(is, value);
+                return value;
+              },
+              "Category1")),
+      std::shared_ptr<imonitorplugin::IPluginConfigSelector>(
+          new monitoringpluginbase::PluginConfigSelector(
+              constants::kReportTags,
+              [&os, &is]() {
+                os << "Select the tag names you want to include in your report."
+                   << std::endl;
+                os << std::endl;
+                os << ">>";
+                std::string value;
+                getline(is, value);
+                return value;
+              },
+              "Reporter"))};
 }
 
 std::vector<imonitorplugin::PluginData> LogWatcherPlugin::AcquireData(

@@ -16,12 +16,16 @@ class NetworkPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   NetworkPlugin();
 
+  void Init() override;
   [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
           &&input_file) override;
+
+  std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+  GetConfigSelectors(std::ostream &os, std::istream &is) const override;
 
  private:
   std::string rx_bytes_file;

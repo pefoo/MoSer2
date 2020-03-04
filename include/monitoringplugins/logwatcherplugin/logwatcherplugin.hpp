@@ -14,6 +14,7 @@ namespace logwatcherplugin {
 class LogWatcherPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   LogWatcherPlugin();
+  void Init() override;
   [[nodiscard]] std::vector<std::string> DoSanityCheck() const override;
   std::vector<imonitorplugin::PluginData> AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
@@ -23,6 +24,8 @@ class LogWatcherPlugin : public monitoringpluginbase::MonitorPluginBase {
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>
           &&input_file) override;
+  std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+  GetConfigSelectors(std::ostream &os, std::istream &is) const override;
 
  private:
   struct LogFile {

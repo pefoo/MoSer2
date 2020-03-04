@@ -1,5 +1,6 @@
 #include "monitoringpluginbase/monitorpluginbase.hpp"
 #include <filesystem>
+#include <iostream>
 #include <string>
 #include <thread>
 #include <utility>
@@ -18,6 +19,8 @@ monitoringpluginbase::MonitorPluginBase::MonitorPluginBase(std::string name)
     this->settings_ = factory.ReadFromFile(this->name() + ".conf", &msg);
   }
 }
+
+void monitoringpluginbase::MonitorPluginBase::Init() {}
 
 std::string monitoringpluginbase::MonitorPluginBase::name() const {
   return this->name_;
@@ -39,6 +42,40 @@ monitoringpluginbase::MonitorPluginBase::AcquireData(
 
 std::vector<std::string>
 monitoringpluginbase::MonitorPluginBase::DoSanityCheck() const {
+  return {};
+}
+
+void monitoringpluginbase::MonitorPluginBase::Configure() {
+  std::string config_file_name = this->name() + ".conf";
+  if (std::filesystem::exists(config_file_name)) {
+    std::filesystem::copy(config_file_name, config_file_name + ".bak",
+                          std::filesystem::copy_options::overwrite_existing);
+  }
+  settingsprovider::SettingsFactory factory{};
+  auto selectors = GetConfigSelectors(std::cout, std::cin);
+  if (!selectors.empty()) {
+    std::cout << "##################################################"
+              << std::endl;
+    std::cout << this->name() << std::endl;
+    std::cout << "##################################################"
+              << std::endl;
+    for (const auto& selector : selectors) {
+      auto [key, section, value] = selector->SelectConfig();
+      std::cout << std::endl;
+      factory.RegisterSetting(key, section, value);
+    }
+    factory.WriteToFile(config_file_name);
+    std::cout << "Configuration file was written to " << config_file_name
+              << std::endl
+              << std::endl;
+  }
+  std::vector<std::string> msg;
+  this->settings_ = factory.ReadFromFile(config_file_name, &msg);
+}
+
+std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector> >
+monitoringpluginbase::MonitorPluginBase::GetConfigSelectors(
+    std::ostream&, std::istream&) const {
   return {};
 }
 

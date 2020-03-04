@@ -17,12 +17,16 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
  public:
   DiskPlugin();
 
+  void Init() override;
   std::vector<std::string> DoSanityCheck() const override;
 
  protected:
   imonitorplugin::PluginData::data_vector AcquireDataInternal(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) override;
+
+  std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector>>
+  GetConfigSelectors(std::ostream& os, std::istream& is) const override;
 
  private:
   struct DiskStat;

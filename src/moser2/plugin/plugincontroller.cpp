@@ -25,6 +25,7 @@ void PluginController::LoadPlugin(const std::string &path) {
     auto plug = this->plugin_manager_->LoadPlugin(
         abs_path, imonitoringplugin::kMonitoringPluginConstructor,
         imonitoringplugin::kMonitoringPluginDestructor);
+    plug->Instance()->Init();
     auto input_files = plug->Instance()->input_files();
     if (!input_files.empty()) {
       this->inputfile_provider_->RegisterPluginFiles(plug->Instance()->name(),

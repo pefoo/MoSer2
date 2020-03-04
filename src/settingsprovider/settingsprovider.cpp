@@ -62,7 +62,7 @@ void SettingsProvider::RegisterSetting(const std::string &key,
 
 std::string SettingsProvider::BuildKey(const std::string &key,
                                        const std::string &section) const {
-  return std::string(key + section);
+  return std::string(section + '|' + key);
 }
 
 bool SettingsProvider::ReadFromFile(const std::string &file,
@@ -119,6 +119,26 @@ bool SettingsProvider::ReadFromFile(const std::string &file,
   }
 
   return result;
-}  // namespace settingsprovider
+}
+
+void SettingsProvider::WriteToFile(const std::string &file) {
+  std::vector<std::string> keys;
+  for (const auto &[key, value] : this->settings_) {
+    keys.push_back(key);
+  }
+  // Reverse sort to get keys without a section first
+  std::sort(keys.begin(), keys.end(), std::greater<>());
+
+  std::ofstream out{file, std::ofstream::out | std::ofstream::trunc};
+  std::string last_section = "";
+  for (const auto &k : keys) {
+    auto setting = this->settings_.at(k);
+    if (last_section != setting.section_) {
+      out << "[" << setting.section_ << "]" << std::endl;
+    }
+    last_section = setting.section_;
+    out << setting.key_ << " = " << setting.value_ << std::endl;
+  }
+}
 
 }  // namespace settingsprovider

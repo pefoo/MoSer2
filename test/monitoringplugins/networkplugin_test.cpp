@@ -13,6 +13,7 @@ TEST_CASE("NetworkPlugin Data acquisition", "[NetworkPlugin]") {
   ConfigurationInjector c{
       monitoringplugins::networkplugin::constants::kPluginName};
   monitoringplugins::networkplugin::NetworkPlugin plug{};
+  plug.Init();
   auto data = plug.AcquireData(
       {{"/sys/class/net/enp0s31f6/statistics/rx_bytes",
         imonitorplugin::InputFileContent{0, "50", "100", 1, 1}},

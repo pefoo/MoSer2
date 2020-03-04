@@ -42,6 +42,7 @@ constexpr char snapshot_2[] =
 
 TEST_CASE("CpuPlugin Data acquisition", "[CpuPlugin]") {
   monitoringplugins::cpuplugin::CpuPlugin plug{};
+  plug.Init();
 
   auto data = plug.AcquireData(
       {{"/proc/stat",

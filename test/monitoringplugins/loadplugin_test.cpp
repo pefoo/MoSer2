@@ -9,6 +9,7 @@
 
 TEST_CASE("LoadPlugin Data acquisition", "[LoadPlugin]") {
   monitoringplugins::loadplugin::LoadPlugin plug{};
+  plug.Init();
   auto data = plug.AcquireData({})[0];
 
   REQUIRE(data.data().size() == 3);

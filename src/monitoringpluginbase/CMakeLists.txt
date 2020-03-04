@@ -2,6 +2,7 @@ set(SOURCES
   monitorpluginbase.cpp
   plugindataprocessor.cpp
   plugindataprocessorcollection.cpp
+  pluginconfigselector.cpp
 )
 
 ADD_LIBRARY(MeasurementPluginBase STATIC ${SOURCES})
