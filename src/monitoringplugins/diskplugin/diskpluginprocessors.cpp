@@ -40,22 +40,30 @@ monitoringplugins::diskplugin::CreateProcessors() {
       device_list.push_back(device);
     }
     for (const auto& device : device_list) {
-      processors.push_back(
-          std::make_shared<monitoringpluginbase::PluginDataProcessor>(
-              TokenDiskTimeSeriesData(device),
-              [device](utility::datastructure::Table data) -> std::string {
-                if (data.MaxSize() == 0) {
-                  return "";
-                }
-                auto record_filter = [device](const std::string& key) {
-                  return !(key.find(device) == 0 || key == "timestamp");
-                };
-                dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
+      processors.push_back(std::make_shared<
+                           monitoringpluginbase::PluginDataProcessor>(
+          TokenDiskTimeSeriesData(device),
+          [device](utility::datastructure::Table data) -> std::string {
+            if (data.MaxSize() == 0) {
+              return "";
+            }
+            auto field_filter = [device](const std::string& c,
+                                         const std::string& v) {
+              if (c !=
+                  monitoringplugins::diskplugin::constants::kDbFieldDriveLabel)
+                return false;
 
-                return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
-                    monitoringplugins::diskplugin::constants::kGpScriptName,
-                    data, params, record_filter);
-              }));
+              return v != device;
+            };
+            dataprocessorhelper::gnuplot::GnuPlotParameterDict params{};
+            params.AddParameter(
+                monitoringplugins::diskplugin::constants::kGpArgTitle, device,
+                true);
+
+            return dataprocessorhelper::gnuplot::EncodeScriptOutputToBase64(
+                monitoringplugins::diskplugin::constants::kGpScriptName, data,
+                params, utility::datastructure::NoColumnFilter, field_filter);
+          }));
     }
     processors.push_back(
         std::make_shared<monitoringpluginbase::PluginDataProcessor>(

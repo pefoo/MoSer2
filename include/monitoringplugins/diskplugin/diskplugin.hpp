@@ -19,14 +19,16 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
 
   void Init() override;
   std::vector<std::string> DoSanityCheck() const override;
-
- protected:
-  imonitorplugin::PluginData::data_vector AcquireDataInternal(
+  std::vector<imonitorplugin::PluginData> AcquireData(
       std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
           input_file) override;
 
+ protected:
   std::vector<std::shared_ptr<imonitorplugin::IPluginConfigSelector>>
   GetConfigSelectors(std::ostream& os, std::istream& is) const override;
+  imonitorplugin::PluginData::data_vector AcquireDataInternal(
+      std::unordered_map<std::string, imonitorplugin::InputFileContent>&&
+          input_file) override;
 
  private:
   struct DiskStat;
@@ -35,7 +37,6 @@ class DiskPlugin : public monitoringpluginbase::MonitorPluginBase {
   // contains the devices and their sector sizes
   std::unordered_map<std::string, int> device_list_;
 };
-
 CREATE_DETAULT_CONSTRUCTOR_FACTORY(DiskPlugin)
 CREATE_DEFAULT_DESTRUCTOR_FACTORY(DiskPlugin)
 

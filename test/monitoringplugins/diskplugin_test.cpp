@@ -1,4 +1,5 @@
 #include "monitoringplugins/diskplugin/diskplugin.hpp"
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <sstream>
@@ -45,24 +46,28 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
   plug.Init();
   auto data = plug.AcquireData(
       {{"/proc/diskstats",
-        imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}})[0];
+        imonitorplugin::InputFileContent{0, snapshot_1, snapshot_2, 1, 1}}});
 
-  REQUIRE(data.data().size() == 6);
+  // 2 drives are configured -> 2 data sets acquired
+  REQUIRE(data.size() == 2);
 
-  REQUIRE(data.data().at(3).first == "sda3_bytes_read");
-  REQUIRE(data.data().at(4).first == "sda3_bytes_written");
-  REQUIRE(data.data().at(5).first == "sda3_utilization");
-  REQUIRE(data.data().at(0).first == "sda4_bytes_read");
-  REQUIRE(data.data().at(1).first == "sda4_bytes_written");
-  REQUIRE(data.data().at(2).first == "sda4_utilization");
+  auto sda3_data = *std::find_if(
+      data.begin(), data.end(), [](const imonitorplugin::PluginData& data) {
+        return std::any_cast<std::string>(data.data().at(3).second) == "sda3";
+      });
+  auto sda4_data = *std::find_if(
+      data.begin(), data.end(), [](const imonitorplugin::PluginData& data) {
+        return std::any_cast<std::string>(data.data().at(3).second) == "sda4";
+      });
 
   using namespace Catch::literals;
-  REQUIRE(std::any_cast<int64_t>(data.data().at(3).second) == 512);
-  REQUIRE(std::any_cast<int64_t>(data.data().at(4).second) == 1024);
-  REQUIRE(std::any_cast<double>(data.data().at(5).second) == 100.0_a);
-  REQUIRE(std::any_cast<int64_t>(data.data().at(0).second) == 2375680);
-  REQUIRE(std::any_cast<int64_t>(data.data().at(1).second) == 13914112);
-  REQUIRE(std::any_cast<double>(data.data().at(2).second) == 13.2_a);
+  REQUIRE(std::any_cast<int64_t>(sda3_data.data().at(0).second) == 512);
+  REQUIRE(std::any_cast<int64_t>(sda3_data.data().at(1).second) == 1024);
+  REQUIRE(std::any_cast<double>(sda3_data.data().at(2).second) == 100.0_a);
+
+  REQUIRE(std::any_cast<int64_t>(sda4_data.data().at(0).second) == 2375680);
+  REQUIRE(std::any_cast<int64_t>(sda4_data.data().at(1).second) == 13914112);
+  REQUIRE(std::any_cast<double>(sda4_data.data().at(2).second) == 13.2_a);
 }
 
 TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
@@ -70,18 +75,21 @@ TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {
       monitoringplugins::diskplugin::constants::kPluginName};
   utility::datastructure::Table sample_data{"DiskPlugin"};
   sample_data.AddColumn(
-      utility::datastructure::DataColumn<int>{"sda3_bytes_read", {5, 5, 5}});
-  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
-      "sda3_bytes_written", {10, 10, 10}});
-  sample_data.AddColumn(utility::datastructure::DataColumn<int>{
-      "sda3_utilization", {50, 50, 50}});
+      utility::datastructure::DataColumn<int>{"bytes_read", {5, 5, 5}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"bytes_written", {10, 10, 10}});
+  sample_data.AddColumn(
+      utility::datastructure::DataColumn<int>{"utilization", {50, 50, 50}});
   sample_data.AddColumn(utility::datastructure::DataColumn<int>{
       "timestamp", {1558784370, 1558784375, 1558784380}});
+  sample_data.AddColumn(utility::datastructure::DataColumn<std::string>{
+      "label", {"sda3", "sda3", "sda3"}});
   dataprocessorhelper::gnuplot::GnuPlotBackend::instance().set_mock_call(true);
   auto processors = monitoringplugins::diskplugin::CreateProcessors();
   auto time_series_processor = processors.front();
 
   auto time_series_response = time_series_processor->processor()(sample_data);
 
-  REQUIRE(time_series_response == "ImRpc2tfY2hhcnRzLmdwIgoK");
+  REQUIRE(time_series_response ==
+          "ImRpc2tfY2hhcnRzLmdwIgoidGl0bGU9J3NkYTMnIgo=");
 }

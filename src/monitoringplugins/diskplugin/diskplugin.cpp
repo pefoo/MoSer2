@@ -90,8 +90,8 @@ monitoringplugins::diskplugin::DiskPlugin::DoSanityCheck() const {
   return messages;
 }
 
-imonitorplugin::PluginData::data_vector
-monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
+std::vector<imonitorplugin::PluginData>
+monitoringplugins::diskplugin::DiskPlugin::AcquireData(
     std::unordered_map<std::string, imonitorplugin::InputFileContent>
         &&input_file) {
   auto stats_1 =
@@ -99,7 +99,7 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
   auto stats_2 =
       this->ParseDiskstat(input_file["/proc/diskstats"].snapshot_2());
 
-  imonitorplugin::PluginData::data_vector data;
+  std::vector<imonitorplugin::PluginData> data;
 
   for (const auto &[device_name, sector_size] : this->device_list_) {
     auto t_io_total =
@@ -114,9 +114,14 @@ monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
     int64_t bytes_written = int64_t(stats_2.at(device_name).sectors_written -
                                     stats_1.at(device_name).sectors_written) *
                             sector_size;
-    data.push_back({device_name + "_bytes_read", bytes_read});
-    data.push_back({device_name + "_bytes_written", bytes_written});
-    data.push_back({device_name + "_utilization", utilization});
+
+    data.push_back(imonitorplugin::PluginData{
+        this->name(),
+        this->MakeTimestamp(),
+        {{constants::kDbFieldBytesRead, bytes_read},
+         {constants::kDbFieldBytesWritten, bytes_written},
+         {constants::kDbFieldUtilization, utilization},
+         {constants::kDbFieldDriveLabel, device_name}}});
   }
 
   return data;
@@ -187,6 +192,14 @@ monitoringplugins::diskplugin::DiskPlugin::GetConfigSelectors(
                     getline(is, value);
                     return value;
                   }))};
+}
+
+imonitorplugin::PluginData::data_vector
+monitoringplugins::diskplugin::DiskPlugin::AcquireDataInternal(
+    std::unordered_map<std::string, imonitorplugin::InputFileContent>
+        &&input_file) {
+  this->ThrowPluginException(
+      "This plugin is using its own AcquireData implementation.");
 }
 
 std::unordered_map<std::string,

@@ -7,13 +7,14 @@
 #
 # Arguments:
 #   file_name       : The data file name and path
-#   y_label         : The label of the Y axis
-#   y_series_count  : The y series count
+#   title           : The chart title
 
 if(!exists("file_name")) exit
+if(!exists("title")) exit
 
 set terminal pngcairo size 1000,400 background rgb '#636363'
 set datafile separator ";"
+set title title
 set xdata time
 set timefmt "%s"
 set format x "%H:%M"
