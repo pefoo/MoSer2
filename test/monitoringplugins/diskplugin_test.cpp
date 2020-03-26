@@ -61,13 +61,25 @@ TEST_CASE("DiskPlugin Data acquisition", "[DiskPlugin]") {
       });
 
   using namespace Catch::literals;
-  REQUIRE(std::any_cast<int64_t>(sda3_data.data().at(0).second) == 512);
-  REQUIRE(std::any_cast<int64_t>(sda3_data.data().at(1).second) == 1024);
-  REQUIRE(std::any_cast<double>(sda3_data.data().at(2).second) == 100.0_a);
+  REQUIRE(sda3_data.GetFieldValue<int64_t>(
+              monitoringplugins::diskplugin::constants::kDbFieldBytesRead) ==
+          512);
+  REQUIRE(sda3_data.GetFieldValue<int64_t>(
+              monitoringplugins::diskplugin::constants::kDbFieldBytesWritten) ==
+          1024);
+  REQUIRE(sda3_data.GetFieldValue<double>(
+              monitoringplugins::diskplugin::constants::kDbFieldUtilization) ==
+          100.0_a);
 
-  REQUIRE(std::any_cast<int64_t>(sda4_data.data().at(0).second) == 2375680);
-  REQUIRE(std::any_cast<int64_t>(sda4_data.data().at(1).second) == 13914112);
-  REQUIRE(std::any_cast<double>(sda4_data.data().at(2).second) == 13.2_a);
+  REQUIRE(sda4_data.GetFieldValue<int64_t>(
+              monitoringplugins::diskplugin::constants::kDbFieldBytesRead) ==
+          2375680);
+  REQUIRE(sda4_data.GetFieldValue<int64_t>(
+              monitoringplugins::diskplugin::constants::kDbFieldBytesWritten) ==
+          13914112);
+  REQUIRE(sda4_data.GetFieldValue<double>(
+              monitoringplugins::diskplugin::constants::kDbFieldUtilization) ==
+          13.2_a);
 }
 
 TEST_CASE("DiskPlugin Data processor", "[DiskPlugin]") {

@@ -1,6 +1,7 @@
 #ifndef PLUGINDATA_H
 #define PLUGINDATA_H
 
+#include <algorithm>
 #include <any>
 #include <functional>
 #include <sstream>
@@ -43,6 +44,35 @@ class PluginData {
   /// \return
   ///
   [[nodiscard]] data_vector data() const { return this->data_; }
+
+  ///
+  /// \brief Get a data field
+  /// \param name The name of the data field
+  /// \return A reference to the requested data field
+  ///
+  [[nodiscard]] std::any& GetField(const std::string& name) {
+    auto field =
+        std::find_if(this->data_.begin(), this->data_.end(),
+                     [name](const std::pair<std::string, std::any>& v) {
+                       return v.first == name;
+                     });
+    if (field != this->data_.end()) {
+      return field->second;
+    }
+    throw std::runtime_error("Failed to find the data field " + name +
+                             " in the data object of " + this->plugin_name());
+  }
+
+  ///
+  /// \brief Get a data field
+  /// \param name The name of the data field
+  /// \return The data field value
+  ///
+  template <typename FieldType>
+  [[nodiscard]] FieldType GetFieldValue(const std::string& name) {
+    auto field = this->GetField(name);
+    return std::any_cast<FieldType>(field);
+  }
 
   ///
   /// \brief ToString
