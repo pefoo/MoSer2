@@ -3,6 +3,7 @@
 #include "dataprocessorhelper/gnuplot/gnuplotparameterdict.hpp"
 #include "dataprocessorhelper/gnuplot/gnuplotwrapper.hpp"
 #include "dataprocessorhelper/tablecalchelper.hpp"
+#include "imonitoringplugin/types.hpp"
 #include "monitoringplugins/networkplugin/constants.hpp"
 #include "utility/datastructure/table.hpp"
 
@@ -54,13 +55,13 @@ monitoringplugins::networkplugin::CreateProcessors() {
                // clang-format off
                // Calculate and convert the stats to kibibyte
                auto avg = std::round(
-                     dataprocessorhelper::Avg<int>(data, filter) * 10 * 0.000976562) / 10;
+                     dataprocessorhelper::Avg<imonitorplugin::sqlite3_int64_t>(data, filter) * 10 * 0.000976562) / 10;
                auto min = std::round(
-                     dataprocessorhelper::Min<int>(data, filter) * 10 * 0.000976562) / 10;
+                     dataprocessorhelper::Min<imonitorplugin::sqlite3_int64_t>(data, filter) * 10 * 0.000976562) / 10;
                auto max = std::round(
-                     dataprocessorhelper::Max<int>(data, filter) * 10 * 0.000976562) / 10;
+                     dataprocessorhelper::Max<imonitorplugin::sqlite3_int64_t>(data, filter) * 10 * 0.000976562) / 10;
                auto std_dev = std::round(
-                     dataprocessorhelper::StdDev<int>(data, filter) * 10 * 0.000976562) / 10;
+                     dataprocessorhelper::StdDev<imonitorplugin::sqlite3_int64_t>(data, filter) * 10 * 0.000976562) / 10;
                // clang-format on
 
                table << kTableRowStart << kTableColumnStart << type

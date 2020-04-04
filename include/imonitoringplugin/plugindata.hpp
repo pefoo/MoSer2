@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "imonitoringplugin/types.hpp"
 
 namespace imonitorplugin {
 ///
@@ -116,6 +117,12 @@ class PluginData {
     if (type == typeid(std::string)) {
       return [](std::any& data) -> std::string {
         return std::any_cast<std::string>(data);
+      };
+    }
+    if (type == typeid(imonitorplugin::sqlite3_int64_t)) {
+      return [](std::any& data) -> std::string {
+        return std::to_string(
+            std::any_cast<imonitorplugin::sqlite3_int64_t>(data));
       };
     }
     throw std::runtime_error("Not supported data type.");

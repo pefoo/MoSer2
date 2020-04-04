@@ -81,7 +81,7 @@ persistenceservice::sqlite::SqliteAdapter::Load(const std::string &plugin_name,
       // Handle data columns
       switch (sqlite3_column_type(stmt, col)) {
         case SQLITE_INTEGER: {
-          data.push_back({col_name, sqlite3_column_int(stmt, col)});
+          data.push_back({col_name, sqlite3_column_int64(stmt, col)});
           break;
         }
         case SQLITE_FLOAT: {
@@ -125,7 +125,7 @@ persistenceservice::sqlite::SqliteAdapter::LoadTable(
       // Handle data columns
       switch (sqlite3_column_type(stmt, col)) {
         case SQLITE_INTEGER: {
-          table.AddValue(sqlite3_column_int(stmt, col), col_name);
+          table.AddValue(sqlite3_column_int64(stmt, col), col_name);
           break;
         }
         case SQLITE_FLOAT: {
