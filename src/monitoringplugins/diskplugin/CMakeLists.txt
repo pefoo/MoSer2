@@ -4,6 +4,7 @@ configure_file("${ETC_DIR}/DiskPlugin.conf" "${CMAKE_BINARY_DIR}/DiskPlugin.conf
 add_library(diskplugin SHARED
   diskplugin.cpp
   diskpluginprocessors.cpp
+  diskpluginhelper.cpp
   "${CMAKE_BINARY_DIR}/disk_charts.gp"
   "${CMAKE_BINARY_DIR}/DiskPlugin.conf"
 )

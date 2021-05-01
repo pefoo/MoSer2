@@ -157,12 +157,9 @@ monitoringplugins::diskplugin::DiskPlugin::GetConfigSelectors(
                     }
                     std::stringstream ss{};
                     ss << "Select the devices you want to monitor. Separate "
-                          "devices "
-                          "using "
-                          "a "
-                          "semicolon."
+                          "devices using a semicolon."
                        << std::endl;
-                    ss << "E.g.: /dev/sda1;/dev/sda4" << std::endl;
+                    ss << "E.g.: sda1;sda4" << std::endl;
                     ss << std::endl;
 
                     auto ignored_types = {
@@ -183,7 +180,7 @@ monitoringplugins::diskplugin::DiskPlugin::GetConfigSelectors(
                       if (device.empty())
                         continue;
 
-                      ss << device << " (Mount point: " << mnt
+                      ss << basename(device.c_str()) << " (Mount point: " << mnt
                          << " type: " << type << ")" << std::endl;
                     }
                     os << ss.str();

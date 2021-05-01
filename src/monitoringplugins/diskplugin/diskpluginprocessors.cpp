@@ -1,4 +1,5 @@
 #include "monitoringplugins/diskplugin/diskpluginprocessors.hpp"
+#include "monitoringplugins/diskplugin/diskpluginhelper.hpp"
 #include <sys/statvfs.h>
 #include <cmath>
 #include <fstream>
@@ -23,32 +24,37 @@ const auto GetStatvfs = statvfs;
 #endif
 
 std::unordered_map<std::string, std::string> GetMountPoints();
-uint64_t GetDiskAvailable(const std::string&);
-uint64_t GetDiskTotal(const std::string&);
+uint64_t GetDiskAvailable(const std::string &);
+uint64_t GetDiskTotal(const std::string &);
 
 monitoringpluginbase::PluginDataProcessorCollection::ProcessorVector
-monitoringplugins::diskplugin::CreateProcessors() {
+monitoringplugins::diskplugin::CreateProcessors()
+{
   auto settings = dataprocessorhelper::GetPluginSettings("DiskPlugin");
   std::vector<std::shared_ptr<imonitorplugin::IPluginDataProcessor>>
       processors{};
 
-  if (settings) {
+  if (settings)
+  {
     auto devices = std::stringstream{settings->GetValue("Devices", "")};
     std::string device;
     std::vector<std::string> device_list;
-    while (std::getline(devices, device, ';')) {
+    while (std::getline(devices, device, ';'))
+    {
       device_list.push_back(device);
     }
-    for (const auto& device : device_list) {
+    for (const auto &device : device_list)
+    {
       processors.push_back(std::make_shared<
                            monitoringpluginbase::PluginDataProcessor>(
           TokenDiskTimeSeriesData(device),
           [device](utility::datastructure::Table data) -> std::string {
-            if (data.MaxSize() == 0) {
+            if (data.MaxSize() == 0)
+            {
               return "";
             }
-            auto field_filter = [device](const std::string& c,
-                                         const std::string& v) {
+            auto field_filter = [device](const std::string &c,
+                                         const std::string &v) {
               if (c !=
                   monitoringplugins::diskplugin::constants::kDbFieldDriveLabel)
                 return false;
@@ -75,8 +81,10 @@ monitoringplugins::diskplugin::CreateProcessors() {
               out << "<table style=\"width:100%\">";
               out << "<col width=50%/>";
               out << "<col width=50%/>";
-              for (const auto& device : device_list) {
-                if (mount_points.count("/dev/" + device) != 0) {
+              for (const auto &device : device_list)
+              {
+                if (mount_points.count("/dev/" + device) != 0)
+                {
                   auto total =
                       GetDiskTotal(mount_points["/dev/" + device]) / pow(2, 30);
                   auto available =
@@ -106,28 +114,37 @@ monitoringplugins::diskplugin::CreateProcessors() {
   return processors;
 }
 
-uint64_t GetDiskAvailable(const std::string& device) {
+uint64_t GetDiskAvailable(const std::string &device)
+{
   Statvfs stat;
   GetStatvfs(device.c_str(), &stat);
   return stat.f_bsize * stat.f_bavail;
 }
 
-uint64_t GetDiskTotal(const std::string& device) {
+uint64_t GetDiskTotal(const std::string &device)
+{
   Statvfs stat;
   GetStatvfs(device.c_str(), &stat);
   return stat.f_frsize * stat.f_blocks;
 }
 
-std::unordered_map<std::string, std::string> GetMountPoints() {
+std::unordered_map<std::string, std::string> GetMountPoints()
+{
   std::ifstream mounts{"/proc/mounts"};
-  if (mounts.fail()) {
+  if (mounts.fail())
+  {
     return {};
   }
   std::unordered_map<std::string, std::string> points;
-  while (!mounts.eof()) {
+  while (!mounts.eof())
+  {
     std::string device;
     std::string point;
     mounts >> device >> point;
+    if (device == "/dev/root")
+    {
+      device = monitoringplugins::diskplugin::ResolveDevRoot();
+    }
     points[device] = point;
     mounts.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
